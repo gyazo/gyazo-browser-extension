@@ -107,6 +107,9 @@ function onClickHandler(info, tab) {
     };
     xhr.send();
   },
+  gyazoSelectElm: function() {
+    chrome.tabs.sendMessage(tab.id, {action: 'gyazoSelectElm'}, function(){})
+  },
   gyazoCapture: function() {
     chrome.tabs.sendMessage(tab.id, {action: 'gyazoCapture'}, function(mes){});
   },
@@ -156,11 +159,19 @@ chrome.contextMenus.create({
   'id': 'gyazoWhole',
   contexts: ['all']
 });
+chrome.contextMenus.create({
+  'title': chrome.i18n.getMessage("contextMenuSelectElement"),
+  'id': 'gyazoSelectElm',
+  contexts: ['all']
+});
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var messageHandlers = {
     gyazoCapture: function() {
       onClickHandler({menuItemId: 'gyazoCapture'}, request.tab)
+    },
+    gyazoSelectElmFromPopup: function() {
+      onClickHandler({menuItemId: 'gyazoSelectElm'}, request.tab)
     },
     gyazoWholeCaptureFromPopup: function() {
       onClickHandler({menuItemId: 'gyazoWhole'}, request.tab);
@@ -172,7 +183,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       var ctx = c.getContext('2d');
       var canvasData = c.toDataURL();
       var capture = function(scrollHeight){
-        if(scrollHeight > request.data.h){
+        if(scrollHeight >= request.data.h){
           chrome.tabs.executeScript(null, {
             code: "window.scrollTo(0, "+ request.data.defaultPositon +" )"
           });
@@ -184,7 +195,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             height: request.data.h,
             scale: request.data.s
           });
-          return true;
+          return sendResponse();
         }
         chrome.tabs.executeScript(null, {
           code: "window.scrollTo(0, "+ (scrollHeight + request.data.y) +" )"
