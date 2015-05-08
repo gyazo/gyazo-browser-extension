@@ -23,6 +23,25 @@ function restorationFixedElement(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   var actions = {
+    gyazoCaptureVisibleArea: function() {
+      var data = {};
+      var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
+      var scale = window.devicePixelRatio / zoom;
+      data.w = window.innerWidth;
+      data.h = window.innerHeight;
+      data.x = window.scrollX;
+      data.y = window.scrollY;
+      data.t = document.title;
+      data.u = location.href;
+      data.s = scale;
+      data.z = zoom;
+      data.defaultPositon = window.scrollY;
+      data.innerHeight = window.innerHeight;
+      chrome.runtime.sendMessage(chrome.runtime.id,{
+        action: 'gyazoCaptureSize',
+        data: data
+      }, function(){});
+    },
     gyazoSelectElm: function() {
       //XXX: prevent loading twice.
       if(document.getElementsByClassName('gyazo-crop-select-element').length > 0){

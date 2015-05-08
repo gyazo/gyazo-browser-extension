@@ -29,5 +29,7 @@
   "contextMenuSelectElement": {
     "message": "Capture selected HTML element"
   },
+  "captureVisibleArea": {
+    "message": "Capture visible area"
   }
 }

@@ -110,6 +110,9 @@ function onClickHandler(info, tab) {
   gyazoSelectElm: function() {
     chrome.tabs.sendMessage(tab.id, {action: 'gyazoSelectElm'}, function(){})
   },
+  gyazoCaptureVisibleArea: function() {
+    chrome.tabs.sendMessage(tab.id, {action: 'gyazoCaptureVisibleArea'}, function(mes){});
+  },
   gyazoCapture: function() {
     chrome.tabs.sendMessage(tab.id, {action: 'gyazoCapture'}, function(mes){});
   },
@@ -164,6 +167,11 @@ chrome.contextMenus.create({
   'id': 'gyazoSelectElm',
   contexts: ['all']
 });
+chrome.contextMenus.create({
+  'title': chrome.i18n.getMessage("captureVisibleArea"),
+  'id': 'gyazoCaptureVisibleArea',
+  contexts: ['all']
+})
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   var messageHandlers = {
@@ -172,6 +180,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     },
     gyazoSelectElmFromPopup: function() {
       onClickHandler({menuItemId: 'gyazoSelectElm'}, request.tab)
+    },
+    gyazoCaptureVisibleArea: function() {
+      onClickHandler({menuItemId: 'gyazoCaptureVisibleArea'}, request.tab)
     },
     gyazoWholeCaptureFromPopup: function() {
       onClickHandler({menuItemId: 'gyazoWhole'}, request.tab);

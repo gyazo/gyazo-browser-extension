@@ -29,5 +29,7 @@
   "contextMenuSelectElement": {
     "message": "要素を選択してキャプチャー"
   },
+  "captureVisibleArea": {
+    "message": "今表示している領域をキャプチャー"
   }
 }
