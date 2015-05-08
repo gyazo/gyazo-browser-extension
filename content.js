@@ -151,13 +151,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       });
       var cancelGyazo = function(){
         document.body.removeChild(layer);
+        document.body.removeChild(jackup);
         document.body.style.webkitUserSelect = tempUserSelect;
         document.removeEventListener('keydown', keydownHandler);
         window.removeEventListener('contextmenu', cancelGyazo);
       }
       var keydownHandler = function(e){
-        // If press Esc Key, cancel it
-        if(e.keyCode === 27){
+        if(event.keyCode === 32){
+          // If press Space bar, capture visible area
+          event.preventDefault();
+          cancelGyazo();
+          actions.gyazoCaptureVisibleArea();
+        }else if(e.keyCode === 27){
+          // If press Esc Key, cancel it
           cancelGyazo();
         }
       };
