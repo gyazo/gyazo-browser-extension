@@ -108,10 +108,10 @@ function onClickHandler(info, tab) {
     xhr.send();
   },
   gyazoSelectElm: function() {
-    chrome.tabs.sendMessage(tab.id, {action: 'gyazoSelectElm'}, function(){})
+    chrome.tabs.sendMessage(tab.id, {action: 'gyazoSelectElm', tab: tab}, function(){})
   },
   gyazoCapture: function() {
-    chrome.tabs.sendMessage(tab.id, {action: 'gyazoCapture'}, function(mes){});
+    chrome.tabs.sendMessage(tab.id, {action: 'gyazoCapture', tab: tab}, function(mes){});
   },
   gyazoWhole: function(){
     var notificationId = 'gyazoCapturing_' + Date.now();
@@ -200,36 +200,38 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         chrome.tabs.executeScript(null, {
           code: "window.scrollTo(0, "+ (scrollHeight + request.data.y) +" )"
         },function(){
-          setTimeout(function(){
-            chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
-              canvasUtils.trimImage({
-                imageData: data,
-                scale: request.data.s,
-                zoom: request.data.z,
-                startX: request.data.x,
-                startY: 0,
-                width: request.data.w,
-                height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-                callback: function(_canvas){
-                  canvasUtils.appendImageToCanvas({
-                    canvasData: canvasData,
-                    imageSrc: _canvas.toDataURL(),
-                    pageHeight: request.data.h,
-                    imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-                    width: request.data.w,
-                    top: scrollHeight,
-                    scale: request.data.s,
-                    zoom: request.data.z,
-                    callback: function(_canvas){
-                      canvasData = _canvas.toDataURL();
-                      scrollHeight += request.data.innerHeight;
-                      capture(scrollHeight);
-                    }
-                  })
-                }
+          chrome.tabs.sendMessage(request.tab.id, {action: 'changeFixedElementToAbsolute'}, function(){
+            setTimeout(function(){
+              chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
+                canvasUtils.trimImage({
+                  imageData: data,
+                  scale: request.data.s,
+                  zoom: request.data.z,
+                  startX: request.data.x,
+                  startY: 0,
+                  width: request.data.w,
+                  height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                  callback: function(_canvas){
+                    canvasUtils.appendImageToCanvas({
+                      canvasData: canvasData,
+                      imageSrc: _canvas.toDataURL(),
+                      pageHeight: request.data.h,
+                      imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                      width: request.data.w,
+                      top: scrollHeight,
+                      scale: request.data.s,
+                      zoom: request.data.z,
+                      callback: function(_canvas){
+                        canvasData = _canvas.toDataURL();
+                        scrollHeight += request.data.innerHeight;
+                        capture(scrollHeight);
+                      }
+                    })
+                  }
+                })
               })
-            })
-          },10)
+            },10)
+          });
         })
       }
       capture(0)
