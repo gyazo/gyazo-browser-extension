@@ -4,6 +4,19 @@ if(/gyazo\.com/.test(location.hostname)){
   document.documentElement.setAttribute("data-extension-installed", true);
 }
 
+function pressCommandKey(event){
+  // Return true when
+  // Press CommandKey on MacOSX or CtrlKey on Windows or Linux
+  if( !(event instanceof MouseEvent || event instanceof KeyboardEvent) ){
+    return false
+  }
+  if(navigator.platform.match(/mac/i).length > 0){
+    return event.metaKey || event.keyIdentifier === 'Meta';
+  }else{
+    return event.ctrlKey || event.keyIdentifier === 'Ctrl';
+  }
+}
+
 function changeFixedElementToAbsolute(){
   Array.prototype.slice.apply(document.querySelectorAll('*')).filter(function(item){
     return (window.getComputedStyle(item).position === 'fixed')
@@ -89,9 +102,25 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         layer.style.left = rect.left + 'px';
         layer.style.top = rect.top + 'px';
       };
+      var takeMargin = function(){
+        layer.style.width = parseInt(getComputedStyle(layer).width) + 6 + 'px';
+        layer.style.height = parseInt(getComputedStyle(layer).height) + 6 + 'px';
+        layer.style.left = parseInt(getComputedStyle(layer).left) -3 + 'px'; + 'px';
+        layer.style.top = parseInt(getComputedStyle(layer).top) -3 + 'px'; + 'px';
+      }
       var keydownHandler = function(event){
         if(event.keyCode === 27){
           cancel();
+        }else if(pressCommandKey(event)){
+          takeMargin();
+        }
+      }
+      var keyUpHandler = function(event){
+        if(pressCommandKey(event)){
+          layer.style.width = parseInt(getComputedStyle(layer).width) - 6 + 'px';
+          layer.style.height = parseInt(getComputedStyle(layer).height) - 6 + 'px';
+          layer.style.left = parseInt(getComputedStyle(layer).left) + 3 + 'px'; + 'px';
+          layer.style.top = parseInt(getComputedStyle(layer).top) + 3 + 'px'; + 'px';
         }
       }
       var cancel = function(){
@@ -99,10 +128,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         document.body.removeChild(layer);
         window.removeEventListener('contextmenu', cancel);
         document.removeEventListener('keydown', keydownHandler);
+        document.removeEventListener('keyup', keyUpHandler);
         restorationFixedElement();
       }
       window.addEventListener('contextmenu', cancel);
       document.addEventListener('keydown', keydownHandler);
+      document.addEventListener('keyup', keyUpHandler);
       var selectElement = function(event){
         event.stopPropagation();
         event.preventDefault();
@@ -126,6 +157,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         jackup.style.height = (window.innerHeight + 30) + 'px';
         window.removeEventListener('contextmenu', cancel);
         window.removeEventListener('keydown', keydownHandler);
+        document.removeEventListener('keyup', keyUpHandler);
         changeFixedElementToAbsolute();
         window.setTimeout(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
