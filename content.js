@@ -127,7 +127,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         window.removeEventListener('contextmenu', cancel);
         window.removeEventListener('keydown', keydownHandler);
         changeFixedElementToAbsolute();
-        window.setTimeout(function() {
+        window.requestAnimationFrame(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
             data: data,
@@ -136,7 +136,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             restorationFixedElement();
             document.body.removeChild(jackup);
           });
-        },100);
+        });
       }
       allElms.forEach(function(item){
         item.addEventListener('mouseover', moveLayer);
@@ -232,8 +232,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
         jackup.style.height = (window.innerHeight + 30) + 'px';
-        //wait for rewrite by removeChild
-        window.setTimeout(function() {
+        window.requestAnimationFrame(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
             data: data,
@@ -241,7 +240,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           }, function(){
             document.body.removeChild(jackup);
           });
-        },100);
+        });
       };
       layer.addEventListener('mousedown', mousedownHandler);
       document.addEventListener('keydown', keydownHandler);
