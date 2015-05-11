@@ -21,25 +21,40 @@ function restorationFixedElement(){
   })
 }
 
+function getZoomAndScale(){
+  var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
+  var scale = window.devicePixelRatio / zoom;
+  // XXX: on Windows, when window is not maximum, it should tweak zoom.(Chrome zoom level 1 is 1.10)
+  var isWindows = navigator.platform.match(/^win/i);
+  var isMaximum = (window.outerHeight === screen.availHeight && window.outerWidth === screen.availWidth);
+  if( isWindows && !isMaximum && 1.00 < zoom && zoom < 1.05){
+    zoom = 1.00;
+  };
+  return {
+    zoom: zoom,
+    scale: scale
+  }
+}
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   var actions = {
     changeFixedElementToAbsolute: function(){
       changeFixedElementToAbsolute();
       sendResponse();
+      return true;
     },
     gyazoCaptureVisibleArea: function(_request) {
       var request = request || _request;
       var data = {};
-      var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
-      var scale = window.devicePixelRatio / zoom;
+      var sclaeObj = getZoomAndScale();
       data.w = window.innerWidth;
       data.h = window.innerHeight;
       data.x = window.scrollX;
       data.y = window.scrollY;
       data.t = document.title;
       data.u = location.href;
-      data.s = scale;
-      data.z = zoom;
+      data.s = scaleObj.scale;
+      data.z = scaleObj.zoom;
       data.defaultPositon = window.scrollY;
       data.innerHeight = window.innerHeight;
       chrome.runtime.sendMessage(chrome.runtime.id,{
@@ -96,16 +111,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           item.removeEventListener('click', selectElement);
         });
         var data = {};
-        var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
-        var scale = window.devicePixelRatio / zoom;
+        var scaleObj = getZoomAndScale();
         data.w = parseFloat(layer.style.width);
         data.h = parseFloat(layer.style.height);
         data.x = window.scrollX + layer.offsetLeft;
         data.y = window.scrollY + layer.offsetTop;
         data.t = document.title;
         data.u = location.href;
-        data.s = scale;
-        data.z = zoom;
+        data.s = scaleObj.scale;
+        data.z = scaleObj.zoom;
         data.defaultPositon = window.scrollY;
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
@@ -201,8 +215,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           cancelGyazo();
           event.preventDefault();
         });
-        var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
-        var scale = window.devicePixelRatio / zoom;
+        var scaleObj = getZoomAndScale();
         data.w = Math.abs(e.pageX - startX);
         data.h = Math.abs(e.pageY - startY);
         if(data.h < 1 || data.w < 1){
@@ -213,8 +226,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         data.y = Math.min(e.pageY, startY);
         data.t = document.title;
         data.u = location.href;
-        data.s = scale;
-        data.z = zoom;
+        data.s = scaleObj.scale;
+        data.z = scaleObj.zoom;
         data.defaultPositon = window.scrollY;
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
@@ -234,72 +247,42 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       document.addEventListener('keydown', keydownHandler);
       window.addEventListener('contextmenu', cancelGyazo);
     },
-    wholeCaptureInit: function() {
-      var context = request.context;
-      context.scrollY = window.scrollY;
-      context.overflow = document.documentElement.style.overflow;
-      context.overflowY = document.documentElement.style.overflowY;
+    gyazoWholeCapture: function(){
+      //XXX: prevent loading twice.
+      if(document.getElementsByClassName('gyazo-jackup-element').length > 0){
+        return false;
+      }
+      var overflow = document.documentElement.style.overflow;
+      var overflowY = document.documentElement.style.overflowY;
       document.documentElement.style.overflow = 'hidden';
       document.documentElement.style.overflowY = 'hidden';
-      //I want some fixed element not to follow scrolling
-      changeFixedElementToAbsolute();
-      window.scroll(0, 0);
-      var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
-	  var windowInnerHeight = window.innerHeight;
-	  // XXX: on Windows, when window is not maximum, it should tweak zoom.(Chrome zoom level 1 is 1.10)
-	  var isWindows = navigator.platform.match(/^win/i);
-	  var isMaximum = (window.outerHeight === screen.availHeight && window.outerWidth === screen.availWidth);
-	  if( isWindows && !isMaximum && 1.00 < zoom && zoom < 1.05){
-	  	zoom = 1.00;
-	  };
-      var data = {
-        width: window.outerWidth,
-        height: Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight),
-        windowInnerHeight: window.innerHeight,
-        title: document.title,
-        url: location.href,
-        captureTop: 0,
-        captureButtom: window.innerHeight * zoom,
-        scrollPositionY: 0,
-        scale: window.devicePixelRatio / zoom,
-        zoom: zoom
-      };
-      //waiting for repaint after scroll
-      window.setTimeout(function(){
-        chrome.runtime.sendMessage(chrome.runtime.id,{
-          action: 'wholeCaptureManager',
-          data: data,
-          context: context
-        });
-      }, 50);
-    },
-    scrollNextPage: function(){
-      var data = request.data;
-      var captureTop = data.captureButtom;
-      var captureButtom = captureTop + data.windowInnerHeight * data.zoom;
-      var scrollPositionY = data.scrollPositionY + data.windowInnerHeight;
-      window.scroll(0, scrollPositionY);
-      data.captureTop = captureTop;
-      data.captureButtom = captureButtom;
-      data.scrollPositionY = scrollPositionY;
-      //I want some fixed element not to follow scrolling
-      window.setTimeout(function(){
-        changeFixedElementToAbsolute();
-        window.setTimeout(function(){
-          chrome.runtime.sendMessage(chrome.runtime.id,{
-            action: 'wholeCaptureManager',
-            canvasData: request.canvasData,
-            data: data,
-            context: request.context
-          });
-        },0);
-      }, 50);
-    },
-    wholeCaptureFinish: function(){
-      document.documentElement.style.overflow = request.context.overflow;
-      document.documentElement.style.overflowY = request.context.overflowY;
-      restorationFixedElement();
-      window.scroll(0, request.context.scrollY);
+      var data = {};
+      var scaleObj = getZoomAndScale();
+      data.w = window.innerWidth;
+      data.h = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight);
+      data.x = 0;
+      data.y = 0;
+      data.t = document.title;
+      data.u = location.href;
+      data.s = scaleObj.scale;
+      data.z = scaleObj.zoom;
+      data.defaultPositon = window.scrollY;
+      data.innerHeight = window.innerHeight;
+      var jackup = document.createElement('div');
+      jackup.classList.add('gyazo-jackup-element');
+      document.body.appendChild(jackup);
+      jackup.style.height = (data.h + 30) + 'px';
+      chrome.runtime.sendMessage(chrome.runtime.id,{
+        action: 'gyazoCaptureSize',
+        data: data,
+        tab: request.tab,
+        notificationId: request.notificationId
+      }, function(){
+        console.log(jackup)
+        document.body.removeChild(jackup);
+        document.documentElement.style.overflow = overflow;
+        document.documentElement.style.overflowY = overflowY;
+      });
     }
   };
   if(request.action in actions){
