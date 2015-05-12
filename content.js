@@ -59,7 +59,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     gyazoCaptureVisibleArea: function(_request) {
       var request = request || _request;
       var data = {};
-      var sclaeObj = getZoomAndScale();
+      var scaleObj = getZoomAndScale();
       data.w = window.innerWidth;
       data.h = window.innerHeight;
       data.x = window.scrollX;
