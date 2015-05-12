@@ -158,7 +158,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         window.removeEventListener('contextmenu', cancel);
         window.removeEventListener('keydown', keydownHandler);
         document.removeEventListener('keyup', keyUpHandler);
-        if(window.innerHeight < data.h){
+        if(layer.offsetTop >= 0 && layer.offsetTop + layer.offsetHeight <= window.innerHeight){
           //Only when required scroll
           changeFixedElementToAbsolute();
         }

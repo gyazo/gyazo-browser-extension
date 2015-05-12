@@ -179,7 +179,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       var ctx = c.getContext('2d');
       var canvasData = c.toDataURL();
       var capture = function(scrollHeight){
-        if(scrollHeight === 0 && request.data.h <= request.data.innerHeight){
+        var offsetTop = request.data.y - request.data.defaultPositon
+        if(scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.data.innerHeight){
           // Capture in window (not require scroll)
           chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
             canvasUtils.trimImage({
@@ -187,7 +188,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
               scale: request.data.s,
               zoom: request.data.z,
               startX: request.data.x,
-              startY: request.data.y,
+              startY: offsetTop,
               width: request.data.w,
               height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
               callback: function(_canvas){
