@@ -179,6 +179,38 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       var ctx = c.getContext('2d');
       var canvasData = c.toDataURL();
       var capture = function(scrollHeight){
+        if(scrollHeight === 0 && request.data.h <= request.data.innerHeight){
+          // Capture in window (not require scroll)
+          chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
+            canvasUtils.trimImage({
+              imageData: data,
+              scale: request.data.s,
+              zoom: request.data.z,
+              startX: request.data.x,
+              startY: request.data.y,
+              width: request.data.w,
+              height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+              callback: function(_canvas){
+                canvasUtils.appendImageToCanvas({
+                  canvasData: canvasData,
+                  imageSrc: _canvas.toDataURL(),
+                  pageHeight: request.data.h,
+                  imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                  width: request.data.w,
+                  top: scrollHeight,
+                  scale: request.data.s,
+                  zoom: request.data.z,
+                  callback: function(_canvas){
+                    canvasData = _canvas.toDataURL();
+                    scrollHeight += request.data.innerHeight;
+                    capture(scrollHeight);
+                  }
+                })
+              }
+            })
+          })
+          return true;
+        }
         if(scrollHeight >= request.data.h){
           chrome.tabs.executeScript(null, {
             code: "window.scrollTo(0, "+ request.data.defaultPositon +" )"

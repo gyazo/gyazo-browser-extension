@@ -158,7 +158,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         window.removeEventListener('contextmenu', cancel);
         window.removeEventListener('keydown', keydownHandler);
         document.removeEventListener('keyup', keyUpHandler);
-        changeFixedElementToAbsolute();
+        if(window.innerHeight < data.h){
+          //Only when required scroll
+          changeFixedElementToAbsolute();
+        }
         window.setTimeout(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
