@@ -53,8 +53,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   var actions = {
     changeFixedElementToAbsolute: function(){
       changeFixedElementToAbsolute();
-      sendResponse();
-      return true;
+      var waitScroll = function(){
+        if(window.scrollX === request.scrollTo.x && window.scrollY === request.scrollTo.y){
+          sendResponse();
+        }else{
+          window.requestAnimationFrame(waitScroll);
+        }
+      }
+      window.requestAnimationFrame(waitScroll);
     },
     gyazoCaptureVisibleArea: function(_request) {
       var request = request || _request;
@@ -68,7 +74,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       data.u = location.href;
       data.s = scaleObj.scale;
       data.z = scaleObj.zoom;
-      data.defaultPositon = window.scrollY;
+      data.positionX = window.scrollX;
+      data.positionY = window.scrollY;
       data.innerHeight = window.innerHeight;
       chrome.runtime.sendMessage(chrome.runtime.id,{
         action: 'gyazoCaptureSize',
@@ -151,7 +158,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         data.u = location.href;
         data.s = scaleObj.scale;
         data.z = scaleObj.zoom;
-        data.defaultPositon = window.scrollY;
+        data.positionX = window.scrollX;
+        data.positionY = window.scrollY;
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
         jackup.style.height = (window.innerHeight + 30) + 'px';
@@ -162,7 +170,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           //Only when required scroll
           changeFixedElementToAbsolute();
         }
-        window.setTimeout(function() {
+        window.requestAnimationFrame(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
             data: data,
@@ -171,7 +179,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             restorationFixedElement();
             document.body.removeChild(jackup);
           });
-        },100);
+        });
       }
       allElms.forEach(function(item){
         item.addEventListener('mouseover', moveLayer);
@@ -251,24 +259,26 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           event.preventDefault();
         });
         var scaleObj = getZoomAndScale();
-        data.w = Math.abs(e.pageX - startX);
-        data.h = Math.abs(e.pageY - startY);
+        var rect = selectionElm.getBoundingClientRect();
+        data.w = rect.width;
+        data.h = rect.height;
         if(data.h < 1 || data.w < 1){
           document.body.removeChild(layer);
           return false;
         }
-        data.x = Math.min(e.pageX, startX);
-        data.y = Math.min(e.pageY, startY);
+        data.x = rect.left  + window.scrollX;
+        data.y = rect.top + window.scrollY;
         data.t = document.title;
         data.u = location.href;
         data.s = scaleObj.scale;
         data.z = scaleObj.zoom;
-        data.defaultPositon = window.scrollY;
+        data.positionX = window.scrollX;
+        data.positionY = window.scrollY;
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
         jackup.style.height = (window.innerHeight + 30) + 'px';
         //wait for rewrite by removeChild
-        window.setTimeout(function() {
+        window.requestAnimationFrame(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
             data: data,
@@ -276,7 +286,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           }, function(){
             document.body.removeChild(jackup);
           });
-        },100);
+        });
       };
       layer.addEventListener('mousedown', mousedownHandler);
       document.addEventListener('keydown', keydownHandler);
@@ -301,7 +311,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       data.u = location.href;
       data.s = scaleObj.scale;
       data.z = scaleObj.zoom;
-      data.defaultPositon = window.scrollY;
+      data.positionX = window.scrollX;
+      data.positionY = window.scrollY;
       data.innerHeight = window.innerHeight;
       var jackup = document.createElement('div');
       jackup.classList.add('gyazo-jackup-element');
@@ -313,7 +324,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         tab: request.tab,
         notificationId: request.notificationId
       }, function(){
-        console.log(jackup)
         document.body.removeChild(jackup);
         document.documentElement.style.overflow = overflow;
         document.documentElement.style.overflowY = overflowY;
@@ -323,5 +333,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
   if(request.action in actions){
     actions[request.action]();
   }
+  return true;
 });
 })()

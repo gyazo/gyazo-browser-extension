@@ -175,11 +175,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     gyazoCaptureSize: function(){
       var c = document.createElement('canvas');
       c.height = request.data.h;
-      c.width = request.data.w;
+      c.width = request.data.w * request.data.z * request.data.s;
       var ctx = c.getContext('2d');
       var canvasData = c.toDataURL();
       var capture = function(scrollHeight){
-        var offsetTop = request.data.y - request.data.defaultPositon
+        var imagePositionTop = scrollHeight * request.data.z * request.data.s;
+        var offsetTop = request.data.y - request.data.positionY;
         if(scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.data.innerHeight){
           // Capture in window (not require scroll)
           chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
@@ -198,7 +199,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                   pageHeight: request.data.h,
                   imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
                   width: request.data.w,
-                  top: scrollHeight,
+                  top: 0,
                   scale: request.data.s,
                   zoom: request.data.z,
                   callback: function(_canvas){
@@ -214,7 +215,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         }
         if(scrollHeight >= request.data.h){
           chrome.tabs.executeScript(null, {
-            code: "window.scrollTo(0, "+ request.data.defaultPositon +" )"
+            code: "window.scrollTo("+ request.data.positionX +", "+ request.data.positionY +" )"
           });
           if(request.notificationId){
             chrome.notifications.clear(request.notificationId,function(){});
@@ -230,39 +231,40 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           return sendResponse();
         }
         chrome.tabs.executeScript(null, {
-          code: "window.scrollTo(0, "+ (scrollHeight + request.data.y) +" )"
+          code: "window.scrollTo(" + request.data.positionX + ", "+ (scrollHeight + request.data.y) +" )"
         },function(){
-          chrome.tabs.sendMessage(request.tab.id, {action: 'changeFixedElementToAbsolute'}, function(){
-            setTimeout(function(){
-              chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
-                canvasUtils.trimImage({
-                  imageData: data,
-                  scale: request.data.s,
-                  zoom: request.data.z,
-                  startX: request.data.x,
-                  startY: 0,
-                  width: request.data.w,
-                  height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-                  callback: function(_canvas){
-                    canvasUtils.appendImageToCanvas({
-                      canvasData: canvasData,
-                      imageSrc: _canvas.toDataURL(),
-                      pageHeight: request.data.h,
-                      imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-                      width: request.data.w,
-                      top: scrollHeight,
-                      scale: request.data.s,
-                      zoom: request.data.z,
-                      callback: function(_canvas){
-                        canvasData = _canvas.toDataURL();
-                        scrollHeight += request.data.innerHeight;
-                        capture(scrollHeight);
-                      }
-                    })
-                  }
-                })
+          chrome.tabs.sendMessage(request.tab.id, {
+            action: 'changeFixedElementToAbsolute',
+            scrollTo: {x: request.data.positionX, y: scrollHeight + request.data.y}
+          }, function(){
+            chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
+              canvasUtils.trimImage({
+                imageData: data,
+                scale: request.data.s,
+                zoom: request.data.z,
+                startX: request.data.x,
+                startY: 0,
+                width: request.data.w,
+                height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                callback: function(_canvas){
+                  canvasUtils.appendImageToCanvas({
+                    canvasData: canvasData,
+                    imageSrc: _canvas.toDataURL(),
+                    pageHeight: request.data.h,
+                    imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                    width: request.data.w,
+                    top: imagePositionTop,
+                    scale: request.data.s,
+                    zoom: request.data.z,
+                    callback: function(_canvas){
+                      canvasData = _canvas.toDataURL();
+                      scrollHeight += request.data.innerHeight;
+                      capture(scrollHeight);
+                    }
+                  })
+                }
               })
-            },10)
+            })
           });
         })
       }
