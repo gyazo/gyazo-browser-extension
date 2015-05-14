@@ -188,7 +188,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
               imageData: data,
               scale: request.data.s,
               zoom: request.data.z,
-              startX: request.data.x,
+              startX: request.data.x - request.data.positionX,
               startY: offsetTop,
               width: request.data.w,
               height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
@@ -204,6 +204,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                   zoom: request.data.z,
                   callback: function(_canvas){
                     canvasData = _canvas.toDataURL();
+                    console.log(request.data)
                     scrollHeight += request.data.innerHeight;
                     capture(scrollHeight);
                   }
@@ -242,7 +243,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 imageData: data,
                 scale: request.data.s,
                 zoom: request.data.z,
-                startX: request.data.x,
+                startX: request.data.x - request.data.positionX,
                 startY: 0,
                 width: request.data.w,
                 height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
