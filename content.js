@@ -54,7 +54,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     changeFixedElementToAbsolute: function(){
       changeFixedElementToAbsolute();
       var waitScroll = function(){
-        if(window.scrollX === request.scrollTo.x && window.scrollY === request.scrollTo.y){
+        if( Math.abs(window.scrollX - request.scrollTo.x) < 1 && Math.abs(window.scrollY - request.scrollTo.y) < 1){
           sendResponse();
         }else{
           window.requestAnimationFrame(waitScroll);
@@ -136,6 +136,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         window.removeEventListener('contextmenu', cancel);
         document.removeEventListener('keydown', keydownHandler);
         document.removeEventListener('keyup', keyUpHandler);
+        allElms.forEach(function(item){
+          item.removeEventListener('mouseover', moveLayer);
+          item.removeEventListener('click', selectElement);
+        });
         restorationFixedElement();
       }
       window.addEventListener('contextmenu', cancel);
@@ -196,7 +200,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       layer.style.position = 'absolute';
       layer.style.left = document.body.clientLeft + 'px';
       layer.style.top = document.body.clientTop + 'px';
-      layer.style.width = document.body.clientWidth + 'px';
+      layer.style.width = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth) + 'px';
       layer.style.height = pageHeight + 'px';
       layer.style.zIndex = 2147483647; //Maximun number of 32bit Int
       layer.style.cursor = 'crosshair';

@@ -43,7 +43,8 @@ var canvasUtils = {
       ctx.drawImage(img, 0, 0);
       imageLoader(imageSrc, function(img) {
         ctx.drawImage(img, 0, 0, width * scale * zoom, imageHeight * scale * zoom, 0, top, img.width, img.height);
-        callback(canvas);
+        lastImageBottom = top + img.height;
+        callback(canvas, lastImageBottom);
       })
     });
   },

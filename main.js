@@ -178,8 +178,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       c.width = request.data.w * request.data.z * request.data.s;
       var ctx = c.getContext('2d');
       var canvasData = c.toDataURL();
-      var capture = function(scrollHeight){
-        var imagePositionTop = scrollHeight * request.data.z * request.data.s;
+      var capture = function(scrollHeight, lastImageBottom){
+        var imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s;
         var offsetTop = request.data.y - request.data.positionY;
         if(scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.data.innerHeight){
           // Capture in window (not require scroll)
@@ -197,7 +197,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                   canvasData: canvasData,
                   imageSrc: _canvas.toDataURL(),
                   pageHeight: request.data.h,
-                  imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+                  imageHeight: imageHeight,
                   width: request.data.w,
                   top: 0,
                   scale: request.data.s,
@@ -236,7 +236,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           chrome.tabs.sendMessage(request.tab.id, {
             action: 'changeFixedElementToAbsolute',
             scrollTo: {x: request.data.positionX, y: scrollHeight + request.data.y}
-          }, function(){
+          }, function(message){
             chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
               canvasUtils.trimImage({
                 imageData: data,
@@ -247,6 +247,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 width: request.data.w,
                 height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
                 callback: function(_canvas){
+                  var imageHeight = Math.min(request.data.innerHeight, request.data.h - scrollHeight);
                   canvasUtils.appendImageToCanvas({
                     canvasData: canvasData,
                     imageSrc: _canvas.toDataURL(),
@@ -256,10 +257,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                     top: imagePositionTop,
                     scale: request.data.s,
                     zoom: request.data.z,
-                    callback: function(_canvas){
+                    callback: function(_canvas, lastImageBottom){
                       canvasData = _canvas.toDataURL();
                       scrollHeight += request.data.innerHeight;
-                      capture(scrollHeight);
+                      capture(scrollHeight, lastImageBottom);
                     }
                   })
                 }
