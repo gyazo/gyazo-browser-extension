@@ -197,7 +197,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                   canvasData: canvasData,
                   imageSrc: _canvas.toDataURL(),
                   pageHeight: request.data.h,
-                  imageHeight: imageHeight,
+                  imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
                   width: request.data.w,
                   top: 0,
                   scale: request.data.s,
