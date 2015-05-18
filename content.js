@@ -34,6 +34,20 @@ function restorationFixedElement(){
   })
 }
 
+function lockScroll(){
+  var overflow = document.documentElement.style.overflow;
+  var overflowY = document.documentElement.style.overflowY;
+  document.documentElement.style.overflow = 'hidden';
+  document.documentElement.style.overflowY = 'hidden';
+  return {overflow: overflow, overflowY: overflowY}
+}
+
+function unlockScroll(old){
+  old = old || {overflow: 'auto', overflowY: 'auto'};
+  document.documentElement.style.overflow = old.overflow;
+  document.documentElement.style.overflowY = old.overflowY;
+}
+
 function getZoomAndScale(){
   var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100;
   var scale = window.devicePixelRatio / zoom;
@@ -174,6 +188,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           //Only when required scroll
           changeFixedElementToAbsolute();
         }
+        var overflow = lockScroll();
         window.requestAnimationFrame(function() {
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
@@ -182,6 +197,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           }, function(){
             restorationFixedElement();
             document.body.removeChild(jackup);
+            unlockScroll(overflow);
           });
         });
       }
@@ -280,6 +296,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         data.positionY = window.scrollY;
         data.innerHeight = window.innerHeight;
         document.body.removeChild(layer);
+        var overflow = lockScroll();
         jackup.style.height = (window.innerHeight + 30) + 'px';
         //wait for rewrite by removeChild
         window.requestAnimationFrame(function() {
@@ -289,6 +306,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             tab: request.tab
           }, function(){
             document.body.removeChild(jackup);
+            unlockScroll(overflow);
           });
         });
       };
@@ -301,10 +319,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       if(document.getElementsByClassName('gyazo-jackup-element').length > 0){
         return false;
       }
-      var overflow = document.documentElement.style.overflow;
-      var overflowY = document.documentElement.style.overflowY;
-      document.documentElement.style.overflow = 'hidden';
-      document.documentElement.style.overflowY = 'hidden';
+      var overflow = lockScroll();
       var data = {};
       var scaleObj = getZoomAndScale();
       data.w = window.innerWidth;
@@ -329,8 +344,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         notificationId: request.notificationId
       }, function(){
         document.body.removeChild(jackup);
-        document.documentElement.style.overflow = overflow;
-        document.documentElement.style.overflowY = overflowY;
+        unlockScroll(overflow);
       });
     }
   };
