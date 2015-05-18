@@ -153,6 +153,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         allElms.forEach(function(item){
           item.removeEventListener('mouseover', moveLayer);
           item.removeEventListener('click', selectElement);
+          item.style.cursor = item.getAttribute('data-gyazo-memory-cursor');
+          item.removeAttribute('data-gyazo-memory-cursor');
         });
         restorationFixedElement();
       }
@@ -163,6 +165,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         event.stopPropagation();
         event.preventDefault();
         allElms.forEach(function(item){
+          item.style.cursor = item.getAttribute('data-gyazo-memory-cursor');
+          item.removeAttribute('data-gyazo-memory-cursor');
           item.removeEventListener('mouseover', moveLayer);
           item.removeEventListener('click', selectElement);
         });
@@ -189,7 +193,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           changeFixedElementToAbsolute();
         }
         var overflow = lockScroll();
-        window.requestAnimationFrame(function() {
+        var finish = function(){
+          if(document.getElementsByClassName('gyazo-crop-select-element').length > 0){
+            return window.requestAnimationFrame(finish);
+          }
           chrome.runtime.sendMessage(chrome.runtime.id,{
             action: 'gyazoCaptureSize',
             data: data,
@@ -199,9 +206,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             document.body.removeChild(jackup);
             unlockScroll(overflow);
           });
-        });
+        }
+        window.requestAnimationFrame(finish)
       }
       allElms.forEach(function(item){
+        var _cursor = getComputedStyle(item).cursor;
+        item.style.cursor = 'default';
+        item.setAttribute('data-gyazo-memory-cursor', _cursor);
         item.addEventListener('mouseover', moveLayer);
         item.addEventListener('click', selectElement)
       });
