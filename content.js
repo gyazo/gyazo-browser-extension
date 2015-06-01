@@ -98,11 +98,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       }, function(){});
     },
     gyazoSelectElm: function() {
-      //XXX: prevent loading twice.
-      if(document.getElementsByClassName('gyazo-crop-select-element').length > 0){
-        return false;
-      }
       var jackup = document.createElement('div');
+      jackup.classList.add('gyazo-jackup-element');
       document.body.appendChild(jackup);
       var layer = document.createElement('div');
       layer.className='gyazo-crop-select-element';
@@ -219,6 +216,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     },
     gyazoCapture: function() {
       var jackup = document.createElement('div');
+      jackup.classList.add('gyazo-jackup-element');
       document.body.appendChild(jackup);
       var startX, startY, data = {};
       var tempUserSelect = document.body.style.webkitUserSelect;
@@ -326,10 +324,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       window.addEventListener('contextmenu', cancelGyazo);
     },
     gyazoWholeCapture: function(){
-      //XXX: prevent loading twice.
-      if(document.getElementsByClassName('gyazo-jackup-element').length > 0){
-        return false;
-      }
       var overflow = lockScroll();
       var data = {};
       var scaleObj = getZoomAndScale();
@@ -359,6 +353,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
       });
     }
   };
+  //XXX: prevent loading twice.
+  if(document.getElementsByClassName('gyazo-jackup-element').length > 0){
+    return false;
+  }
   if(request.action in actions){
     actions[request.action]();
   }
