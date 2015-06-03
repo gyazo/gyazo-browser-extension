@@ -232,6 +232,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           });
           return sendResponse();
         }
+        console.log('aaa')
         chrome.tabs.executeScript(null, {
           code: "window.scrollTo(" + request.data.positionX + ", "+ (scrollHeight + request.data.y) +" )"
         },function(){
@@ -240,6 +241,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             scrollTo: {x: request.data.positionX, y: scrollHeight + request.data.y}
           }, function(message){
             chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(data){
+              console.log('bbb')
               canvasUtils.trimImage({
                 imageData: data,
                 scale: request.data.s,
