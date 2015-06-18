@@ -254,6 +254,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         document.body.style.webkitUserSelect = tempUserSelect;
         document.removeEventListener('keydown', keydownHandler);
         window.removeEventListener('contextmenu', cancelGyazo);
+        restorationFixedElement()
       }
       var keydownHandler = function(e){
         if(event.keyCode === 32){
@@ -322,6 +323,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
           }, function(){
             document.body.removeChild(jackup);
             unlockScroll(overflow);
+            restorationFixedElement();
           });
         });
       };
