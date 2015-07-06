@@ -3,6 +3,8 @@
   captureBtn.appendChild(document.createTextNode(chrome.i18n.getMessage("contextMenuSelect")));
   var wholeBtn = document.getElementById('whole');
   wholeBtn.appendChild(document.createTextNode(chrome.i18n.getMessage("contextMenuWhole")));
+  var selectElm = document.getElementById('selectElm');
+  selectElm.appendChild(document.createTextNode(chrome.i18n.getMessage("contextMenuSelectElement")));
 
   captureBtn.addEventListener('click', function() {
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
@@ -22,4 +24,14 @@
       window.close();
     });
   });
+  selectElm.addEventListener('click', function() {
+    chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+      chrome.runtime.sendMessage(chrome.runtime.id, {
+        tab: tabs[0],
+        action: 'gyazoSelectElmFromPopup'
+      }, function(){});
+      window.close();
+    });
+  })
+
 })()
