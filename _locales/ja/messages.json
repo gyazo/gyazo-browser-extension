@@ -25,5 +25,8 @@
   },
   "contextMenuWhole": {
     "message": "ページ全体をキャプチャー"
+  },
+  "contextMenuSelectElement": {
+    "message": "要素を選択してキャプチャー"
   }
 }
