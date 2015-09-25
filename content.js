@@ -418,8 +418,7 @@
         layer.style.width = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth) + 'px'
         layer.style.height = pageHeight + 'px'
         layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
-        layer.style.cursor = 'crosshair'
-        layer.className = 'gyazo-select-layer'
+        layer.className = 'gyazo-select-layer gyazo-menu-element'
         document.body.style.webkitUserSelect = 'none'
         var selectionElm = document.createElement('div')
         layer.appendChild(selectionElm)

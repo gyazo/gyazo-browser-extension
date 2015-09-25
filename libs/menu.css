@@ -1,6 +1,9 @@
 body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu-element) {
   cursor: default !important;
 }
+.gyazo-select-layer {
+  cursor: -webkit-image-set(url('chrome-extension://__MSG_@@extension_id__/icons/cross_cursor.png') 1x, url('chrome-extension://__MSG_@@extension_id__/icons/cross_cursor2x.png') 2x) 11 11, auto !important;
+}
 .gyazo-menu {
   box-sizing: border-box;
   position: fixed;
