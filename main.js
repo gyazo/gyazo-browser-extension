@@ -35,6 +35,7 @@ var UploadNotification = function (callback) {
 
 function postToGyazo (data) {
   var notification = new UploadNotification()
+  data.scale = data.scale || 1.0
   $.ajax({
     type: 'POST',
     url: host,
@@ -43,7 +44,9 @@ function postToGyazo (data) {
       image_url: data.imageData,
       title: data.title,
       referer_url: data.url,
-      scale: data.scale || '',
+      scale: data.scale,
+      height: data.height * data.scale,
+      width: data.width * data.scale,
       desc: data.desc ? data.desc.replace(/\t/, ' ').replace(/(^\s+| +$)/gm, '') : ''
     },
     crossDomain: true
