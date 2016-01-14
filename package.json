@@ -1,26 +1,33 @@
 {
   "name": "Gyazo-Extension",
-  "version": "2.0.12",
+  "version": "2.1.0",
   "dependencies": {
-    "jquery": "^2.1.4"
+    "delegate": "^3.0.0",
+    "dom-css": "^2.0.0",
+    "jquery": "^2.1.4",
+    "xtend": "^4.0.1"
   },
   "devDependencies": {
+    "ava": "^0.9.1",
     "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
     "chrome-webstore-manager": "^0.1.1",
     "crx": "github:pastak/crx",
+    "jsdom": "^7.2.2",
     "request-promise": "^1.0.2",
     "standard": "^4.5.4"
   },
   "scripts": {
-    "test": "standard \"./**/*.js\"",
-    "build": "mkdir -p dist && cp -r src/statics/* dist && browserify src/normal/index.js -o dist/main.js && browserify src/common/content/*.js -o dist/content.js",
+    "test": "standard \"./**/*.js\" && ava",
+    "build": "mkdir -p dist && cp -r src/statics/* dist && browserify src/normal/index.js -o dist/main.js && browserify src/common/content/content.js -o dist/content.js",
     "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx",
     "token": "chrome-webstore-manager token --client_id \"429190263566-vt3rvfgtro0olbhdnledb25r0rfb2lu3.apps.googleusercontent.com\" --client_secret \"wyS1sXSLv0cLtjev6g4hTZZ2\""
   },
   "browserify": {
-    "transform": [ "babelify" ]
+    "transform": [
+      "babelify"
+    ]
   },
   "standard": {
     "global": [

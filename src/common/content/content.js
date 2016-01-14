@@ -610,3 +610,5 @@
     return true
   })
 })()
+
+require('./expander')
