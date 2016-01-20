@@ -1,6 +1,6 @@
 {
   "name": "Gyazo-Extension",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "dependencies": {
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",

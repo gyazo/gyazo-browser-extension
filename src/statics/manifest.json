@@ -2,7 +2,7 @@
   "name": "Gyazo",
   "description": "Grab any image on the web and share it instantly.",
   "short_name": "Gyazo",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "Nota inc.",
   "permissions": [
     "<all_urls>",

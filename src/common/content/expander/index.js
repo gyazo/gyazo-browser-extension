@@ -3,6 +3,7 @@ const css = require('dom-css')
 const extend = require('xtend')
 const gyazoIdFromUrl = require('./lib/gyazoIdFromUrl')
 const adjacentStyle = require('./lib/adjacentStyle')
+const waitFor = require('./lib/waitFor')
 
 function fetchImage (url, callback) {
   chrome.runtime.sendMessage(chrome.runtime.id, {
@@ -73,17 +74,20 @@ delegate(document.body, 'a', 'mouseover', (event) => {
 
     let leaved = false
 
-    const onLeave = (event) => {
+    const onLeave = (event = {}) => {
       leaved = true
 
-      if (element !== event.target) return
+      if (event.target && element !== event.target) return
       if (container) document.body.removeChild(container)
       if (loader) document.body.removeChild(loader)
 
       element.removeEventListener('mouseleave', onLeave)
     }
 
+    const cancel = waitFor(() => !element.offsetParent, onLeave)
+
     element.addEventListener('mouseleave', onLeave)
+    element.addEventListener('mouseleave', cancel)
 
     fetchImage(href, (e, blob) => {
       if (leaved) return
