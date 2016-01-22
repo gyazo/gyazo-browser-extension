@@ -1,9 +1,6 @@
 machine:
   node:
     version: 4.1.0
-dependencies:
-  pre:
-    - npm install -g chrome-webstore-manager
 test:
   post:
     - |
@@ -16,7 +13,5 @@ deployment:
   production:
     branch: production
     commands:
-      - git archive production -o release.zip
-      - export WEBSTORE_TOKEN=$(chrome-webstore-manager refresh_token --client_id "429190263566-vt3rvfgtro0olbhdnledb25r0rfb2lu3.apps.googleusercontent.com" --client_secret "wyS1sXSLv0cLtjev6g4hTZZ2")
-      - chrome-webstore-manager update ffdaeeijbbijklfcpahbghahojgfgebo release.zip
-      - chrome-webstore-manager publish ffdaeeijbbijklfcpahbghahojgfgebo
+      - npm run build && npm run pack
+      - curl -XPOST -F 'file=@build/chrome.crx' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release

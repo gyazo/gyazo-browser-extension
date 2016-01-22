@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+var packageVer = require('../package.json').version
+var manifest = require('../src/manifest.json')
+manifest.version = packageVer
+require('fs').writeFileSync(
+  require('path').resolve(__dirname, '../dist/manifest.json'),
+  JSON.stringify(manifest, null, 2)
+)

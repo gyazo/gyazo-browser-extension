@@ -1,6 +1,6 @@
 {
   "name": "Gyazo-Extension",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "dependencies": {
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",
@@ -20,9 +20,8 @@
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
-    "build": "mkdir -p dist && cp -r src/statics/* dist && browserify src/normal/index.js -o dist/main.js && browserify src/common/content/content.js -o dist/content.js",
-    "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx",
-    "token": "chrome-webstore-manager token --client_id \"429190263566-vt3rvfgtro0olbhdnledb25r0rfb2lu3.apps.googleusercontent.com\" --client_secret \"wyS1sXSLv0cLtjev6g4hTZZ2\""
+    "build": "mkdir -p dist && script/generate_manifest && cp -r src/statics/* dist && browserify src/normal/index.js -o dist/main.js && browserify src/common/content/content.js -o dist/content.js",
+    "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx"
   },
   "browserify": {
     "transform": [

@@ -59,7 +59,10 @@ function createImagePreview ({ url, boxStyle }) {
   return img
 }
 
+let previewIsShown = false
 delegate(document.body, 'a', 'mouseover', (event) => {
+  if (previewIsShown) return
+
   const element = event.target
   const href = element.getAttribute('href')
 
@@ -67,6 +70,8 @@ delegate(document.body, 'a', 'mouseover', (event) => {
 
   const isGyazoUrl = !!gyazoIdFromUrl(href)
   if (isGyazoUrl) {
+    previewIsShown = true
+
     let container
 
     let loader = createLoader(adjacentStyle(element))
@@ -82,6 +87,7 @@ delegate(document.body, 'a', 'mouseover', (event) => {
       if (loader) document.body.removeChild(loader)
 
       element.removeEventListener('mouseleave', onLeave)
+      previewIsShown = false
     }
 
     const cancel = waitFor(() => !element.offsetParent, onLeave)
