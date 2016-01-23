@@ -611,4 +611,7 @@
   })
 })()
 
-require('./expander')
+// Disable expander at gyazo.com
+if (!(/^(.+\.)?gyazo\.com$/).test(window.location.host)) {
+  require('./expander')
+}
