@@ -609,6 +609,6 @@
     }
     return true
   })
-})()
 
-require('./expander')
+  require('./expander')
+})()
