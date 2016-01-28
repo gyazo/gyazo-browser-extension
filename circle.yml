@@ -14,4 +14,4 @@ deployment:
     branch: production
     commands:
       - npm run build && npm run pack
-      - curl -X POST -F 'file=@build/chrome.crx' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release
+      - curl -X POST -F 'file=@build/chrome.crx' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
