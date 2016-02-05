@@ -18,7 +18,7 @@ let waitForDelay = function (callback) {
 
 function postToGyazo (tabId, data) {
   var notification = new UploadNotification(tabId)
-  notification.update({message: chrome.i18n.getMessage('uploadingMessage')})
+  notification.update({message: ''})
   $.ajax({
     type: 'POST',
     url: host,

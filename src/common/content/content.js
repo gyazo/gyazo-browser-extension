@@ -185,17 +185,23 @@
           }
         }
         window.addEventListener('keydown', hotKey)
-        chrome.storage.sync.get({behavior: 'element'}, function (item) {
-          if (item.behavior === 'element') {
-            // Default behavior is select element
-            selectElementBtn.classList.add('gyazo-button-active')
-            window.requestAnimationFrame(actions.gyazoSelectElm)
-          } else if (item.behavior === 'area') {
-            // Default behavior is select area
-            selectAreaBtn.classList.add('gyazo-button-active')
-            actions.gyazoCaptureSelectedArea()
-          }
-        })
+        // XXX: `storage` Firefox supports only area is `local`.
+        try {
+          chrome.storage.local.get({behavior: 'element'}, function (item) {
+            if (item.behavior === 'element') {
+              // Default behavior is select element
+              selectElementBtn.classList.add('gyazo-button-active')
+              window.requestAnimationFrame(actions.gyazoSelectElm)
+            } else if (item.behavior === 'area') {
+              // Default behavior is select area
+              selectAreaBtn.classList.add('gyazo-button-active')
+              actions.gyazoCaptureSelectedArea()
+            }
+          })
+        } catch (e) {
+          selectAreaBtn.classList.add('gyazo-button-active')
+          actions.gyazoCaptureSelectedArea()
+        }
         selectAreaBtn.addEventListener('click', function () {
           hideMenu()
           window.requestAnimationFrame(function () {

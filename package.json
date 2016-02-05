@@ -21,7 +21,7 @@
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
     "build": "mkdir -p dist/chrome && script/generate_manifest && cp -r src/statics/* dist/chrome && browserify src/normal/index.js -o dist/chrome/main.js && browserify src/common/content/content.js -o dist/chrome/content.js",
-    "build-xpi": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js",
+    "build-xpi": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js && cd dist/firefox && zip -r ../../build/firefox.xpi * && cd ../../",
     "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx"
   },
   "browserify": {

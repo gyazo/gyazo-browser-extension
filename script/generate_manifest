@@ -9,6 +9,21 @@ if (process.env.TARGET === 'firefox') {
       }
     }
   })
+  // XXX: NOW Firefox WebExtension doesn't support `options_ui`
+  // ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1212685
+  delete manifest['options_ui']
+  // XXX: NOW not supported
+  // ref: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/manifest.json
+  delete manifest['author']
+  delete manifest['short_name']
+  // XXX: NOW `permissions` doesn't support `clipboardRead`, `clipboardWrite`
+  // ref: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Chrome_incompatibilities#permissions
+  manifest.permissions.splice(manifest.permissions.indexOf('clipboardRead'), 1)
+  manifest.permissions.splice(manifest.permissions.indexOf('clipboardWrite'), 1)
+  // XXX: NOW `permissions` yet doesn't support `activeTab`
+  manifest.permissions.splice(manifest.permissions.indexOf('activeTab'), 1)
+  // XXX" `background` does not support the "persistent" property. Background scripts stay loaded all the time.
+  delete manifest.background['persistent']
 } else {
   var manifestPath = '../dist/chrome/manifest.json'
 }

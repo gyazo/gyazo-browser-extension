@@ -24,11 +24,11 @@
       }
   },
   "web_accessible_resources": [
-    "fonts/icomoon.eot",
-    "fonts/icomoon.svg",
-    "fonts/icomoon.ttf",
-    "fonts/icomoon.woff",
-    "fonts/icomoon.woff2"
+    "/fonts/icomoon.eot",
+    "/fonts/icomoon.svg",
+    "/fonts/icomoon.ttf",
+    "/fonts/icomoon.woff",
+    "/fonts/icomoon.woff2"
   ],
   "icons": {
     "16": "icons/16.png",
