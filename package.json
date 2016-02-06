@@ -16,12 +16,13 @@
     "crx": "github:pastak/crx",
     "jsdom": "^7.2.2",
     "request-promise": "^1.0.2",
-    "standard": "^4.5.4"
+    "standard": "^4.5.4",
+    "wemf": "^0.2.0"
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
     "build": "mkdir -p dist/chrome && script/generate_manifest && cp -r src/statics/* dist/chrome && browserify src/normal/index.js -o dist/chrome/main.js && browserify src/common/content/content.js -o dist/chrome/content.js",
-    "build-xpi": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js && cd dist/firefox && zip -r ../../build/firefox.xpi * && cd ../../",
+    "build-xpi": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && wemf dist/firefox/manifest.json -U && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js && cd dist/firefox && zip -r ../../build/firefox.xpi * && cd ../../",
     "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx"
   },
   "browserify": {
