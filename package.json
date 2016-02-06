@@ -16,7 +16,8 @@
     "crx": "github:pastak/crx",
     "jsdom": "^7.2.2",
     "request-promise": "^1.0.2",
-    "standard": "^4.5.4"
+    "standard": "^4.5.4",
+    "wemf": "^0.2.0"
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
