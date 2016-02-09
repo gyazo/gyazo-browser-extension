@@ -67,15 +67,28 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover {
   color: rgb(9, 132, 222);
 }
+.gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon {
+  background-color: rgb(9, 132, 222);
+}
+.gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon {
+  background-color: rgb(9, 132, 222);
+}
 .gyazo-menu > .gyazo-button:hover {
   border-bottom: 5px solid #cccccc;
   color: #000;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: #595959;
   box-sizing: border-box;
-  font-size: 20px;
-  margin: 8px 0 3px;
+  margin: 8px auto 3px;
   pointer-events: none;
+}
+
+.gyazo-menu > .gyazo-button:hover > .gyazo-button-icon {
+  background-color: #000;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
@@ -94,19 +107,25 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   width: 22px;
   height: 53px;
   float: left;
-  color: #aaa;
-  font-size: 15px;
   cursor: pointer;
   padding-top: 6px;
 }
-.gyazo-menu > .gyazo-close-button:hover {
-  color: #000;
+.gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross {
+  background-color: #000;
 }
-
+.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
+  background-color: #aaa;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
 .gyazo-menu > .gyazo-spin {
+  display: inline-block;
+  background-color: #595959;
   animation: gyazo-spin 2s infinite linear;
-  font-size: 24px;
-  line-height: 53px;
+  width: 24px;
+  height: 24px;
+  margin: 14.5px 0;
 }
 
 @keyframes gyazo-spin {
@@ -118,48 +137,21 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   }
 }
 
-/* Icons */
-@font-face {
-  font-family: 'gyazo-icomoon';
-  src:url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.eot?-jmg6j');
-  src:url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.eot?#iefix-jmg6j') format('embedded-opentype'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.woff2?-jmg6j') format('woff2'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.ttf?-jmg6j') format('truetype'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.woff?-jmg6j') format('woff'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.svg?-jmg6j#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
+.gyazo-icon-cross {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/cross.svg) center / contain no-repeat;
 }
-
-[class^="gyazo-icon-"], [class*=" gyazo-icon-"] {
-  font-family: 'gyazo-icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.gyazo-icon-spinner3 {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/spinner.svg) center / contain no-repeat;
 }
-
-.gyazo-icon-cross:before {
-  content: "\e117";
+.gyazo-icon-window-scroll {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window-scroll.svg) center / contain no-repeat;
 }
-.gyazo-icon-spinner3:before {
-  content: "\e604";
+.gyazo-icon-crop {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/crop.svg) center / contain no-repeat;
 }
-.gyazo-icon-window-scroll:before {
-  content: "\e600";
+.gyazo-icon-window {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window.svg) center / contain no-repeat;
 }
-.gyazo-icon-crop:before {
-  content: "\e601";
-}
-.gyazo-icon-window:before {
-  content: "\e602";
-}
-.gyazo-icon-selection:before {
-  content: "\e603";
+.gyazo-icon-selection {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/selection.svg) center / contain no-repeat;
 }
