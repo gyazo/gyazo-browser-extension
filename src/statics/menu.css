@@ -80,10 +80,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 .gyazo-menu > .gyazo-button > .gyazo-button-icon {
   width: 20px;
   height: 20px;
-  display: inline-block;
+  display: block;
   background-color: #595959;
   box-sizing: border-box;
-  margin: 8px 0 0;
+  margin: 8px auto 3px;
   pointer-events: none;
 }
 
@@ -93,7 +93,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 18px;
   pointer-events: none;
   white-space: nowrap;
   text-overflow: ellipsis;
