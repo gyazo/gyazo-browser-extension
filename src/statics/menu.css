@@ -107,15 +107,18 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   width: 22px;
   height: 53px;
   float: left;
-  color: #aaa;
-  font-size: 15px;
   cursor: pointer;
   padding-top: 6px;
 }
-.gyazo-menu > .gyazo-close-button:hover {
-  color: #000;
+.gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross {
+  background-color: #000;
 }
-
+.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
+  background-color: #aaa;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
 .gyazo-menu > .gyazo-spin {
   display: inline-block;
   background-color: #595959;
