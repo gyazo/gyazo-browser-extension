@@ -83,7 +83,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   display: inline-block;
   background-color: #595959;
   box-sizing: border-box;
-  margin: 8px 0 3px;
+  margin: 8px 0 0;
   pointer-events: none;
 }
 
@@ -93,7 +93,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 16px;
   pointer-events: none;
   white-space: nowrap;
   text-overflow: ellipsis;
