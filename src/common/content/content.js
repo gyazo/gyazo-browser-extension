@@ -3,7 +3,7 @@
     return
   }
   window.__embededGyazoContentJS = true
-
+  const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
   const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')
@@ -185,9 +185,9 @@
           }
         }
         window.addEventListener('keydown', hotKey)
-        // XXX: `storage` Firefox supports only area is `local`.
         try {
-          chrome.storage.local.get({behavior: 'element'}, function (item) {
+          // Provide access to chrome.storage at content script https://bugzilla.mozilla.org/show_bug.cgi?id=1197346
+          storage.get({behavior: 'element'}, function (item) {
             if (item.behavior === 'element') {
               // Default behavior is select element
               selectElementBtn.classList.add('gyazo-button-active')
@@ -610,6 +610,7 @@
         })
       }
     }
+    console.log(request.action)
     if (request.action in actions) {
       actions[request.action]()
     }
