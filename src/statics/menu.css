@@ -7,7 +7,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   right: 0;
   top: 0;
   padding: 0;
-  width: 364px;
+  width: 449px;
   z-index: 2147483647;
   background-color: #e8e8e8;
   color: #595959;
@@ -154,4 +154,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 .gyazo-icon-selection {
   -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/selection.svg) center / contain no-repeat;
+}
+.gyazo-icon-grid {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/grid.svg) center / contain no-repeat;
 }

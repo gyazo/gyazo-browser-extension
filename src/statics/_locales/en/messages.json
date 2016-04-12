@@ -31,5 +31,8 @@
   },
   "welcomeMessage": {
     "message": "Welcome! Please open a page in a new tab, and click the Gyazo button!"
+  },
+  "myImage": {
+    "message": "My Images"
   }
 }
