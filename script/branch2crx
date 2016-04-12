@@ -30,7 +30,7 @@ request({
   body: {
     ref: ref,
     required_contexts: [],
-    auto_merge: 'false',
+    auto_merge: false,
     environment: 'alpha_build',
     description: ''
   },
@@ -38,7 +38,7 @@ request({
   resolveWithFullResponse: true
 }).then(function(res) {
   var err = false
-  var path = `gyazo-extension/${Date.now()}/`
+  var path = `gyazo-browser-extension/${Date.now()}/`
   var crxUploadUrl = `http://storage.googleapis.com/${path}chrome.crx`
   if (res.statusCode < 400) {
     try {
