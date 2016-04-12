@@ -160,6 +160,7 @@
         let windowCaptureBtn = createButton('gyazo-icon-window', chrome.i18n.getMessage('captureWindow'), 'P')
         let wholeCaptureBtn = createButton('gyazo-icon-window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
         let myImageBtn = createButton('gyazo-icon-grid', chrome.i18n.getMessage('myImage'))
+        myImageBtn.classList.add('gyazo-menu-myimage')
         let closeBtn = document.createElement('div')
         closeBtn.className = 'gyazo-close-button gyazo-menu-element'
         closeBtn.innerHTML = `<div class='gyazo-menu-element gyazo-icon-cross'></div>`

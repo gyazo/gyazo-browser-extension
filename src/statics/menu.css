@@ -64,6 +64,9 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   font-size: 12px;
   cursor: pointer;
 }
+.gyazo-menu > .gyazo-button.gyazo-menu-myimage {
+  border-left: 1px solid #cccccc;
+}
 .gyazo-menu > .gyazo-button.gyazo-button-active {
   color: #2378FF;
 }
