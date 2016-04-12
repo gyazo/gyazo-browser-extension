@@ -96,7 +96,13 @@
           showImage = `
             <a href='${request.imagePageUrl}' target='_blank'>
               <img class='image' src='${request.imageUrl}' />
-            </a>`
+            </a>
+            <br />
+            <div class='gyazo-notification-image-info'>
+            <span>${document.title}</span><br />
+            <span>${location.href}</span>
+            </div>
+            `
         } else {
           showImage = `<span class='gyazo-icon-spinner3 gyazo-spin'></span>`
         }

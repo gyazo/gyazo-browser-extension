@@ -46,6 +46,9 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   max-width: 200px;
   margin-bottom: 20px;
 }
+.gyazo-notification .gyazo-notification-image-info {
+  margin-bottom: 25px;
+}
 .gyazo-menu > .gyazo-close-button {
   width: 20px;
   float: right;
