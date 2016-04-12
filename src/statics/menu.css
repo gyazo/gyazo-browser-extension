@@ -7,7 +7,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   right: 0;
   top: 0;
   padding: 0;
-  width: 449px;
+  width: 374px;
   z-index: 2147483647;
   background-color: #e8e8e8;
   color: #595959;
@@ -55,23 +55,23 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   text-align: center;
   margin: 0;
   padding: 0;
-  width: 85px;
+  width: 70px;
   height: 53px;
   float: left;
   font-size: 12px;
   cursor: pointer;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active {
-  color: rgb(9, 132, 222);
+  color: #2378FF;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover {
-  color: rgb(9, 132, 222);
+  color: #2378FF;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon {
-  background-color: rgb(9, 132, 222);
+  background-color: #2378FF;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon {
-  background-color: rgb(9, 132, 222);
+  background-color: #2378FF;
 }
 .gyazo-menu > .gyazo-button:hover {
   border-bottom: 5px solid #cccccc;
@@ -92,7 +92,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 18px;
   pointer-events: none;
   white-space: nowrap;
