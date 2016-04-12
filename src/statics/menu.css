@@ -48,6 +48,12 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 .gyazo-notification .gyazo-notification-image-info {
   margin-bottom: 25px;
+  white-space: nowrap;
+  width: calc(100% - 30px);
+  margin-left: 15px;
+  margin-right: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .gyazo-menu > .gyazo-close-button {
   width: 20px;
@@ -92,7 +98,9 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   margin: 8px auto 3px;
   pointer-events: none;
 }
-
+.gyazo-menu > .gyazo-button > .gyazo-button-icon.gyazo-icon-grid {
+  width: 16px;
+}
 .gyazo-menu > .gyazo-button:hover > .gyazo-button-icon {
   background-color: #000;
 }
@@ -110,7 +118,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   text-align: left;
   margin: 0;
   padding: 0;
-  width: 22px;
+  width: 21px;
   height: 53px;
   float: left;
   cursor: pointer;
