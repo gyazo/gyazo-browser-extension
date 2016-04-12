@@ -100,7 +100,7 @@
             <br />
             <div class='gyazo-notification-image-info'>
             <span>${document.title}</span><br />
-            <span>${location.href}</span>
+            <span>${location.host}</span>
             </div>
             `
         } else {
