@@ -1,6 +1,6 @@
 {
   "uploadingFinishTitle": {
-    "message": "完了!"
+    "message": "Saved!"
   },
   "uploadingFinishMessage": {
     "message": "Gyazoのリンクがコピーされました"
@@ -31,5 +31,8 @@
   },
   "welcomeMessage": {
     "message": "ようこそ。キャプチャしたいウェブサイトを新しいタブで開いて、Gyazoボタンを押してみてください。"
+  },
+  "myImage": {
+    "message": "ホーム"
   }
 }
