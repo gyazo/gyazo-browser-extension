@@ -99,7 +99,9 @@
             </a>
             <br />
             <div class='gyazo-notification-image-info'>
-            <span>${document.title}</span><br />
+            <span>${document.title}</span>
+            </div>
+            <div class='gyazo-notification-image-host'>
             <span>${location.host}</span>
             </div>
             `

@@ -7,10 +7,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   right: 0;
   top: 0;
   padding: 0;
-  width: 374px;
+  width: 378px;
   z-index: 2147483647;
   background-color: #e8e8e8;
-  color: #595959;
+  color: #4d4d4d;
   border: 1px solid #ccc;
   border-top: none;
   border-radius: 0;
@@ -32,28 +32,38 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 
 .gyazo-menu.gyazo-notification {
+  padding: 30px 38px;
   text-align: center;
 }
 .gyazo-notification > .gyazo-notification-title {
-  margin: 15px 0 0px;
-  font-size: 20px;
+  font-size: 22px;
 }
 .gyazo-notification > .gyazo-notification-message {
-  font-size: 12px;
-  margin: 0 0 15px;
+  font-size: 13px;
+  padding: 5px 0 15px;
+  border-bottom: 1px solid #ccc;
 }
 .gyazo-notification .image {
+  margin: 23px 0;
   max-width: 200px;
   margin-bottom: 20px;
 }
 .gyazo-notification .gyazo-notification-image-info {
-  margin-bottom: 25px;
   white-space: nowrap;
-  width: calc(100% - 30px);
-  margin-left: 15px;
-  margin-right: 15px;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: bold;
+}
+.gyazo-notification .gyazo-notification-image-host {
+  margin-top: 4px;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: #8e8e8e;
 }
 .gyazo-menu > .gyazo-close-button {
   width: 20px;
@@ -86,23 +96,19 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   background-color: #2378FF;
 }
 .gyazo-menu > .gyazo-button:hover {
-  border-bottom: 5px solid #cccccc;
-  color: #000;
+  background-color: #dedede;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-icon {
   width: 20px;
   height: 20px;
   display: block;
-  background-color: #595959;
+  background-color: #4d4d4d;
   box-sizing: border-box;
   margin: 8px auto 3px;
   pointer-events: none;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-icon.gyazo-icon-grid {
   width: 16px;
-}
-.gyazo-menu > .gyazo-button:hover > .gyazo-button-icon {
-  background-color: #000;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
@@ -115,10 +121,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 .gyazo-menu > .gyazo-close-button {
   box-sizing: border-box;
-  text-align: left;
+  text-align: center;
   margin: 0;
   padding: 0;
-  width: 21px;
+  width: 25px;
   height: 53px;
   float: left;
   cursor: pointer;
