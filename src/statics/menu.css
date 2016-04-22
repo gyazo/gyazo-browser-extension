@@ -35,10 +35,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   padding: 30px 38px;
   text-align: center;
 }
-.gyazo-notification > .gyazo-notification-title {
+.gyazo-notification .gyazo-notification-title {
   font-size: 22px;
 }
-.gyazo-notification > .gyazo-notification-message {
+.gyazo-notification .gyazo-notification-message {
   font-size: 13px;
   padding: 5px 0 15px;
   border-bottom: 1px solid #ccc;
@@ -89,11 +89,11 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover {
   color: #2378FF;
 }
-.gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon {
-  background-color: #2378FF;
+.gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon > svg{
+  fill: #2378FF;
 }
-.gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon {
-  background-color: #2378FF;
+.gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon > svg{
+  fill: #2378FF;
 }
 .gyazo-menu > .gyazo-button:hover {
   background-color: #dedede;
@@ -102,11 +102,16 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   width: 20px;
   height: 20px;
   display: block;
-  background-color: #4d4d4d;
   box-sizing: border-box;
   margin: 8px auto 3px;
   pointer-events: none;
 }
+
+.gyazo-menu > .gyazo-button > .gyazo-button-icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
 .gyazo-menu > .gyazo-button > .gyazo-button-icon.gyazo-icon-grid {
   width: 16px;
 }
@@ -130,24 +135,28 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   cursor: pointer;
   padding-top: 6px;
 }
-.gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross {
-  background-color: #000;
+.gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross > svg {
+  fill: #000;
 }
-.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
-  background-color: #aaa;
+.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross > svg {
+  fill: #aaa;
   width: 15px;
   height: 15px;
+}
+.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
   display: inline-block;
 }
-.gyazo-menu > .gyazo-spin {
+.gyazo-menu .gyazo-spin {
   display: inline-block;
-  background-color: #595959;
   animation: gyazo-spin 2s infinite linear;
-  width: 24px;
-  height: 24px;
   margin: 14.5px 0;
 }
 
+.gyazo-menu .gyazo-spin > svg {
+  fill: #595959;
+  width: 24px;
+  height: 24px;
+}
 @keyframes gyazo-spin {
   0% {
     transform:rotate(0deg);
@@ -155,26 +164,4 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   100% {
     transform:rotate(359deg);
   }
-}
-
-.gyazo-icon-cross {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/cross.svg) center / contain no-repeat;
-}
-.gyazo-icon-spinner3 {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/spinner.svg) center / contain no-repeat;
-}
-.gyazo-icon-window-scroll {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window-scroll.svg) center / contain no-repeat;
-}
-.gyazo-icon-crop {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/crop.svg) center / contain no-repeat;
-}
-.gyazo-icon-window {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window.svg) center / contain no-repeat;
-}
-.gyazo-icon-selection {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/selection.svg) center / contain no-repeat;
-}
-.gyazo-icon-grid {
-  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/grid.svg) center / contain no-repeat;
 }

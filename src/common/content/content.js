@@ -51,7 +51,6 @@
     document.documentElement.style.overflowY = 'hidden'
     var w = document.documentElement.getBoundingClientRect().width
     var scrollBarWidth = w - _w
-    console.log(scrollBarWidth)
     document.documentElement.style.marginRight = `${scrollBarWidth}px`
     return {overflow: overflow, overflowY: overflowY, marginRight: marginRight}
   }
@@ -91,9 +90,9 @@
         }
         let title = request.title ? `<div class='gyazo-notification-title'>${request.title}</div>` : ''
         let message = request.message ? `<div class='gyazo-notification-message'>${request.message}</div>` : ''
-        let showImage = ''
+        let showImage = document.createElement('div')
         if (request.imagePageUrl) {
-          showImage = `
+          showImage.innerHTML = `
             <a href='${request.imagePageUrl}' target='_blank'>
               <img class='image' src='${request.imageUrl}' />
             </a>
@@ -106,9 +105,17 @@
             </div>
             `
         } else {
-          showImage = `<span class='gyazo-icon-spinner3 gyazo-spin'></span>`
+          const loadingElm = document.createElement('span')
+          loadingElm.className = 'gyazo-spin'
+          window.fetch(chrome.runtime.getURL('imgs/spinner.svg'))
+            .then((res) => res.text())
+            .then((text) => {
+              loadingElm.innerHTML = text
+            })
+          showImage.appendChild(loadingElm)
         }
-        notificationContainer.innerHTML = `${title}${message}${showImage}`
+        notificationContainer.innerHTML = `${title}${message}`
+        notificationContainer.appendChild(showImage)
         if (request.isFinish) {
           notificationContainer.querySelector('.image').addEventListener('load', function () {
             window.setTimeout(function () {
@@ -136,7 +143,7 @@
         gyazoMenu = document.createElement('div')
         gyazoMenu.className = 'gyazo-menu gyazo-menu-element'
 
-        let createButton = function (iconClass, text, shortcutKey) {
+        let createButton = function (loadSvgName, text, shortcutKey) {
           let btn = document.createElement('div')
           btn.className = 'gyazo-big-button gyazo-button gyazo-menu-element'
 
@@ -145,7 +152,11 @@
           }
 
           let iconElm = document.createElement('div')
-          iconElm.className = 'gyazo-button-icon ' + iconClass
+          iconElm.classList.add('gyazo-button-icon')
+
+          window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
+            .then((res) => res.text())
+            .then((text) => iconElm.innerHTML = text)
 
           let textElm = document.createElement('div')
           textElm.className = 'gyazo-button-text'
@@ -157,15 +168,20 @@
           return btn
         }
 
-        let selectElementBtn = createButton('gyazo-icon-selection', chrome.i18n.getMessage('selectElement'), 'E')
-        let selectAreaBtn = createButton('gyazo-icon-crop', chrome.i18n.getMessage('selectArea'), 'S')
-        let windowCaptureBtn = createButton('gyazo-icon-window', chrome.i18n.getMessage('captureWindow'), 'P')
-        let wholeCaptureBtn = createButton('gyazo-icon-window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
-        let myImageBtn = createButton('gyazo-icon-grid', chrome.i18n.getMessage('myImage'))
+        let selectElementBtn = createButton('selection', chrome.i18n.getMessage('selectElement'), 'E')
+        let selectAreaBtn = createButton('crop', chrome.i18n.getMessage('selectArea'), 'S')
+        let windowCaptureBtn = createButton('window', chrome.i18n.getMessage('captureWindow'), 'P')
+        let wholeCaptureBtn = createButton('window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
+        let myImageBtn = createButton('grid', chrome.i18n.getMessage('myImage'))
         myImageBtn.classList.add('gyazo-menu-myimage')
         let closeBtn = document.createElement('div')
         closeBtn.className = 'gyazo-close-button gyazo-menu-element'
-        closeBtn.innerHTML = `<div class='gyazo-menu-element gyazo-icon-cross'></div>`
+        const closeBtnIcon = document.createElement('div')
+        closeBtnIcon.className = 'gyazo-menu-element gyazo-icon gyazo-icon-cross'
+        closeBtn.appendChild(closeBtnIcon)
+        window.fetch(chrome.runtime.getURL('imgs/cross.svg'))
+          .then((res) => res.text())
+          .then((text) => closeBtnIcon.innerHTML = text)
         closeBtn.setAttribute('title', 'Press: Escape')
 
         window.addEventListener('contextmenu', function (event) {
@@ -629,7 +645,6 @@
         })
       }
     }
-    console.log(request.action)
     if (request.action in actions) {
       actions[request.action]()
     }

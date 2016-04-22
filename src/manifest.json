@@ -24,13 +24,13 @@
       }
   },
   "web_accessible_resources": [
-    "/imgs/crop.svg",
-    "/imgs/cross.svg",
-    "/imgs/grid.svg",
-    "/imgs/selection.svg",
-    "/imgs/spinner.svg",
-    "/imgs/window-scroll.svg",
-    "/imgs/window.svg"
+    "imgs/crop.svg",
+    "imgs/cross.svg",
+    "imgs/grid.svg",
+    "imgs/selection.svg",
+    "imgs/spinner.svg",
+    "imgs/window-scroll.svg",
+    "imgs/window.svg"
   ],
   "icons": {
     "16": "icons/16.png",
