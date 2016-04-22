@@ -17,13 +17,17 @@
     "jsdom": "^7.2.2",
     "request-promise": "^1.0.2",
     "standard": "^4.5.4",
+    "web-ext": "^1.0.1",
     "wemf": "^0.3.0"
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
-    "build": "mkdir -p dist/chrome && script/generate_manifest && cp -r src/statics/* dist/chrome && browserify src/normal/index.js -o dist/chrome/main.js && browserify src/common/content/content.js -o dist/chrome/content.js",
-    "build-xpi": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && wemf dist/firefox/manifest.json -U && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js && cd dist/firefox && zip -r ../../build/firefox.xpi * && cd ../../",
-    "pack": "crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx"
+    "build": "npm run build-chrome && npm run build-firefox",
+    "build-chrome": "mkdir -p dist/chrome && script/generate_manifest && cp -r src/statics/* dist/chrome && browserify src/normal/index.js -o dist/chrome/main.js && browserify src/common/content/content.js -o dist/chrome/content.js",
+    "build-firefox": "mkdir -p dist/firefox && TARGET=firefox script/generate_manifest && wemf dist/firefox/manifest.json -U && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js",
+    "pack": "npm run pack-chrome && npm run pack-firefox",
+    "pack-chrome": "npm run build-chrome && crx pack ./dist --zip-output ./build/chrome.zip -o ./build/chrome.crx",
+    "pack-firefox": "npm run build-firefox && web-ext build -a build -s dist/firefox -v"
   },
   "browserify": {
     "transform": [
