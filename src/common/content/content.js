@@ -96,7 +96,15 @@
           showImage = `
             <a href='${request.imagePageUrl}' target='_blank'>
               <img class='image' src='${request.imageUrl}' />
-            </a>`
+            </a>
+            <br />
+            <div class='gyazo-notification-image-info'>
+            <span>${document.title}</span>
+            </div>
+            <div class='gyazo-notification-image-host'>
+            <span>${location.host}</span>
+            </div>
+            `
         } else {
           showImage = `<span class='gyazo-icon-spinner3 gyazo-spin'></span>`
         }
@@ -131,7 +139,10 @@
         let createButton = function (iconClass, text, shortcutKey) {
           let btn = document.createElement('div')
           btn.className = 'gyazo-big-button gyazo-button gyazo-menu-element'
-          btn.setAttribute('title', 'Press: ' + shortcutKey)
+
+          if (shortcutKey) {
+            btn.setAttribute('title', 'Press: ' + shortcutKey)
+          }
 
           let iconElm = document.createElement('div')
           iconElm.className = 'gyazo-button-icon ' + iconClass
@@ -150,8 +161,11 @@
         let selectAreaBtn = createButton('gyazo-icon-crop', chrome.i18n.getMessage('selectArea'), 'S')
         let windowCaptureBtn = createButton('gyazo-icon-window', chrome.i18n.getMessage('captureWindow'), 'P')
         let wholeCaptureBtn = createButton('gyazo-icon-window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
+        let myImageBtn = createButton('gyazo-icon-grid', chrome.i18n.getMessage('myImage'))
+        myImageBtn.classList.add('gyazo-menu-myimage')
         let closeBtn = document.createElement('div')
-        closeBtn.className = 'gyazo-close-button gyazo-menu-element gyazo-icon-cross'
+        closeBtn.className = 'gyazo-close-button gyazo-menu-element'
+        closeBtn.innerHTML = `<div class='gyazo-menu-element gyazo-icon-cross'></div>`
         closeBtn.setAttribute('title', 'Press: Escape')
 
         window.addEventListener('contextmenu', function (event) {
@@ -162,6 +176,7 @@
         gyazoMenu.appendChild(selectAreaBtn)
         gyazoMenu.appendChild(windowCaptureBtn)
         gyazoMenu.appendChild(wholeCaptureBtn)
+        gyazoMenu.appendChild(myImageBtn)
         gyazoMenu.appendChild(closeBtn)
 
         let hotKey = function (event) {
@@ -228,6 +243,10 @@
         })
         closeBtn.addEventListener('click', function () {
           hideMenu()
+        })
+        myImageBtn.addEventListener('click', function () {
+          hideMenu()
+          window.open('https://gyazo.com/')
         })
       },
       changeFixedElementToAbsolute: function () {

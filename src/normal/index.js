@@ -163,6 +163,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     }
     chrome.tabs.sendMessage(tab.id, {action: 'insertMenu', tab: tab}, function () {
       chrome && chrome.runtime && chrome.runtime.lastError &&
+      !chrome.runtime.lastError.message.match(/message port closed/) &&
       window.confirm(chrome.i18n.getMessage('confirmReload')) &&
       chrome.tabs.reload(tab.id)
     })

@@ -7,10 +7,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   right: 0;
   top: 0;
   padding: 0;
-  width: 364px;
+  width: 378px;
   z-index: 2147483647;
   background-color: #e8e8e8;
-  color: #595959;
+  color: #4d4d4d;
   border: 1px solid #ccc;
   border-top: none;
   border-radius: 0;
@@ -32,19 +32,38 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 
 .gyazo-menu.gyazo-notification {
+  padding: 30px 38px;
   text-align: center;
 }
 .gyazo-notification > .gyazo-notification-title {
-  margin: 15px 0 0px;
-  font-size: 20px;
+  font-size: 22px;
 }
 .gyazo-notification > .gyazo-notification-message {
-  font-size: 12px;
-  margin: 0 0 15px;
+  font-size: 13px;
+  padding: 5px 0 15px;
+  border-bottom: 1px solid #ccc;
 }
 .gyazo-notification .image {
+  margin: 23px 0;
   max-width: 200px;
   margin-bottom: 20px;
+}
+.gyazo-notification .gyazo-notification-image-info {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: bold;
+}
+.gyazo-notification .gyazo-notification-image-host {
+  margin-top: 4px;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: #8e8e8e;
 }
 .gyazo-menu > .gyazo-close-button {
   width: 20px;
@@ -55,31 +74,45 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   text-align: center;
   margin: 0;
   padding: 0;
-  width: 85px;
+  width: 70px;
   height: 53px;
   float: left;
   font-size: 12px;
   cursor: pointer;
 }
+.gyazo-menu > .gyazo-button.gyazo-menu-myimage {
+  border-left: 1px solid #cccccc;
+}
 .gyazo-menu > .gyazo-button.gyazo-button-active {
-  color: rgb(9, 132, 222);
+  color: #2378FF;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover {
-  color: rgb(9, 132, 222);
+  color: #2378FF;
+}
+.gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon {
+  background-color: #2378FF;
+}
+.gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon {
+  background-color: #2378FF;
 }
 .gyazo-menu > .gyazo-button:hover {
-  border-bottom: 5px solid #cccccc;
-  color: #000;
+  background-color: #dedede;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: #4d4d4d;
   box-sizing: border-box;
-  font-size: 20px;
-  margin: 8px 0 3px;
+  margin: 8px auto 3px;
   pointer-events: none;
+}
+.gyazo-menu > .gyazo-button > .gyazo-button-icon.gyazo-icon-grid {
+  width: 16px;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 18px;
   pointer-events: none;
   white-space: nowrap;
@@ -88,25 +121,31 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 .gyazo-menu > .gyazo-close-button {
   box-sizing: border-box;
-  text-align: left;
+  text-align: center;
   margin: 0;
   padding: 0;
-  width: 22px;
+  width: 25px;
   height: 53px;
   float: left;
-  color: #aaa;
-  font-size: 15px;
   cursor: pointer;
   padding-top: 6px;
 }
-.gyazo-menu > .gyazo-close-button:hover {
-  color: #000;
+.gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross {
+  background-color: #000;
 }
-
+.gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
+  background-color: #aaa;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+}
 .gyazo-menu > .gyazo-spin {
+  display: inline-block;
+  background-color: #595959;
   animation: gyazo-spin 2s infinite linear;
-  font-size: 24px;
-  line-height: 53px;
+  width: 24px;
+  height: 24px;
+  margin: 14.5px 0;
 }
 
 @keyframes gyazo-spin {
@@ -118,52 +157,24 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   }
 }
 
-/* Icons */
-@font-face {
-  font-family: 'gyazo-icomoon';
-  /*
-   * XXX: Firefox Extension CANNOT access to files on exitension dir from web content by CORS.
-  src:url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.eot?-jmg6j');
-  src:url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.eot?#iefix-jmg6j') format('embedded-opentype'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.woff2?-jmg6j') format('woff2'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.ttf?-jmg6j') format('truetype'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.woff?-jmg6j') format('woff'),
-    url('chrome-extension://__MSG_@@extension_id__/fonts/icomoon.svg?-jmg6j#icomoon') format('svg');
-  */
-  src: url(data:application/font-woff;base64,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) format('woff');
-  font-weight: normal;
-  font-style: normal;
+.gyazo-icon-cross {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/cross.svg) center / contain no-repeat;
 }
-
-[class^="gyazo-icon-"], [class*=" gyazo-icon-"] {
-  font-family: 'gyazo-icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.gyazo-icon-spinner3 {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/spinner.svg) center / contain no-repeat;
 }
-
-.gyazo-icon-cross:before {
-  content: "\e117";
+.gyazo-icon-window-scroll {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window-scroll.svg) center / contain no-repeat;
 }
-.gyazo-icon-spinner3:before {
-  content: "\e604";
+.gyazo-icon-crop {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/crop.svg) center / contain no-repeat;
 }
-.gyazo-icon-window-scroll:before {
-  content: "\e600";
+.gyazo-icon-window {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/window.svg) center / contain no-repeat;
 }
-.gyazo-icon-crop:before {
-  content: "\e601";
+.gyazo-icon-selection {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/selection.svg) center / contain no-repeat;
 }
-.gyazo-icon-window:before {
-  content: "\e602";
-}
-.gyazo-icon-selection:before {
-  content: "\e603";
+.gyazo-icon-grid {
+  -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/imgs/grid.svg) center / contain no-repeat;
 }

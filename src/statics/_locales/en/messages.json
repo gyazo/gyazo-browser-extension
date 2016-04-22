@@ -1,6 +1,6 @@
 {
   "uploadingFinishTitle": {
-    "message": "Complete!"
+    "message": "Saved!"
   },
   "uploadingFinishMessage": {
     "message": "Gyazo link has been copied"
@@ -31,5 +31,8 @@
   },
   "welcomeMessage": {
     "message": "Welcome! Please open a page in a new tab, and click the Gyazo button!"
+  },
+  "myImage": {
+    "message": "Home"
   }
 }
