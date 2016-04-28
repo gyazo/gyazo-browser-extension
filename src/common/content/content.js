@@ -441,7 +441,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, function () {
+              }, null, function () {
                 restoreFixedElement()
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
@@ -603,7 +603,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, function () {
+              }, null, function () {
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
                 restoreFixedElement()
@@ -639,7 +639,7 @@
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
-        }, function () {
+        }, null, function () {
           document.body.removeChild(jackup)
           unlockScroll(overflow)
         })
