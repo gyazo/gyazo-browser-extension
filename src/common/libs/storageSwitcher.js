@@ -7,6 +7,6 @@ try {
     : chrome.storage.local
 } catch (e) {
   module.exports = {get: function (a, b) {
-    throw 'not support chrome.storage'
+    throw new Error('not support chrome.storage')
   }}
 }
