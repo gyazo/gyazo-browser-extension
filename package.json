@@ -37,8 +37,12 @@
   "webextension": {
     "applications": {
       "gecko": {
-        "id": "gyazo.extension@gyazo.com"
+        "id": "gyazo.extension@gyazo.com",
+        "strict_min_version": "47.0b1"
       }
+    },
+    "options_ui": {
+      "page": "option/options.html"
     }
   },
   "standard": {
