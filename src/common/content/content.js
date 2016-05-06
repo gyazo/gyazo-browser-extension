@@ -3,6 +3,7 @@
     return
   }
   window.__embededGyazoContentJS = true
+  const escapeHtml = require('escape-html')
   const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
@@ -88,8 +89,8 @@
           notificationContainer.className = 'gyazo-menu gyazo-notification'
           document.body.appendChild(notificationContainer)
         }
-        let title = request.title ? `<div class='gyazo-notification-title'>${request.title}</div>` : ''
-        let message = request.message ? `<div class='gyazo-notification-message'>${request.message}</div>` : ''
+        let title = request.title ? `<div class='gyazo-notification-title'>${escapeHtml(request.title)}</div>` : ''
+        let message = request.message ? `<div class='gyazo-notification-message'>${escapeHtml(request.message)}</div>` : ''
         let showImage = document.createElement('div')
         if (request.imagePageUrl) {
           showImage.innerHTML = `
@@ -98,10 +99,10 @@
             </a>
             <br />
             <div class='gyazo-notification-image-info'>
-            <span>${document.title}</span>
+            <span>${escapeHtml(document.title)}</span>
             </div>
             <div class='gyazo-notification-image-host'>
-            <span>${location.host}</span>
+            <span>${escapeHtml(location.host)}</span>
             </div>
             `
         } else {
