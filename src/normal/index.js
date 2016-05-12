@@ -38,7 +38,7 @@ function postToGyazo (tabId, data) {
       let xhr = new window.XMLHttpRequest()
       xhr.open('GET', _data.get_image_url)
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
+        if (xhr.responseURL) {
           saveToClipboard(xhr.responseURL)
           notification.finish(xhr.responseURL, data.imageData)
         }

@@ -27,7 +27,9 @@ function fetchImage (url, callback) {
 
 function createLoader (position = {}) {
   const loader = document.createElement('div')
-  loader.innerHTML = `<div class='gz-circle-loader'></div>`
+  const circleIcon = document.createElement('div')
+  circleIcon.className = 'gz-circle-loader'
+  loader.appendChild(circleIcon)
 
   css(loader, extend({
     position: 'fixed',

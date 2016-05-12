@@ -89,22 +89,39 @@
           notificationContainer.className = 'gyazo-menu gyazo-notification'
           document.body.appendChild(notificationContainer)
         }
-        let title = request.title ? `<div class='gyazo-notification-title'>${escapeHtml(request.title)}</div>` : ''
-        let message = request.message ? `<div class='gyazo-notification-message'>${escapeHtml(request.message)}</div>` : ''
+        let title = document.createTextNode('')
+        let message = document.createTextNode('')
+        if (request.title) {
+          title = document.createElement('div')
+          title.className = 'gyazo-notification-title'
+          title.textContent = request.title
+        }
+        if (request.message) {
+          message = document.createElement('div')
+          message.className = 'gyazo-notification-message'
+          message.textContent = request.message
+        }
         let showImage = document.createElement('div')
         if (request.imagePageUrl) {
-          showImage.innerHTML = `
-            <a href='${request.imagePageUrl}' target='_blank'>
-              <img class='image' src='${request.imageUrl}' />
-            </a>
-            <br />
-            <div class='gyazo-notification-image-info'>
-            <span>${escapeHtml(document.title)}</span>
-            </div>
-            <div class='gyazo-notification-image-host'>
-            <span>${escapeHtml(location.host)}</span>
-            </div>
-            `
+          const imageContainer = document.createElement('a')
+          imageContainer.href = request.imagePageUrl
+          imageContainer.target = '_blank'
+          showImage.appendChild(imageContainer)
+          const imageElem = document.createElement('img')
+          imageElem.className = 'image'
+          imageElem.src = request.imageUrl
+          imageContainer.appendChild(imageElem)
+          showImage.appendChild(document.createElement('br'))
+          const imageInfo = document.createElement('div')
+          imageInfo.className = 'gyazo-notification-image-info'
+          showImage.appendChild(imageInfo)
+          const infoSpan = document.createElement('span')
+          infoSpan.textContent = document.title
+          imageInfo.appendChild(infoSpan)
+          const imageHost = document.createElement('div')
+          imageHost.className = 'gyazo-notification-image-host'
+          showImage.appendChild(imageHost)
+          imageHost.textContent = location.host
         } else {
           const loadingElm = document.createElement('span')
           loadingElm.className = 'gyazo-spin'
@@ -115,7 +132,9 @@
             })
           showImage.appendChild(loadingElm)
         }
-        notificationContainer.innerHTML = `${title}${message}`
+        notificationContainer.innerHTML = ''
+        notificationContainer.appendChild(title)
+        notificationContainer.appendChild(message)
         notificationContainer.appendChild(showImage)
         if (request.isFinish) {
           notificationContainer.querySelector('.image').addEventListener('load', function () {
@@ -500,7 +519,10 @@
         layer.style.position = 'absolute'
         layer.style.left = document.body.clientLeft + 'px'
         layer.style.top = document.body.clientTop + 'px'
-        layer.style.width = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth) + 'px'
+        layer.style.width = Math.max(
+          document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth,
+          document.documentElement.clientWidth, document.documentElement.offsetWidth, document.documentElement.scrollWidth
+        ) + 'px'
         layer.style.height = pageHeight + 'px'
         layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
         layer.style.cursor = 'crosshair'
