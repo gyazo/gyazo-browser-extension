@@ -3,7 +3,6 @@
     return
   }
   window.__embededGyazoContentJS = true
-  const escapeHtml = require('escape-html')
   const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
