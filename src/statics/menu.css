@@ -108,13 +108,17 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 
 .gyazo-menu > .gyazo-button > .gyazo-button-icon > svg {
+  fill: #4D4D4D;
+  width: 20px;
+  height: 20px;
+}
+
+.gyazo-menu > .gyazo-button.gyazo-menu-myimage > .gyazo-button-icon > svg {
+  margin: 2px;
   width: 16px;
   height: 16px;
 }
 
-.gyazo-menu > .gyazo-button > .gyazo-button-icon.gyazo-icon-grid {
-  width: 16px;
-}
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
   box-sizing: border-box;
   font-size: 10px;
