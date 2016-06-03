@@ -1,8 +1,13 @@
 #!/usr/bin/env node
-var packageVer = require('../package.json').version
 var manifest = require('../src/manifest.json')
+if (process.env.TARGET === 'firefox') {
+  var manifestPath = '../dist/firefox/manifest.json'
+} else {
+  var manifestPath = '../dist/chrome/manifest.json'
+}
+var packageVer = require('../package.json').version
 manifest.version = packageVer
 require('fs').writeFileSync(
-  require('path').resolve(__dirname, '../dist/manifest.json'),
+  require('path').resolve(__dirname, manifestPath),
   JSON.stringify(manifest, null, 2)
 )

@@ -2,12 +2,13 @@ const $ = require('jquery')
 const UploadNotification = require('../common/libs/UploadNotification')
 const saveToClipboard = require('../common/libs/saveToClipboard')
 const canvasUtils = require('../common/libs/canvasUtils')
+const storage = require('../common/libs/storageSwitcher')
 
 var host = 'https://upload.gyazo.com/api/upload/easy_auth'
 var clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'
 const DELAY_TIMES = [0, 200, 400, 700, 1000]
 let waitForDelay = function (callback) {
-  chrome.storage.sync.get({delay: 1}, function (item) {
+  storage.get({delay: 1}, function (item) {
     let delay = DELAY_TIMES[item.delay]
     if (delay === 0) {
       window.requestAnimationFrame(callback)
@@ -18,7 +19,7 @@ let waitForDelay = function (callback) {
 
 function postToGyazo (tabId, data) {
   var notification = new UploadNotification(tabId)
-  notification.update({message: chrome.i18n.getMessage('uploadingMessage')})
+  notification.update({message: ''})
   $.ajax({
     type: 'POST',
     url: host,
@@ -37,7 +38,7 @@ function postToGyazo (tabId, data) {
       let xhr = new window.XMLHttpRequest()
       xhr.open('GET', _data.get_image_url)
       xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
+        if (xhr.responseURL) {
           saveToClipboard(xhr.responseURL)
           notification.finish(xhr.responseURL, data.imageData)
         }

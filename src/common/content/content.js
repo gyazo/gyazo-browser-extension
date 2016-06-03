@@ -3,7 +3,7 @@
     return
   }
   window.__embededGyazoContentJS = true
-
+  const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
   const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')
@@ -51,7 +51,6 @@
     document.documentElement.style.overflowY = 'hidden'
     var w = document.documentElement.getBoundingClientRect().width
     var scrollBarWidth = w - _w
-    console.log(scrollBarWidth)
     document.documentElement.style.marginRight = `${scrollBarWidth}px`
     return {overflow: overflow, overflowY: overflowY, marginRight: marginRight}
   }
@@ -89,26 +88,53 @@
           notificationContainer.className = 'gyazo-menu gyazo-notification'
           document.body.appendChild(notificationContainer)
         }
-        let title = request.title ? `<div class='gyazo-notification-title'>${request.title}</div>` : ''
-        let message = request.message ? `<div class='gyazo-notification-message'>${request.message}</div>` : ''
-        let showImage = ''
-        if (request.imagePageUrl) {
-          showImage = `
-            <a href='${request.imagePageUrl}' target='_blank'>
-              <img class='image' src='${request.imageUrl}' />
-            </a>
-            <br />
-            <div class='gyazo-notification-image-info'>
-            <span>${document.title}</span>
-            </div>
-            <div class='gyazo-notification-image-host'>
-            <span>${location.host}</span>
-            </div>
-            `
-        } else {
-          showImage = `<span class='gyazo-icon-spinner3 gyazo-spin'></span>`
+        let title = document.createTextNode('')
+        let message = document.createTextNode('')
+        if (request.title) {
+          title = document.createElement('div')
+          title.className = 'gyazo-notification-title'
+          title.textContent = request.title
         }
-        notificationContainer.innerHTML = `${title}${message}${showImage}`
+        if (request.message) {
+          message = document.createElement('div')
+          message.className = 'gyazo-notification-message'
+          message.textContent = request.message
+        }
+        let showImage = document.createElement('div')
+        if (request.imagePageUrl) {
+          const imageContainer = document.createElement('a')
+          imageContainer.href = request.imagePageUrl
+          imageContainer.target = '_blank'
+          showImage.appendChild(imageContainer)
+          const imageElem = document.createElement('img')
+          imageElem.className = 'image'
+          imageElem.src = request.imageUrl
+          imageContainer.appendChild(imageElem)
+          showImage.appendChild(document.createElement('br'))
+          const imageInfo = document.createElement('div')
+          imageInfo.className = 'gyazo-notification-image-info'
+          showImage.appendChild(imageInfo)
+          const infoSpan = document.createElement('span')
+          infoSpan.textContent = document.title
+          imageInfo.appendChild(infoSpan)
+          const imageHost = document.createElement('div')
+          imageHost.className = 'gyazo-notification-image-host'
+          showImage.appendChild(imageHost)
+          imageHost.textContent = location.host
+        } else {
+          const loadingElm = document.createElement('span')
+          loadingElm.className = 'gyazo-spin'
+          window.fetch(chrome.runtime.getURL('imgs/spinner.svg'))
+            .then((res) => res.text())
+            .then((text) => {
+              loadingElm.innerHTML = text
+            })
+          showImage.appendChild(loadingElm)
+        }
+        notificationContainer.innerHTML = ''
+        notificationContainer.appendChild(title)
+        notificationContainer.appendChild(message)
+        notificationContainer.appendChild(showImage)
         if (request.isFinish) {
           notificationContainer.querySelector('.image').addEventListener('load', function () {
             window.setTimeout(function () {
@@ -136,7 +162,7 @@
         gyazoMenu = document.createElement('div')
         gyazoMenu.className = 'gyazo-menu gyazo-menu-element'
 
-        let createButton = function (iconClass, text, shortcutKey) {
+        let createButton = function (loadSvgName, text, shortcutKey) {
           let btn = document.createElement('div')
           btn.className = 'gyazo-big-button gyazo-button gyazo-menu-element'
 
@@ -145,7 +171,11 @@
           }
 
           let iconElm = document.createElement('div')
-          iconElm.className = 'gyazo-button-icon ' + iconClass
+          iconElm.classList.add('gyazo-button-icon')
+
+          window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
+            .then((res) => res.text())
+            .then((text) => iconElm.innerHTML = text)
 
           let textElm = document.createElement('div')
           textElm.className = 'gyazo-button-text'
@@ -157,15 +187,20 @@
           return btn
         }
 
-        let selectElementBtn = createButton('gyazo-icon-selection', chrome.i18n.getMessage('selectElement'), 'E')
-        let selectAreaBtn = createButton('gyazo-icon-crop', chrome.i18n.getMessage('selectArea'), 'S')
-        let windowCaptureBtn = createButton('gyazo-icon-window', chrome.i18n.getMessage('captureWindow'), 'P')
-        let wholeCaptureBtn = createButton('gyazo-icon-window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
-        let myImageBtn = createButton('gyazo-icon-grid', chrome.i18n.getMessage('myImage'))
+        let selectElementBtn = createButton('selection', chrome.i18n.getMessage('selectElement'), 'E')
+        let selectAreaBtn = createButton('crop', chrome.i18n.getMessage('selectArea'), 'S')
+        let windowCaptureBtn = createButton('window', chrome.i18n.getMessage('captureWindow'), 'P')
+        let wholeCaptureBtn = createButton('window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
+        let myImageBtn = createButton('grid', chrome.i18n.getMessage('myImage'))
         myImageBtn.classList.add('gyazo-menu-myimage')
         let closeBtn = document.createElement('div')
         closeBtn.className = 'gyazo-close-button gyazo-menu-element'
-        closeBtn.innerHTML = `<div class='gyazo-menu-element gyazo-icon-cross'></div>`
+        const closeBtnIcon = document.createElement('div')
+        closeBtnIcon.className = 'gyazo-menu-element gyazo-icon gyazo-icon-cross'
+        closeBtn.appendChild(closeBtnIcon)
+        window.fetch(chrome.runtime.getURL('imgs/cross.svg'))
+          .then((res) => res.text())
+          .then((text) => closeBtnIcon.innerHTML = text)
         closeBtn.setAttribute('title', 'Press: Escape')
 
         window.addEventListener('contextmenu', function (event) {
@@ -200,17 +235,23 @@
           }
         }
         window.addEventListener('keydown', hotKey)
-        chrome.storage.sync.get({behavior: 'element'}, function (item) {
-          if (item.behavior === 'element') {
-            // Default behavior is select element
-            selectElementBtn.classList.add('gyazo-button-active')
-            window.requestAnimationFrame(actions.gyazoSelectElm)
-          } else if (item.behavior === 'area') {
-            // Default behavior is select area
-            selectAreaBtn.classList.add('gyazo-button-active')
-            actions.gyazoCaptureSelectedArea()
-          }
-        })
+        try {
+          // Provide access to chrome.storage at content script https://bugzilla.mozilla.org/show_bug.cgi?id=1197346
+          storage.get({behavior: 'element'}, function (item) {
+            if (item.behavior === 'element') {
+              // Default behavior is select element
+              selectElementBtn.classList.add('gyazo-button-active')
+              window.requestAnimationFrame(actions.gyazoSelectElm)
+            } else if (item.behavior === 'area') {
+              // Default behavior is select area
+              selectAreaBtn.classList.add('gyazo-button-active')
+              actions.gyazoCaptureSelectedArea()
+            }
+          })
+        } catch (e) {
+          selectAreaBtn.classList.add('gyazo-button-active')
+          actions.gyazoCaptureSelectedArea()
+        }
         selectAreaBtn.addEventListener('click', function () {
           hideMenu()
           window.requestAnimationFrame(function () {
@@ -419,7 +460,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, function () {
+              }, null, function () {
                 restoreFixedElement()
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
@@ -477,7 +518,10 @@
         layer.style.position = 'absolute'
         layer.style.left = document.body.clientLeft + 'px'
         layer.style.top = document.body.clientTop + 'px'
-        layer.style.width = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth) + 'px'
+        layer.style.width = Math.max(
+          document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth,
+          document.documentElement.clientWidth, document.documentElement.offsetWidth, document.documentElement.scrollWidth
+        ) + 'px'
         layer.style.height = pageHeight + 'px'
         layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
         layer.style.cursor = 'crosshair'
@@ -581,7 +625,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, function () {
+              }, null, function () {
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
                 restoreFixedElement()
@@ -617,7 +661,7 @@
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
-        }, function () {
+        }, null, function () {
           document.body.removeChild(jackup)
           unlockScroll(overflow)
         })
