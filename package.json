@@ -9,8 +9,6 @@
   },
   "devDependencies": {
     "ava": "^0.9.1",
-    "babel-preset-es2015": "^6.3.13",
-    "babelify": "^7.2.0",
     "browserify": "^12.0.1",
     "chrome-webstore-manager": "^0.1.1",
     "crx": "github:pastak/crx",
@@ -28,11 +26,6 @@
     "pack": "npm run pack-chrome && npm run pack-firefox",
     "pack-chrome": "npm run build-chrome && crx pack ./dist/chrome --zip-output ./build/chrome.zip -o ./build/chrome.crx",
     "pack-firefox": "npm run build-firefox && web-ext build -a build -s dist/firefox -v"
-  },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
   },
   "webextension": {
     "applications": {
