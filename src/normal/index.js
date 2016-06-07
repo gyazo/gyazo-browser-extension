@@ -171,6 +171,8 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  // XXX: Firefox WebExtension returns real size image
+  if (/Firefox/.test(navigator.userAgent)) request.data.s = 1
   var messageHandlers = {
     gyazoGetImageBlob: function () {
       const xhr = new window.XMLHttpRequest()
