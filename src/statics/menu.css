@@ -151,6 +151,8 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   display: inline-block;
 }
 .gyazo-menu .gyazo-spin {
+  width: 24px;
+  height: 24px;
   display: inline-block;
   animation: gyazo-spin 2s infinite linear;
   margin: 14.5px 0;
