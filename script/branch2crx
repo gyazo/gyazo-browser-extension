@@ -5,7 +5,7 @@ var exec = require('child_process').execSync
 var token = process.env.GITHUB_TOKEN
 
 try {
-  exec('npm run build && npm run pack')
+  exec('npm run pack-chrome')
 } catch (e) {
   console.error('Error on packing')
   process.exit(-1)
