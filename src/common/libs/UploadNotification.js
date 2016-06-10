@@ -1,3 +1,5 @@
+const browser = require('bowser')
+
 module.exports = class UploadNotification {
   constructor (tabId) {
     this.tabId = tabId
@@ -10,7 +12,7 @@ module.exports = class UploadNotification {
   finish (imagePageUrl, imageDataUrl, callback) {
     this.update({
       title: chrome.i18n.getMessage('uploadingFinishTitle'),
-      message: chrome.i18n.getMessage('uploadingFinishMessage'),
+      message: browser.firefox ? '' : chrome.i18n.getMessage('uploadingFinishMessage'),
       imagePageUrl: imagePageUrl,
       imageUrl: imageDataUrl,
       isFinish: true
