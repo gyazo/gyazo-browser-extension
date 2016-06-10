@@ -31,7 +31,6 @@ Whenever you capture an image the original address and title of the page the ima
 ### How To Development
 
 - `$ npm install`
-- `$ npm run build`
 - `$ npm run pack`
 
 ## Coding Style
