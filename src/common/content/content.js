@@ -3,6 +3,7 @@
     return
   }
   window.__embededGyazoContentJS = true
+  const browser = require('bowser')
   const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
@@ -672,6 +673,7 @@
     }
     return true
   })
-
+  // XXX: Firefox can't embed moz-extension:// file in content
+  if (browser.firefox) return
   require('./expander')
 })()
