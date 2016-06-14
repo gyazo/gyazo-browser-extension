@@ -1,13 +1,14 @@
 Gyazo Extension
 =======
 
-Chrome Extension for Gyazo.
+Gyazo Browser Extensions for Chrome / Firefox.
 
 ## Install
 
-- You can install from Chrome Web Store
+- Chrome / Chromium
   - https://chrome.google.com/webstore/detail/gyazo/ffdaeeijbbijklfcpahbghahojgfgebo
-
+- Firefox
+  - https://addons.mozilla.org/ja/firefox/addon/gyazo-official/
 
 ## About
 
@@ -30,7 +31,6 @@ Whenever you capture an image the original address and title of the page the ima
 ### How To Development
 
 - `$ npm install`
-- `$ npm run build`
 - `$ npm run pack`
 
 ## Coding Style

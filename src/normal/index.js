@@ -1,4 +1,5 @@
 const $ = require('jquery')
+const browser = require('bowser')
 const UploadNotification = require('../common/libs/UploadNotification')
 const saveToClipboard = require('../common/libs/saveToClipboard')
 const canvasUtils = require('../common/libs/canvasUtils')
@@ -141,13 +142,16 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   }
 })
 
-chrome.contextMenus.onClicked.addListener(onClickHandler)
+// XXX: Buggy contextMenus on Firefox < v49
+if (browser.firefox && browser.version >= 49) {
+  chrome.contextMenus.onClicked.addListener(onClickHandler)
 
-chrome.contextMenus.create({
-  title: chrome.i18n.getMessage('contextMenuImage'),
-  id: 'gyazoIt',
-  contexts: ['image']
-})
+  chrome.contextMenus.create({
+    title: chrome.i18n.getMessage('contextMenuImage'),
+    id: 'gyazoIt',
+    contexts: ['image']
+  })
+}
 
 chrome.browserAction.onClicked.addListener(function (tab) {
   if (tab.url.match(/chrome\.google\.com\/webstore\//)) {
