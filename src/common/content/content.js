@@ -52,7 +52,7 @@
     document.documentElement.style.overflowY = 'hidden'
     var w = document.documentElement.getBoundingClientRect().width
     var scrollBarWidth = w - _w
-    if (skipPack == null) { document.documentElement.style.marginRight = `${scrollBarWidth}px` }
+    if (skipPack === null) { document.documentElement.style.marginRight = `${scrollBarWidth}px` }
     return {overflow: overflow, overflowY: overflowY, marginRight: marginRight}
   }
 
