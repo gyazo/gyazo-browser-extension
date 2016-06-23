@@ -143,7 +143,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 })
 
 // XXX: Buggy contextMenus on Firefox < v49
-if (browser.firefox && browser.version >= 49) {
+if (browser.chrome || (browser.firefox && browser.version >= 49)) {
   chrome.contextMenus.onClicked.addListener(onClickHandler)
 
   chrome.contextMenus.create({
