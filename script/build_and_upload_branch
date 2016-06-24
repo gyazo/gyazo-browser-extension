@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+var fs = require('fs')
+var request = require('request-promise')
+var upload = require('./libs/upload')
+
+var crxfile, xpifile = null
+
+fs.readdirSync('build').forEach(function (file) {
+  if (/xpi$/.test(file)) return xpifile = file
+  if (/crx$/.test(file)) return crxfile = file
+})
+
+if (!crxfile) {
+  console.error('It requires crx file')
+  process.exit(-1)
+}
+
+if (!xpifile) {
+  console.error('It requires xpi file')
+  process.exit(-1)
+}
+
+var path = `gyazo-chrome-extension/${Date.now()}/`
+
+upload({targetEnv: 'firefox alpha build',  fileName: xpifile, path})
+upload({targetEnv: 'chrome alpha build',  fileName: crxfile, path})

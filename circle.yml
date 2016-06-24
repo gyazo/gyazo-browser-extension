@@ -1,17 +1,20 @@
 machine:
   node:
-    version: 4.1.0
+    version: 6.1.0
 test:
   post:
     - |
       if [ -z "$CIRCLE_PR_NUMBER" ]; then
         echo $GCS_KEY | base64 --decode > gcs_key.json
         gcloud auth activate-service-account --key-file gcs_key.json
-        ./script/branch2crx
+        BUILD_TARGET=review npm run build-firefox
+        npm run pack-chrome
+        web-ext sign -a build -s dist/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+        ./script/build_and_upload_branch
       fi
 deployment:
   production:
     branch: production
     commands:
-      - npm run build && npm run pack
+      - npm run pack
       - curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
