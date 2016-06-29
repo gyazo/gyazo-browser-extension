@@ -17,7 +17,7 @@
     "request-promise": "^1.0.2",
     "standard": "^4.5.4",
     "web-ext": "^1.0.1",
-    "wemf": "^0.3.0"
+    "wemf": "^0.3.3"
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
