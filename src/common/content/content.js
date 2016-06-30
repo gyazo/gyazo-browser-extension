@@ -28,10 +28,10 @@
 
   function changeFixedElementToAbsolute () {
     Array.prototype.slice.apply(document.querySelectorAll('*')).filter(function (item) {
-      return (window.window.getComputedStyle(item).position === 'fixed')
+      return (window.getComputedStyle(item).position === 'fixed')
     }).forEach(function (item) {
       item.classList.add('gyazo-whole-capture-onetime-absolute')
-      item.style.position = 'absolute'
+      item.style.setProperty('position', 'absolute', 'important')
     })
   }
 
