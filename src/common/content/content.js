@@ -28,10 +28,10 @@
 
   function changeFixedElementToAbsolute () {
     Array.prototype.slice.apply(document.querySelectorAll('*')).filter(function (item) {
-      return (window.window.getComputedStyle(item).position === 'fixed')
+      return (window.getComputedStyle(item).position === 'fixed')
     }).forEach(function (item) {
       item.classList.add('gyazo-whole-capture-onetime-absolute')
-      item.style.position = 'absolute'
+      item.style.setProperty('position', 'absolute', 'important')
     })
   }
 
@@ -43,7 +43,7 @@
     })
   }
 
-  function lockScroll () {
+  function lockScroll (skipPack) {
     var overflow = document.documentElement.style.overflow
     var overflowY = document.documentElement.style.overflowY
     var marginRight = document.documentElement.style.marginRight
@@ -52,7 +52,7 @@
     document.documentElement.style.overflowY = 'hidden'
     var w = document.documentElement.getBoundingClientRect().width
     var scrollBarWidth = w - _w
-    document.documentElement.style.marginRight = `${scrollBarWidth}px`
+    if (skipPack === null) { document.documentElement.style.marginRight = `${scrollBarWidth}px` }
     return {overflow: overflow, overflowY: overflowY, marginRight: marginRight}
   }
 
@@ -298,6 +298,7 @@
         window.requestAnimationFrame(waitScroll)
       },
       gyazocaptureWindow: function () {
+        var overflow = lockScroll(true)
         var data = {}
         var scaleObj = getZoomAndScale()
         data.w = window.innerWidth
@@ -312,11 +313,13 @@
         data.positionY = window.scrollY
         data.defaultPositon = window.scrollY
         data.innerHeight = window.innerHeight
-        chrome.runtime.sendMessage(chrome.runtime.id, {
+        window.requestAnimationFrame(() => chrome.runtime.sendMessage(chrome.runtime.id, {
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
-        }, function () {})
+        }, function () {
+          unlockScroll(overflow)
+        }))
       },
       gyazoSelectElm: function () {
         if (document.querySelector('.gyazo-crop-select-element')) {
@@ -640,7 +643,7 @@
         window.addEventListener('contextmenu', cancelGyazo)
       },
       gyazoWholeCapture: function () {
-        var overflow = lockScroll()
+        var overflow = lockScroll(true)
         var data = {}
         var scaleObj = getZoomAndScale()
         data.w = window.innerWidth

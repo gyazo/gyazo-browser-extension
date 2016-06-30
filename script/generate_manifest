@@ -6,7 +6,13 @@ if (process.env.TARGET === 'firefox') {
   var manifestPath = '../dist/chrome/manifest.json'
 }
 var packageVer = require('../package.json').version
+if (process.env.BUILD_TARGET === 'review') {
+  const d = new Date()
+  packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`
+  manifest.applications = {gecko: {id: 'gyazo-extension-dev@gyazo.com'}}
+}
 manifest.version = packageVer
+
 require('fs').writeFileSync(
   require('path').resolve(__dirname, manifestPath),
   JSON.stringify(manifest, null, 2)
