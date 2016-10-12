@@ -62,7 +62,7 @@
     document.documentElement.style.marginRight = old.marginRight
   }
 
-  function packScrollBar(old) {
+  function packScrollBar (old) {
     document.documentElement.style.marginRight = `${old.scrollBarWidth}px`
   }
 
