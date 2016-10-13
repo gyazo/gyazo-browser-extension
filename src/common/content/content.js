@@ -43,7 +43,7 @@
     })
   }
 
-  function lockScroll (skipPack) {
+  function lockScroll () {
     var overflow = document.documentElement.style.overflow
     var overflowY = document.documentElement.style.overflowY
     var marginRight = document.documentElement.style.marginRight
@@ -52,8 +52,7 @@
     document.documentElement.style.overflowY = 'hidden'
     var w = document.documentElement.getBoundingClientRect().width
     var scrollBarWidth = w - _w
-    if (skipPack === null) { document.documentElement.style.marginRight = `${scrollBarWidth}px` }
-    return {overflow: overflow, overflowY: overflowY, marginRight: marginRight}
+    return {overflow: overflow, overflowY: overflowY, marginRight: marginRight, scrollBarWidth: scrollBarWidth}
   }
 
   function unlockScroll (old) {
@@ -61,6 +60,10 @@
     document.documentElement.style.overflow = old.overflow
     document.documentElement.style.overflowY = old.overflowY
     document.documentElement.style.marginRight = old.marginRight
+  }
+
+  function packScrollBar (old) {
+    document.documentElement.style.marginRight = `${old.scrollBarWidth}px`
   }
 
   function getZoomAndScale () {
@@ -298,7 +301,7 @@
         window.requestAnimationFrame(waitScroll)
       },
       gyazocaptureWindow: function () {
-        var overflow = lockScroll(true)
+        var overflow = lockScroll()
         var data = {}
         var scaleObj = getZoomAndScale()
         data.w = window.innerWidth
@@ -454,7 +457,11 @@
               tab: request.tab
             }, function () {})
           }
-          var overflow = lockScroll()
+          var overflow = {}
+          if (data.y + data.h > data.innerHeight + data.positionY) {
+            overflow = lockScroll()
+            packScrollBar(overflow)
+          }
           var finish = function () {
             if (document.getElementsByClassName('gyazo-crop-select-element').length > 0) {
               return window.requestAnimationFrame(finish)
@@ -617,7 +624,11 @@
           if (document.querySelector('.gyazo-menu')) {
             document.body.removeChild(document.querySelector('.gyazo-menu'))
           }
-          var overflow = lockScroll()
+          var overflow = {}
+          if (data.h > data.innerHeight) {
+            overflow = lockScroll()
+            packScrollBar(overflow)
+          }
           jackup.style.height = (window.innerHeight + JACKUP_HEIGHT) + 'px'
           // wait for rewrite by removeChild
           let finish = function () {
@@ -643,7 +654,7 @@
         window.addEventListener('contextmenu', cancelGyazo)
       },
       gyazoWholeCapture: function () {
-        var overflow = lockScroll(true)
+        var overflow = lockScroll()
         var data = {}
         var scaleObj = getZoomAndScale()
         data.w = window.innerWidth
