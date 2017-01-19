@@ -1,4 +1,5 @@
-const browser = require('bowser')
+require('chrome-browser-object-polyfill')
+const browserInfo = require('bowser')
 
 module.exports = class UploadNotification {
   constructor (tabId) {
@@ -12,7 +13,7 @@ module.exports = class UploadNotification {
   finish (imagePageUrl, imageDataUrl, callback) {
     this.update({
       title: chrome.i18n.getMessage('uploadingFinishTitle'),
-      message: browser.firefox ? '' : chrome.i18n.getMessage('uploadingFinishMessage'),
+      message: browserInfo.firefox ? '' : chrome.i18n.getMessage('uploadingFinishMessage'),
       imagePageUrl: imagePageUrl,
       imageUrl: imageDataUrl,
       isFinish: true

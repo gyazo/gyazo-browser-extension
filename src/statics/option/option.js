@@ -1,3 +1,4 @@
+require('chrome-browser-object-polyfill')
 (function () {
   'use strict'
   let selector = document.getElementById('selector')
