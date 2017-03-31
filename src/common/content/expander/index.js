@@ -62,7 +62,7 @@ function createImagePreview ({ url, boxStyle }) {
 }
 
 let previewIsShown = false
-delegate(document.body, 'a', 'mouseover', (event) => {
+delegate(document, 'a', 'mouseover', (event) => {
   if (previewIsShown) return
 
   const element = event.target
