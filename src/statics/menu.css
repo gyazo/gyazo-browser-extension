@@ -1,173 +1,193 @@
 body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu-element) {
   cursor: default !important;
 }
-.gyazo-menu {
-  box-sizing: border-box;
-  position: fixed;
-  right: 0;
-  top: 0;
+
+.gyazo-menu.gyazo-menu-element, .gyazo-menu.gyazo-menu-element * {
+  margin: 0;
   padding: 0;
-  width: 378px;
-  z-index: 2147483647;
-  background-color: #e8e8e8;
-  color: #4d4d4d;
-  border: 1px solid #ccc;
-  border-top: none;
   border-radius: 0;
-  font-family: Helvetica, Arial, sans-serif;
-  letter-spacing: 0;
-  animation-duration: 0.3s;
-  animation-name: slidein;
-  animation-timing-function: ease-out;
+  background: none;
+}
+
+.gyazo-menu {
+  box-sizing: border-box !important;
+  position: fixed !important;
+  right: 0 !important;
+  top: 0 !important;
+  padding: 0 !important;
+  width: 378px !important;
+  z-index: 2147483647 !important;
+  background-color: #e8e8e8 !important;
+  color: #4d4d4d !important;
+  border: 1px solid #ccc !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+  animation-duration: 0.3s !important;
+  animation-name: slidein !important;
+  animation-timing-function: ease-out !important;
 }
 
 @keyframes slidein {
   from {
-    top: -60px;
+    top: -60px !important;
   }
 
   to {
-    top: 0;
+    top: 0 !important;
   }
 }
 
 .gyazo-menu.gyazo-notification {
-  padding: 30px 38px;
-  text-align: center;
+  padding: 30px 38px !important;
+  text-align: center !important;
 }
 .gyazo-notification .gyazo-notification-title {
-  font-size: 22px;
+  padding: 0 !important;
+  font-size: 22px !important;
 }
 .gyazo-notification .gyazo-notification-message {
-  font-size: 13px;
-  padding: 5px 0 15px;
-  border-bottom: 1px solid #ccc;
+  font-size: 13px !important;
+  padding: 5px 0 15px !important;
+  border-bottom: 1px solid #ccc !important;
 }
 .gyazo-notification .image {
-  margin: 23px 0;
-  max-width: 200px;
-  margin-bottom: 20px;
+  padding: 0 !important;
+  margin: 23px 0 !important;
+  max-width: 200px !important;
+  margin-bottom: 20px !important;
 }
 .gyazo-notification .gyazo-notification-image-info {
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 13px;
-  font-weight: bold;
+  white-space: nowrap !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 13px !important;
+  font-weight: bold !important;
+  padding: 0 !important;
 }
 .gyazo-notification .gyazo-notification-image-host {
-  margin-top: 4px;
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 13px;
-  color: #8e8e8e;
+  margin-top: 4px !important;
+  white-space: nowrap !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 13px !important;
+  color: #8e8e8e !important;
+  padding: 0 !important;
 }
 .gyazo-menu > .gyazo-close-button {
-  width: 20px;
-  float: right;
+  padding: 0 !important;
+  width: 20px !important;
+  float: right !important;
 }
 .gyazo-menu > .gyazo-button {
-  box-sizing: border-box;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  width: 70px;
-  height: 53px;
-  float: left;
-  font-size: 12px;
-  cursor: pointer;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 70px !important;
+  height: 53px !important;
+  float: left !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-menu-myimage {
-  border-left: 1px solid #cccccc;
+  border-left: 1px solid #cccccc !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active {
-  color: #2378FF;
+  color: #2378FF !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover {
-  color: #2378FF;
+  color: #2378FF !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active > .gyazo-button-icon > svg{
-  fill: #2378FF;
+  fill: #2378FF !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-button-active:hover > .gyazo-button-icon > svg{
-  fill: #2378FF;
+  fill: #2378FF !important;
 }
 .gyazo-menu > .gyazo-button:hover {
-  background-color: #dedede;
+  background-color: #dedede !important;
 }
 .gyazo-menu > .gyazo-button > .gyazo-button-icon {
-  width: 20px;
-  height: 20px;
-  display: block;
-  box-sizing: border-box;
-  margin: 8px auto 3px;
-  pointer-events: none;
+  width: 20px !important;
+  height: 20px !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  margin: 8px auto 3px !important;
+  pointer-events: none !important;
+  padding: 0 !important;
 }
 
 .gyazo-menu > .gyazo-button > .gyazo-button-icon > svg {
-  fill: #4D4D4D;
-  width: 20px;
-  height: 20px;
+  fill: #4D4D4D !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0 !important;
 }
 
 .gyazo-menu > .gyazo-button.gyazo-menu-myimage > .gyazo-button-icon > svg {
-  margin: 2px;
-  width: 16px;
-  height: 16px;
+  margin: 2px !important;
+  width: 16px !important;
+  height: 16px !important;
+  padding: 0 !important;
 }
 
 .gyazo-menu > .gyazo-button > .gyazo-button-text {
-  box-sizing: border-box;
-  font-size: 10px;
-  line-height: 18px;
-  pointer-events: none;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  font-size: 10px !important;
+  line-height: 18px !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  padding: 0 !important;
 }
 .gyazo-menu > .gyazo-close-button {
-  box-sizing: border-box;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  width: 25px;
-  height: 53px;
-  float: left;
-  cursor: pointer;
-  padding-top: 6px;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 25px !important;
+  height: 53px !important;
+  float: left !important;
+  cursor: pointer !important;
+  padding-top: 6px !important;
+  padding: 0 !important;
 }
 .gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross > svg {
-  fill: #000;
+  fill: #000 !important;
 }
 .gyazo-menu > .gyazo-close-button > .gyazo-icon-cross > svg {
-  fill: #aaa;
-  width: 15px;
-  height: 15px;
+  fill: #aaa !important;
+  width: 15px !important;
+  height: 15px !important;
 }
 .gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
-  display: inline-block;
+  width: 100% !important;
+  display: inline-block !important;
 }
 .gyazo-menu .gyazo-spin {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  animation: gyazo-spin 2s infinite linear;
-  margin: 14.5px 0;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+  animation: gyazo-spin 2s infinite linear !important;
+  margin: 14.5px 0 !important;
 }
 
 .gyazo-menu .gyazo-spin > svg {
-  fill: #595959;
-  width: 24px;
-  height: 24px;
+  fill: #595959 !important;
+  width: 24px !important;
+  height: 24px !important;
 }
 @keyframes gyazo-spin {
   0% {
-    transform:rotate(0deg);
+    transform:rotate(0deg) !important;
   }
   100% {
-    transform:rotate(359deg);
+    transform:rotate(359deg) !important;
   }
 }
