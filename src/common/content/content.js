@@ -182,7 +182,7 @@
           let iconElm = document.createElement('div')
           iconElm.classList.add('gyazo-button-icon')
           try {
-            //Edge cannot fetch to ms-edge-extension:
+            // Edge cannot fetch to ms-edge-extension:
             window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
               .then((res) => res.text())
               .then((text) => iconElm.innerHTML = text)
