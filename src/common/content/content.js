@@ -1,9 +1,10 @@
 (function () {
+  require('chrome-browser-object-polyfill')
   if (window.__embededGyazoContentJS) {
     return
   }
   window.__embededGyazoContentJS = true
-  const browser = require('bowser')
+  const browserInfo = require('bowser')
   const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
@@ -128,11 +129,15 @@
         } else {
           const loadingElm = document.createElement('span')
           loadingElm.className = 'gyazo-spin'
-          window.fetch(chrome.runtime.getURL('imgs/spinner.svg'))
-            .then((res) => res.text())
-            .then((text) => {
-              loadingElm.innerHTML = text
-            })
+          try {
+            window.fetch(chrome.runtime.getURL('imgs/spinner.svg'))
+              .then((res) => res.text())
+              .then((text) => {
+                loadingElm.innerHTML = text
+              })
+          } catch(e) {
+            loadingElm.innerHTML = `<img src='${chrome.runtime.getURL('imgs/spinner.svg')}' />`
+          }
           showImage.appendChild(loadingElm)
         }
         notificationContainer.innerHTML = ''
@@ -176,10 +181,15 @@
 
           let iconElm = document.createElement('div')
           iconElm.classList.add('gyazo-button-icon')
-
-          window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
-            .then((res) => res.text())
-            .then((text) => iconElm.innerHTML = text)
+          try {
+            // Edge cannot fetch to ms-edge-extension:
+            window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
+              .then((res) => res.text())
+              .then((text) => iconElm.innerHTML = text)
+          } catch (e) {
+            const svgUrl = chrome.runtime.getURL(`imgs/${loadSvgName}.svg`)
+            iconElm.innerHTML = `<img src='${svgUrl}' />`
+          }
 
           let textElm = document.createElement('div')
           textElm.className = 'gyazo-button-text'
@@ -202,9 +212,13 @@
         const closeBtnIcon = document.createElement('div')
         closeBtnIcon.className = 'gyazo-menu-element gyazo-icon gyazo-icon-cross'
         closeBtn.appendChild(closeBtnIcon)
-        window.fetch(chrome.runtime.getURL('imgs/cross.svg'))
-          .then((res) => res.text())
-          .then((text) => closeBtnIcon.innerHTML = text)
+        try {
+          window.fetch(chrome.runtime.getURL('imgs/cross.svg'))
+            .then((res) => res.text())
+            .then((text) => closeBtnIcon.innerHTML = text)
+        } catch (e) {
+          closeBtnIcon.innerHTML = `<img src='${chrome.runtime.getURL('imgs/cross.svg')}' />`
+        }
         closeBtn.setAttribute('title', 'Press: Escape')
 
         window.addEventListener('contextmenu', function (event) {
@@ -471,7 +485,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, null, function () {
+              }, function () {
                 restoreFixedElement()
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
@@ -640,7 +654,7 @@
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, null, function () {
+              }, function () {
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
                 restoreFixedElement()
@@ -676,7 +690,7 @@
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
-        }, null, function () {
+        }, function () {
           document.body.removeChild(jackup)
           unlockScroll(overflow)
         })
@@ -688,6 +702,6 @@
     return true
   })
   // XXX: Firefox can't embed moz-extension:// file in content
-  if (browser.firefox) return
+  if (browserInfo.firefox) return
   require('./expander')
 })()

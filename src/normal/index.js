@@ -1,5 +1,7 @@
+require('chrome-browser-object-polyfill')
+
 const $ = require('jquery')
-const browser = require('bowser')
+const browserInfo = require('bowser')
 const UploadNotification = require('../common/libs/UploadNotification')
 const saveToClipboard = require('../common/libs/saveToClipboard')
 const canvasUtils = require('../common/libs/canvasUtils')
@@ -31,6 +33,9 @@ function postToGyazo (tabId, data) {
       referer_url: data.url,
       scale: data.scale || '',
       desc: data.desc ? data.desc.replace(/\t/, ' ').replace(/(^\s+| +$)/gm, '') : ''
+    },
+    xhrFields: {
+      withCredentials: true
     },
     crossDomain: true
   })
@@ -143,7 +148,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
 })
 
 // XXX: Buggy contextMenus on Firefox < v49
-if (browser.chrome || (browser.firefox && browser.version >= 49)) {
+if (browserInfo.chrome || (browserInfo.firefox && browserInfo.version >= 49) || browserInfo.msedge) {
   chrome.contextMenus.onClicked.addListener(onClickHandler)
 
   chrome.contextMenus.create({
@@ -167,6 +172,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     }
     chrome.tabs.sendMessage(tab.id, {action: 'insertMenu', tab: tab}, function () {
       chrome && chrome.runtime && chrome.runtime.lastError &&
+      chrome.runtime.lastError.number !== -2147467259 &&
       !chrome.runtime.lastError.message.match(/message port closed/) &&
       window.confirm(chrome.i18n.getMessage('confirmReload')) &&
       chrome.tabs.reload(tab.id)

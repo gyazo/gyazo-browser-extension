@@ -2,6 +2,8 @@
 var manifest = require('../src/manifest.json')
 if (process.env.TARGET === 'firefox') {
   var manifestPath = '../dist/firefox/manifest.json'
+} else if (process.env.TARGET === 'edge') {
+  var manifestPath = '../dist/edge/manifest.json'
 } else {
   var manifestPath = '../dist/chrome/manifest.json'
 }

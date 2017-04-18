@@ -1,3 +1,4 @@
+require('chrome-browser-object-polyfill')
 const delegate = require('delegate')
 const css = require('dom-css')
 const extend = require('xtend')
