@@ -1,5 +1,4 @@
 (function () {
-  require('chrome-browser-object-polyfill')
   if (window.__embededGyazoContentJS) {
     return
   }

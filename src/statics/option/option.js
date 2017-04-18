@@ -1,5 +1,4 @@
-require('chrome-browser-object-polyfill')
-;(function () {
+(function () {
   'use strict'
   let selector = document.getElementById('selector')
   let delaySelector = document.getElementById('delay')

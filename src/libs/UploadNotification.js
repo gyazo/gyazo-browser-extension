@@ -1,4 +1,3 @@
-require('chrome-browser-object-polyfill')
 const browserInfo = require('bowser')
 
 module.exports = class UploadNotification {

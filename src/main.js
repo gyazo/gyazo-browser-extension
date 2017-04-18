@@ -1,11 +1,9 @@
-require('chrome-browser-object-polyfill')
-
 const $ = require('jquery')
 const browserInfo = require('bowser')
-const UploadNotification = require('../common/libs/UploadNotification')
-const saveToClipboard = require('../common/libs/saveToClipboard')
-const canvasUtils = require('../common/libs/canvasUtils')
-const storage = require('../common/libs/storageSwitcher')
+const UploadNotification = require('./libs/UploadNotification')
+const saveToClipboard = require('./libs/saveToClipboard')
+const canvasUtils = require('./libs/canvasUtils')
+const storage = require('./libs/storageSwitcher')
 
 var host = 'https://upload.gyazo.com/api/upload/easy_auth'
 var clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'
