@@ -6,20 +6,20 @@
     "chrome-browser-object-polyfill": "^0.2.2",
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",
-    "jquery": "^2.1.4",
+    "jquery": "^3.2.1",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "ava": "^0.9.1",
-    "browserify": "^12.0.1",
-    "chrome-webstore-manager": "^0.1.1",
-    "crx": "github:pastak/crx",
-    "jsdom": "^7.2.2",
+    "ava": "^0.19.1",
+    "browserify": "^14.3.0",
+    "chrome-webstore-manager": "^0.4.1",
+    "crx": "^3.2.1",
+    "jsdom": "^9.12.0",
     "manifoldjs": "^0.7.5",
-    "request-promise": "^1.0.2",
-    "standard": "^4.5.4",
+    "request-promise": "^4.2.0",
+    "standard": "^10.0.2",
     "web-ext": "^1.0.1",
-    "wemf": "^0.3.3"
+    "wemf": "^1.0.0"
   },
   "scripts": {
     "test": "standard \"./**/*.js\" && ava",
@@ -58,5 +58,8 @@
       "MouseEvent",
       "KeyboardEvent"
     ]
-  }
+  },
+  "repository": "https://github.com/gyazo/gyazo-browser-extension.git",
+  "author": "NOTA Inc <contact@gyazo.com>",
+  "license": "MIT"
 }
