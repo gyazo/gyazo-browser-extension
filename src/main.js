@@ -4,19 +4,9 @@ import {trimImage, appendImageToCanvas} from './libs/canvasUtils'
 import storage from './libs/storageSwitcher'
 import MessageListener from './libs/MessageListener'
 import postToGyazo from './libs/postToGyazo'
+import waitForDelay from './libs/waitForDelay'
 
-const DELAY_TIMES = [0, 200, 400, 700, 1000]
 const onMessageListener = new MessageListener('main')
-
-let waitForDelay = function (callback) {
-  storage.get({delay: 1}, function (item) {
-    let delay = DELAY_TIMES[item.delay]
-    if (delay === 0) {
-      window.requestAnimationFrame(callback)
-    }
-    window.setTimeout(callback, delay)
-  })
-}
 
 function onClickHandler (info, tab) {
   chrome.tabs.insertCSS(tab.id, {
