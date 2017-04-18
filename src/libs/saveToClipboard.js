@@ -1,5 +1,5 @@
 module.exports = function (str) {
-  var textArea = document.createElement('textarea')
+  const textArea = document.createElement('textarea')
   textArea.style.cssText = 'position:absolute;left:-100%'
 
   document.body.appendChild(textArea)

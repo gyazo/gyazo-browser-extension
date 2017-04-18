@@ -2,11 +2,11 @@ import $ from 'jquery'
 import browserInfo from 'bowser'
 import UploadNotification from './libs/UploadNotification'
 import saveToClipboard from './libs/saveToClipboard'
-import canvasUtils from './libs/canvasUtils'
+import {trimImage, appendImageToCanvas} from './libs/canvasUtils'
 import storage from './libs/storageSwitcher'
 
-var host = 'https://upload.gyazo.com/api/upload/easy_auth'
-var clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'
+const host = 'https://upload.gyazo.com/api/upload/easy_auth'
+const clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'
 const DELAY_TIMES = [0, 200, 400, 700, 1000]
 let waitForDelay = function (callback) {
   storage.get({delay: 1}, function (item) {
@@ -19,7 +19,7 @@ let waitForDelay = function (callback) {
 }
 
 function postToGyazo (tabId, data) {
-  var notification = new UploadNotification(tabId)
+  const notification = new UploadNotification(tabId)
   notification.update({message: ''})
   $.ajax({
     type: 'POST',
@@ -58,7 +58,7 @@ function onClickHandler (info, tab) {
   chrome.tabs.insertCSS(tab.id, {
     file: '/menu.css'
   })
-  var GyazoFuncs = {
+  const GyazoFuncs = {
     gyazoIt: function () {
       if (info.srcUrl.match(/^data:/)) {
         postToGyazo(tab.id, {
@@ -67,13 +67,13 @@ function onClickHandler (info, tab) {
           url: tab.url
         })
       } else {
-        var xhr = $.ajaxSettings.xhr()
+        const xhr = $.ajaxSettings.xhr()
         xhr.open('GET', info.srcUrl, true)
         xhr.responseType = 'blob'
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
-            var blob = xhr.response
-            var fileReader = new FileReader()
+            const blob = xhr.response
+            const fileReader = new FileReader()
             fileReader.onload = function (e) {
               postToGyazo(tab.id, {
                 imageData: fileReader.result,
@@ -182,7 +182,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   // XXX: Firefox WebExtension returns real size image
   if (/Firefox/.test(navigator.userAgent)) request.data.s = 1
-  var messageHandlers = {
+  const messageHandlers = {
     gyazoGetImageBlob: function () {
       const xhr = new window.XMLHttpRequest()
       xhr.open('GET', request.gyazoUrl + '/raw', true)
@@ -201,13 +201,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       }, request.tab)
     },
     gyazoCaptureWithSize: function () {
-      var c = document.createElement('canvas')
+      const c = document.createElement('canvas')
       c.height = request.data.h
       c.width = request.data.w * request.data.z * request.data.s
-      var canvasData = c.toDataURL()
-      var capture = function (scrollHeight, lastImageBottom, lastImageData) {
-        var imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s
-        var offsetTop = request.data.y - request.data.positionY
+      let canvasData = c.toDataURL()
+      const capture = function (scrollHeight, lastImageBottom, lastImageData) {
+        const imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s
+        const offsetTop = request.data.y - request.data.positionY
         if (scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.data.innerHeight) {
           // Capture in window (not require scroll)
           chrome.tabs.captureVisibleTab(null, {format: 'png'}, function (data) {
@@ -215,7 +215,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               // retry
               return capture(scrollHeight, lastImageBottom, data)
             }
-            canvasUtils.trimImage({
+            trimImage({
               imageData: data,
               scale: request.data.s,
               zoom: request.data.z,
@@ -224,7 +224,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
               width: request.data.w,
               height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
               callback: function (_canvas) {
-                canvasUtils.appendImageToCanvas({
+                appendImageToCanvas({
                   canvasData: canvasData,
                   imageSrc: _canvas.toDataURL(),
                   pageHeight: request.data.h,
@@ -271,7 +271,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 // retry
                 return capture(scrollHeight, lastImageBottom, data)
               }
-              canvasUtils.trimImage({
+              trimImage({
                 imageData: data,
                 scale: request.data.s,
                 zoom: request.data.z,
@@ -280,7 +280,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
                 width: request.data.w,
                 height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
                 callback: function (_canvas) {
-                  canvasUtils.appendImageToCanvas({
+                  appendImageToCanvas({
                     canvasData: canvasData,
                     imageSrc: _canvas.toDataURL(),
                     pageHeight: request.data.h,

@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function adjacentStyle (element) {
+export default function adjacentStyle (element) {
   const rect = element.getBoundingClientRect()
 
   const offsetY = 20

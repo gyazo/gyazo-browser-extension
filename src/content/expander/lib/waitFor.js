@@ -1,4 +1,4 @@
-module.exports = function waitFor (condition, fn) {
+export default function waitFor (condition, fn) {
   const timer = window.setInterval(() => {
     if (!condition()) return
     fn()

@@ -1,4 +1,4 @@
-module.exports = function () {
+export default function () {
   global.document = require('jsdom').jsdom()
   global.window = document.defaultView
 

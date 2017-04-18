@@ -37,7 +37,7 @@ import storage from '../libs/storageSwitcher'
   }
 
   function restoreFixedElement () {
-    var fixedElms = document.getElementsByClassName('gyazo-whole-capture-onetime-absolute')
+    const fixedElms = document.getElementsByClassName('gyazo-whole-capture-onetime-absolute')
     Array.prototype.slice.apply(fixedElms).forEach(function (item) {
       item.classList.remove('gyazo-whole-capture-onetime-absolute')
       item.style.position = 'fixed'
@@ -45,14 +45,12 @@ import storage from '../libs/storageSwitcher'
   }
 
   function lockScroll () {
-    var overflow = document.documentElement.style.overflow
-    var overflowY = document.documentElement.style.overflowY
-    var marginRight = document.documentElement.style.marginRight
-    var _w = document.documentElement.getBoundingClientRect().width
+    const {overflow, overflowY, marginRight} = document.documentElement.style
+    const _w = document.documentElement.getBoundingClientRect().width
     document.documentElement.style.overflow = 'hidden'
     document.documentElement.style.overflowY = 'hidden'
-    var w = document.documentElement.getBoundingClientRect().width
-    var scrollBarWidth = w - _w
+    const w = document.documentElement.getBoundingClientRect().width
+    const scrollBarWidth = w - _w
     return {overflow: overflow, overflowY: overflowY, marginRight: marginRight, scrollBarWidth: scrollBarWidth}
   }
 
@@ -68,14 +66,13 @@ import storage from '../libs/storageSwitcher'
   }
 
   function getZoomAndScale () {
-    var zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100
+    let zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100
     // XXX: on Windows, when window is not maximum, it should tweak zoom.(Chrome zoom level 1 is 1.10)
-    var isWindows = navigator.platform.match(/^win/i)
-    var isMaximum = (window.outerHeight === screen.availHeight && window.outerWidth === screen.availWidth)
-    if (isWindows && !isMaximum && zoom > 1.00 && zoom < 1.05) {
+    const isMaximum = (window.outerHeight === screen.availHeight && window.outerWidth === screen.availWidth)
+    if (browserInfo.windows && !isMaximum && zoom > 1.00 && zoom < 1.05) {
       zoom = 1.00
     }
-    var scale = window.devicePixelRatio / zoom
+    const scale = window.devicePixelRatio / zoom
     return {
       zoom: zoom,
       scale: scale
@@ -83,7 +80,7 @@ import storage from '../libs/storageSwitcher'
   }
 
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    var actions = {
+    const actions = {
       notification: function () {
         let notificationContainer = document.querySelector('.gyazo-menu.gyazo-menu-element.gyazo-notification') || document.querySelector('.gyazo-menu.gyazo-notification')
         if (notificationContainer) {
@@ -304,7 +301,7 @@ import storage from '../libs/storageSwitcher'
       },
       changeFixedElementToAbsolute: function () {
         changeFixedElementToAbsolute()
-        var waitScroll = function () {
+        const waitScroll = function () {
           if (Math.abs(window.scrollX - request.scrollTo.x) < 1 &&
               Math.abs(window.scrollY - request.scrollTo.y) < 1) {
             window.requestAnimationFrame(sendResponse)
@@ -315,9 +312,9 @@ import storage from '../libs/storageSwitcher'
         window.requestAnimationFrame(waitScroll)
       },
       gyazocaptureWindow: function () {
-        var overflow = lockScroll()
-        var data = {}
-        var scaleObj = getZoomAndScale()
+        const overflow = lockScroll()
+        const data = {}
+        const scaleObj = getZoomAndScale()
         data.w = window.innerWidth
         data.h = window.innerHeight
         data.x = window.scrollX
@@ -344,10 +341,10 @@ import storage from '../libs/storageSwitcher'
         }
         const MARGIN = 3
         document.body.classList.add('gyazo-select-element-mode')
-        var jackup = document.createElement('div')
+        const jackup = document.createElement('div')
         jackup.classList.add('gyazo-jackup-element')
         document.body.appendChild(jackup)
-        var layer = document.createElement('div')
+        const layer = document.createElement('div')
         layer.className = 'gyazo-crop-select-element'
         document.body.appendChild(layer)
         layer.style.background = 'rgba(9, 132, 222, 0.35)'
@@ -356,29 +353,29 @@ import storage from '../libs/storageSwitcher'
         layer.style.position = 'fixed'
         layer.style.pointerEvents = 'none'
         layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
-        var allElms = Array.prototype.slice.apply(document.body.querySelectorAll('*')).filter(function (item) {
+        const allElms = Array.prototype.slice.apply(document.body.querySelectorAll('*')).filter(function (item) {
           return !item.classList.contains('gyazo-crop-select-element') &&
                  !item.classList.contains('gyazo-menu-element')
         })
         allElms.forEach(function (item) {
           item.classList.add('gyazo-select-element-cursor-overwrite')
         })
-        var moveLayer = function (event) {
-          var item = event.target
+        const moveLayer = function (event) {
+          const item = event.target
           event.stopPropagation()
           if (item.tagName === 'IMG') {
             layer.setAttribute('data-img-url', item.src)
           } else {
             layer.setAttribute('data-img-url', '')
           }
-          var rect = item.getBoundingClientRect()
+          const rect = item.getBoundingClientRect()
           layer.style.width = rect.width + 'px'
           layer.style.height = rect.height + 'px'
           layer.style.left = rect.left + 'px'
           layer.style.top = rect.top + 'px'
         }
         let hasMargin = false
-        var takeMargin = function () {
+        const takeMargin = function () {
           if (hasMargin) return
           hasMargin = true
           layer.style.width = parseInt(window.getComputedStyle(layer).width, 10) + MARGIN * 2 + 'px'
@@ -386,14 +383,14 @@ import storage from '../libs/storageSwitcher'
           layer.style.left = parseInt(window.getComputedStyle(layer).left, 10) - MARGIN + 'px'
           layer.style.top = parseInt(window.getComputedStyle(layer).top, 10) - MARGIN + 'px'
         }
-        var keydownHandler = function (event) {
+        const keydownHandler = function (event) {
           if (event.keyCode === ESC_KEY_CODE) {
             cancel()
           } else if (isPressCommandKey(event)) {
             takeMargin()
           }
         }
-        var keyUpHandler = function (event) {
+        const keyUpHandler = function (event) {
           if (isPressCommandKey(event)) {
             hasMargin = false
             layer.style.width = parseInt(window.getComputedStyle(layer).width, 10) - MARGIN * 2 + 'px'
@@ -402,7 +399,7 @@ import storage from '../libs/storageSwitcher'
             layer.style.top = parseInt(window.getComputedStyle(layer).top, 10) + MARGIN + 'px'
           }
         }
-        var clickElement = function (event) {
+        const clickElement = function (event) {
           event.stopPropagation()
           event.preventDefault()
           document.body.classList.remove('gyazo-select-element-mode')
@@ -413,8 +410,8 @@ import storage from '../libs/storageSwitcher'
             item.removeEventListener('mouseover', moveLayer)
             item.removeEventListener('click', clickElement)
           })
-          var data = {}
-          var scaleObj = getZoomAndScale()
+          const data = {}
+          const scaleObj = getZoomAndScale()
 
           // Sanitize gyazo desc for ivy-search
           Array.from(document.querySelectorAll('*')).forEach(function (elm) {
@@ -422,7 +419,7 @@ import storage from '../libs/storageSwitcher'
               elm.classList.add('gyazo-hidden')
             }
           })
-          var dupTarget = event.target.cloneNode(true)
+          const dupTarget = event.target.cloneNode(true)
           Array.from(dupTarget.querySelectorAll('*')).forEach(function (elm) {
             switch (elm.tagName) {
               case 'SCRIPT':
@@ -471,12 +468,12 @@ import storage from '../libs/storageSwitcher'
               tab: request.tab
             }, function () {})
           }
-          var overflow = {}
+          let overflow = {}
           if (data.y + data.h > data.innerHeight + data.positionY) {
             overflow = lockScroll()
             packScrollBar(overflow)
           }
-          var finish = function () {
+          const finish = function () {
             if (document.getElementsByClassName('gyazo-crop-select-element').length > 0) {
               return window.requestAnimationFrame(finish)
             }
@@ -494,7 +491,7 @@ import storage from '../libs/storageSwitcher'
           }
           window.requestAnimationFrame(finish)
         }
-        var cancel = function () {
+        const cancel = function () {
           if (document.body.contains(jackup)) {
             document.body.removeChild(jackup)
           }
@@ -531,15 +528,14 @@ import storage from '../libs/storageSwitcher'
         if (document.querySelector('.gyazo-jackup-element')) {
           return false
         }
-        var startX
-        var startY
-        var data = {}
-        var tempUserSelect = document.body.style.webkitUserSelect
-        var layer = document.createElement('div')
-        var jackup = document.createElement('div')
+        let startX, startY
+        let data = {}
+        const tempUserSelect = document.body.style.webkitUserSelect
+        const layer = document.createElement('div')
+        const jackup = document.createElement('div')
         jackup.classList.add('gyazo-jackup-element')
         document.body.appendChild(jackup)
-        var pageHeight = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
+        const pageHeight = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
         layer.style.position = 'absolute'
         layer.style.left = document.body.clientLeft + 'px'
         layer.style.top = document.body.clientTop + 'px'
@@ -552,7 +548,7 @@ import storage from '../libs/storageSwitcher'
         layer.style.cursor = 'crosshair'
         layer.className = 'gyazo-select-layer'
         document.body.style.webkitUserSelect = 'none'
-        var selectionElm = document.createElement('div')
+        const selectionElm = document.createElement('div')
         layer.appendChild(selectionElm)
         document.body.appendChild(layer)
         selectionElm.styleUpdate = function (styles) {
@@ -564,7 +560,7 @@ import storage from '../libs/storageSwitcher'
           background: 'rgba(92, 92, 92, 0.3)',
           position: 'absolute'
         })
-        var cancelGyazo = function () {
+        const cancelGyazo = function () {
           document.body.removeChild(layer)
           document.body.removeChild(jackup)
           document.body.style.webkitUserSelect = tempUserSelect
@@ -580,13 +576,13 @@ import storage from '../libs/storageSwitcher'
           window.removeEventListener('removeGyazoMenu', removedGyazoMenu)
         }
         window.addEventListener('removeGyazoMenu', removedGyazoMenu)
-        var keydownHandler = function (event) {
+        const keydownHandler = function (event) {
           if (event.keyCode === ESC_KEY_CODE) {
             //  If press Esc Key, cancel it
             cancelGyazo()
           }
         }
-        var mousedownHandler = function (e) {
+        const mousedownHandler = function (e) {
           let gyazoMenu = document.querySelector('.gyazo-menu')
           if (gyazoMenu) {
             document.body.removeChild(gyazoMenu)
@@ -602,7 +598,7 @@ import storage from '../libs/storageSwitcher'
           layer.addEventListener('mousemove', mousemoveHandler)
           layer.addEventListener('mouseup', mouseupHandler)
         }
-        var mousemoveHandler = function (e) {
+        const mousemoveHandler = function (e) {
           selectionElm.styleUpdate({
             width: (Math.abs(e.pageX - startX) - 1) + 'px',
             height: (Math.abs(e.pageY - startY) - 1) + 'px',
@@ -610,15 +606,15 @@ import storage from '../libs/storageSwitcher'
             top: Math.min(e.pageY, startY) + 'px'
           })
         }
-        var mouseupHandler = function (e) {
+        const mouseupHandler = function (e) {
           document.body.style.webkitUserSelect = tempUserSelect
           document.removeEventListener('keydown', keydownHandler)
           window.addEventListener('contextmenu', function (event) {
             cancelGyazo()
             event.preventDefault()
           })
-          var scaleObj = getZoomAndScale()
-          var rect = selectionElm.getBoundingClientRect()
+          const scaleObj = getZoomAndScale()
+          const rect = selectionElm.getBoundingClientRect()
           data.w = rect.width
           data.h = rect.height
           if (data.h <= 3 || data.w <= 3) {
@@ -638,7 +634,7 @@ import storage from '../libs/storageSwitcher'
           if (document.querySelector('.gyazo-menu')) {
             document.body.removeChild(document.querySelector('.gyazo-menu'))
           }
-          var overflow = {}
+          let overflow = {}
           if (data.h > data.innerHeight) {
             overflow = lockScroll()
             packScrollBar(overflow)
@@ -668,9 +664,9 @@ import storage from '../libs/storageSwitcher'
         window.addEventListener('contextmenu', cancelGyazo)
       },
       gyazoWholeCapture: function () {
-        var overflow = lockScroll()
-        var data = {}
-        var scaleObj = getZoomAndScale()
+        const overflow = lockScroll()
+        const data = {}
+        const scaleObj = getZoomAndScale()
         data.w = window.innerWidth
         data.h = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
         data.x = 0
@@ -682,7 +678,7 @@ import storage from '../libs/storageSwitcher'
         data.positionX = window.scrollX
         data.positionY = window.scrollY
         data.innerHeight = window.innerHeight
-        var jackup = document.createElement('div')
+        const jackup = document.createElement('div')
         jackup.classList.add('gyazo-jackup-element')
         document.body.appendChild(jackup)
         jackup.style.height = (data.h + 30) + 'px'

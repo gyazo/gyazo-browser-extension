@@ -1,6 +1,6 @@
 import browserInfo from 'bowser'
 
-module.exports = class UploadNotification {
+export default class UploadNotification {
   constructor (tabId) {
     this.tabId = tabId
   }

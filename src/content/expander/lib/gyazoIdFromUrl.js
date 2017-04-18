@@ -1,7 +1,7 @@
 'use strict'
 import url from 'url'
 
-module.exports = function gyazoIdFromUrl (str) {
+export default function gyazoIdFromUrl (str) {
   let parsedUrl = ''
   try {
     parsedUrl = url.parse(str)
