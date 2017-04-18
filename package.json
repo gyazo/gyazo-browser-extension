@@ -39,17 +39,6 @@
     "pack-chrome": "npm run build-chrome && crx pack ./dist/chrome --zip-output ./build/chrome.zip -o ./build/chrome.crx",
     "pack-firefox": "npm run build-firefox && web-ext build -a build -s dist/firefox -v"
   },
-  "webextension": {
-    "applications": {
-      "gecko": {
-        "id": "gyazo-extension@gyazo.com",
-        "strict_min_version": "47.0a1"
-      }
-    },
-    "options_ui": {
-      "page": "option/options.html"
-    }
-  },
   "standard": {
     "global": [
       "chrome",
