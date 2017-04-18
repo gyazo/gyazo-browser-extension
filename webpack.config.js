@@ -25,7 +25,7 @@ let plugins = [
     exec('./node_modules/.bin/wemf -U --browser edge dist/edge/manifest.json')
 
     if (process.env.BUILD_TARGET === 'review') {
-      const manifestPath = require('path').resolve(__dirname, './dist/firefox/manifest.json')
+      const manifestPath = path.resolve(__dirname, './dist/firefox/manifest.json')
       let manifest = require(manifestPath)
       const d = new Date()
       const packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`

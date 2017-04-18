@@ -1,4 +1,4 @@
-const browserInfo = require('bowser')
+import browserInfo from 'bowser'
 
 module.exports = class UploadNotification {
   constructor (tabId) {

@@ -1,9 +1,9 @@
-const $ = require('jquery')
-const browserInfo = require('bowser')
-const UploadNotification = require('./libs/UploadNotification')
-const saveToClipboard = require('./libs/saveToClipboard')
-const canvasUtils = require('./libs/canvasUtils')
-const storage = require('./libs/storageSwitcher')
+import $ from 'jquery'
+import browserInfo from 'bowser'
+import UploadNotification from './libs/UploadNotification'
+import saveToClipboard from './libs/saveToClipboard'
+import canvasUtils from './libs/canvasUtils'
+import storage from './libs/storageSwitcher'
 
 var host = 'https://upload.gyazo.com/api/upload/easy_auth'
 var clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'

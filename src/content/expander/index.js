@@ -1,9 +1,9 @@
-const delegate = require('delegate')
-const css = require('dom-css')
-const extend = require('xtend')
-const gyazoIdFromUrl = require('./lib/gyazoIdFromUrl')
-const adjacentStyle = require('./lib/adjacentStyle')
-const waitFor = require('./lib/waitFor')
+import delegate from 'delegate'
+import css from 'dom-css'
+import extend from 'xtend'
+import gyazoIdFromUrl from './lib/gyazoIdFromUrl'
+import adjacentStyle from './lib/adjacentStyle'
+import waitFor from './lib/waitFor'
 
 function fetchImage (url, callback) {
   chrome.runtime.sendMessage(chrome.runtime.id, {

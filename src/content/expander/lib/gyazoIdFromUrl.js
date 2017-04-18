@@ -1,5 +1,5 @@
 'use strict'
-const url = require('url')
+import url from 'url'
 
 module.exports = function gyazoIdFromUrl (str) {
   let parsedUrl = ''

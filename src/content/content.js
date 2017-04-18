@@ -1,10 +1,11 @@
+import browserInfo from 'bowser'
+import storage from '../libs/storageSwitcher'
+
 (function () {
   if (window.__embededGyazoContentJS) {
     return
   }
   window.__embededGyazoContentJS = true
-  const browserInfo = require('bowser')
-  const storage = require('../libs/storageSwitcher')
   const ESC_KEY_CODE = 27
   const JACKUP_HEIGHT = 30
   const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')

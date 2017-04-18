@@ -1,7 +1,7 @@
-const test = require('ava')
-const setup = require('../../../helpers/setupDom')
+import test from 'ava'
+import setup from '../../../helpers/setupDom'
 
-const adjacentStyle = require('../../../../src/content/expander/lib/adjacentStyle')
+import adjacentStyle from '../../../../src/content/expander/lib/adjacentStyle'
 
 test.before(() => setup())
 
