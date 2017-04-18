@@ -5,6 +5,8 @@ import storage from './libs/storageSwitcher'
 import MessageListener from './libs/MessageListener'
 import postToGyazo from './libs/postToGyazo'
 import waitForDelay from './libs/waitForDelay'
+import gyazoIt from './libs/gyazoIt'
+import './libs/changeTabEvents'
 
 const onMessageListener = new MessageListener('main')
 
@@ -13,92 +15,13 @@ function onClickHandler (info, tab) {
     file: '/menu.css'
   })
   const GyazoFuncs = {
-    gyazoIt: function () {
-      if (info.srcUrl.match(/^data:/)) {
-        postToGyazo(tab.id, {
-          imageData: info.srcUrl,
-          title: tab.title,
-          url: tab.url
-        })
-      } else {
-        const xhr = $.ajaxSettings.xhr()
-        xhr.open('GET', info.srcUrl, true)
-        xhr.responseType = 'blob'
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4) {
-            const blob = xhr.response
-            const fileReader = new FileReader()
-            fileReader.onload = function (e) {
-              postToGyazo(tab.id, {
-                imageData: fileReader.result,
-                title: tab.title,
-                url: tab.url
-              })
-            }
-            fileReader.readAsDataURL(blob)
-          }
-        }
-        xhr.send()
-      }
-    }
+    gyazoIt: () => gyazoIt(tab, info.srcUrl)
   }
 
   if (info.menuItemId in GyazoFuncs) {
     GyazoFuncs[info.menuItemId]()
   }
 }
-
-function disableButton (tabId) {
-  chrome.browserAction.setIcon({
-    path: {
-      19: '/icons/19_disable.png',
-      38: '/icons/19_disable@2x.png'
-    }
-  })
-  chrome.browserAction.disable(tabId)
-}
-
-function enableButton (tabId) {
-  chrome.browserAction.setIcon({
-    path: {
-      19: '/icons/19.png',
-      38: '/icons/19@2x.png'
-    }
-  })
-  chrome.browserAction.enable(tabId)
-}
-
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-  chrome.tabs.get(activeInfo.tabId, function (tab) {
-    if (tab.status === 'loading') {
-      return disableButton(tab.id)
-    }
-    if (tab.url.match(/^https?:/)) {
-      enableButton(tab.id)
-    } else {
-      disableButton(tab.id)
-    }
-  })
-})
-
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
-  if (changeInfo.status === 'loading') {
-    disableButton(tabId)
-  } else if (changeInfo.status === 'complete') {
-    chrome.tabs.get(tabId, function (tab) {
-      if (!tab.url.match(/^https?:/)) {
-        return
-      }
-      chrome.tabs.executeScript(tab.id, {
-        file: './content.js'
-      }, function () {
-        chrome.tabs.insertCSS(tab.id, {
-          file: '/content.css'
-        }, () => enableButton(tab.id))
-      })
-    })
-  }
-})
 
 // XXX: Buggy contextMenus on Firefox < v49
 if (browserInfo.chrome || (browserInfo.firefox && browserInfo.version >= 49) || browserInfo.msedge) {
@@ -148,10 +71,7 @@ onMessageListener.add('gyazoSendRawImage', (request, sender, sendResponse) => {
   // XXX: Firefox WebExtension returns real size image
   if (browserInfo.firefox) request.data.s = 1
   let data = request.data
-  onClickHandler({
-    menuItemId: 'gyazoIt',
-    srcUrl: data.srcUrl
-  }, request.tab)
+  gyazoIt(request.tab, data.srcUrl)
 })
 
 onMessageListener.add('gyazoCaptureWithSize', (request, sender, sendResponse) => {
