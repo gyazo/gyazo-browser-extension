@@ -32,12 +32,27 @@
     "wemf": "^1.0.0"
   },
   "scripts": {
-    "test": "standard \"./**/*.js\" && ava",
+    "test": "./node_modules/.bin/run-p test:**",
+    "test:lint": "./node_modules/.bin/standard \"./**/*.js\"",
+    "test:ava": "./node_modules/.bin/ava",
+    "test:lint:package:firefox": "yarn run build > /dev/null && ./node_modules/.bin/web-ext lint -s dist/firefox -w",
     "clean": "rm -rf dist/{chrome,firefox,common,edge}/* build/*",
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
-    "pack": "npm run pack-chrome && npm run pack-firefox",
-    "pack-chrome": "npm run build-chrome && crx pack ./dist/chrome --zip-output ./build/chrome.zip -o ./build/chrome.crx",
-    "pack-firefox": "npm run build-firefox && web-ext build -a build -s dist/firefox -v"
+    "pack": "./node_modules/.bin/npm-run-all clean build --parallel pack:*",
+    "pack:chrome": "./node_modules/.bin/run-s pack:chrome:keygen pack:chrome:zip",
+    "pack:chrome:zip": "./node_modules/.bin/crx pack -p build/key.pem -o build/scboloo.crx --zip-output build/scboloo.chrome.zip dist/chrome",
+    "pack:firefox": "./node_modules/.bin/web-ext build -a build -s dist/firefox -v",
+    "pack:chrome:keygen": "if [ ! -f tmp/key.pem ] ; then ./node_modules/.bin/crx keygen ./build ; fi",
+    "pack:firefox": "./node_modules/.bin/web-ext build -s dist/firefox -a packages",
+    "pack:msedge": "./node_modules/.bin/run-s pack:msedge:prepare pack:msedge:generate pack:msedge:finalize",
+    "pack:msedge:prepare": "./node_modules/.bin/run-s pack:msedge:gen-manifest pack:msedge:replace-manifest",
+    "pack:msedge:gen-manifest": "rm -rf build/Gyazo && ./node_modules/.bin/manifoldjs -l debug -p edgeextension -f edgeextension -m dist/edge/manifest.json && mv Gyazo build",
+    "pack:msedge:replace-manifest": "./node_modules/.bin/run-s pack:msedge:replace-manifest:*",
+    "pack:msedge:replace-manifest:01": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-NAME-HERE|$MS_PACKAGE_ID|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:replace-manifest:02": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-PUBLISHER-HERE|$MS_PUBLISHER_IDENTITY|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:replace-manifest:03": "sed -i -e \"s|INSERT-YOUR-PACKAGE-PROPERTIES-PUBLISHERDISPLAYNAME-HERE|$MS_PUBLISHER_DNAME|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:generate": "./node_modules/.bin/manifoldjs -l debug -p edgeextension package build/Gyazo/edgeextension/manifest",
+    "pack:msedge:finalize": "mv build/Gyazo/edgeextension/package/edgeExtension.appx build"
   },
   "standard": {
     "global": [

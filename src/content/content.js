@@ -134,7 +134,7 @@
               .then((text) => {
                 loadingElm.innerHTML = text
               })
-          } catch(e) {
+          } catch (e) {
             loadingElm.innerHTML = `<img src='${chrome.runtime.getURL('imgs/spinner.svg')}' />`
           }
           showImage.appendChild(loadingElm)
@@ -184,7 +184,7 @@
             // Edge cannot fetch to ms-edge-extension:
             window.fetch(chrome.runtime.getURL(`imgs/${loadSvgName}.svg`))
               .then((res) => res.text())
-              .then((text) => iconElm.innerHTML = text)
+              .then((text) => { iconElm.innerHTML = text })
           } catch (e) {
             const svgUrl = chrome.runtime.getURL(`imgs/${loadSvgName}.svg`)
             iconElm.innerHTML = `<img src='${svgUrl}' />`
@@ -214,7 +214,7 @@
         try {
           window.fetch(chrome.runtime.getURL('imgs/cross.svg'))
             .then((res) => res.text())
-            .then((text) => closeBtnIcon.innerHTML = text)
+            .then((text) => { closeBtnIcon.innerHTML = text })
         } catch (e) {
           closeBtnIcon.innerHTML = `<img src='${chrome.runtime.getURL('imgs/cross.svg')}' />`
         }
@@ -388,7 +388,7 @@
         var keydownHandler = function (event) {
           if (event.keyCode === ESC_KEY_CODE) {
             cancel()
-          }else if (isPressCommandKey(event)) {
+          } else if (isPressCommandKey(event)) {
             takeMargin()
           }
         }

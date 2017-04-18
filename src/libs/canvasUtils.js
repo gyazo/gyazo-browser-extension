@@ -52,7 +52,7 @@ module.exports = {
         ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height)
         callback(canvas)
       })
-    }else if (typeof imageData === 'object') {
+    } else if (typeof imageData === 'object') {
       // maybe <canvas>
       this.appendImageToCanvas({
         canvasData: document.createElement('canvas'),

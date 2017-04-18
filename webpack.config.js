@@ -28,7 +28,7 @@ let plugins = [
       const manifestPath = require('path').resolve(__dirname, './dist/firefox/manifest.json')
       let manifest = require(manifestPath)
       const d = new Date()
-      packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`
+      const packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`
       manifest.applications = {gecko: {id: 'gyazo-extension-dev@gyazo.com'}}
       manifest.version = packageVer
 
