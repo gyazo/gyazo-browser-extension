@@ -11,7 +11,7 @@ export const appendImageToCanvas = function (argObj) {
   const zoom = argObj.zoom || 1.0
   const pageHeight = argObj.pageHeight * zoom
   const {width, top, callback, imageHeight, imageSrc} = argObj
-  let canvasData = {argObj}
+  let {canvasData} = argObj
   // If 1st argument is Object (maybe <canvas>), convert to dataURL.
   if (typeof canvasData === 'object') {
     canvasData = canvasData.toDataURL()

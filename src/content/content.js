@@ -328,6 +328,7 @@ import storage from '../libs/storageSwitcher'
         data.defaultPositon = window.scrollY
         data.innerHeight = window.innerHeight
         window.requestAnimationFrame(() => chrome.runtime.sendMessage(chrome.runtime.id, {
+          target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
@@ -463,6 +464,7 @@ import storage from '../libs/storageSwitcher'
           if (layer.getAttribute('data-img-url')) {
             restoreFixedElement()
             return chrome.runtime.sendMessage(chrome.runtime.id, {
+              target: 'main',
               action: 'gyazoSendRawImage',
               data: {srcUrl: layer.getAttribute('data-img-url')},
               tab: request.tab
@@ -479,6 +481,7 @@ import storage from '../libs/storageSwitcher'
             }
             window.requestAnimationFrame(function () {
               chrome.runtime.sendMessage(chrome.runtime.id, {
+                target: 'main',
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
@@ -647,6 +650,7 @@ import storage from '../libs/storageSwitcher'
             }
             window.setTimeout(function () {
               chrome.runtime.sendMessage(chrome.runtime.id, {
+                target: 'main',
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
@@ -683,6 +687,7 @@ import storage from '../libs/storageSwitcher'
         document.body.appendChild(jackup)
         jackup.style.height = (data.h + 30) + 'px'
         chrome.runtime.sendMessage(chrome.runtime.id, {
+          target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab

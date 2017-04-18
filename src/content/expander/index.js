@@ -7,6 +7,7 @@ import waitFor from './lib/waitFor'
 
 function fetchImage (url, callback) {
   chrome.runtime.sendMessage(chrome.runtime.id, {
+    target: 'main',
     action: 'gyazoGetImageBlob',
     gyazoUrl: url
   }, (response) => {
