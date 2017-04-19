@@ -2,7 +2,7 @@ import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import storage from '../libs/storageSwitcher'
 import expander from './expander'
-import notification from '../libs/notification'
+import notification from '../notification'
 
 (function () {
   if (window.__embededGyazoContentJS) {
