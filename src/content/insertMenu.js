@@ -80,7 +80,6 @@ export default (request, sender, sendResponse) => {
       if (item.behavior === 'element') {
         // Default behavior is select element
         selectElementBtn.classList.add('gyazo-button-active')
-        console.log(gyazoSelectElm)
         window.requestAnimationFrame(() => gyazoSelectElm(request, sender, sendResponse))
       } else if (item.behavior === 'area') {
         // Default behavior is select area

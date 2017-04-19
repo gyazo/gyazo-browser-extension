@@ -28,11 +28,11 @@ export const trimImage = (argObj) => new Promise((resolve) => {
   let width = argObj.width * zoom * scale
   let height = argObj.height * zoom * scale
   const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
   const ctx = canvas.getContext('2d')
   if (typeof imageData === 'string' && imageData.substr(0, 5) === 'data:') {
     imageLoader(imageData, function (img) {
-      canvas.width = width
-      canvas.height = height
       ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height)
       resolve(canvas)
     })
@@ -44,8 +44,6 @@ export const trimImage = (argObj) => new Promise((resolve) => {
     startY *= scale
     height *= scale * zoom
     width *= scale * zoom
-    canvas.width = width
-    canvas.height = height
     ctx.drawImage(imageData, startX, startY, width, height, 0, 0, originalWidth, originalHeight)
     resolve(canvas)
   }

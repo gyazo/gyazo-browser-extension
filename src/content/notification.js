@@ -28,6 +28,11 @@ export default (request, sender, sendResponse) => {
     const imageElem = document.createElement('img')
     imageElem.className = 'image'
     imageElem.src = request.imageUrl
+    imageElem.addEventListener('load', (event) => {
+      const {naturalWidth, naturalHeight} = imageElem
+      imageElem.style.maxWidth = naturalWidth / request.scale
+      imageElem.style.maxHeight = naturalHeight / request.scale
+    })
     imageContainer.appendChild(imageElem)
     showImage.appendChild(document.createElement('br'))
     const imageInfo = document.createElement('div')

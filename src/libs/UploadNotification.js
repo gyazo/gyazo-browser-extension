@@ -4,19 +4,19 @@ export default class UploadNotification {
   constructor (tabId) {
     this.tabId = tabId
   }
-  update (option, callback) {
-    callback = callback || function () {}
+  update (option) {
     option.target = 'content'
     option.action = 'notification'
-    chrome.tabs.sendMessage(this.tabId, option, callback)
+    chrome.tabs.sendMessage(this.tabId, option)
   }
-  finish (imagePageUrl, imageDataUrl, callback) {
+  finish (imagePageUrl, imageDataUrl, scale) {
     this.update({
       title: chrome.i18n.getMessage('uploadingFinishTitle'),
       message: browserInfo.firefox ? '' : chrome.i18n.getMessage('uploadingFinishMessage'),
-      imagePageUrl: imagePageUrl,
+      imagePageUrl,
       imageUrl: imageDataUrl,
+      scale,
       isFinish: true
-    }, callback)
+    })
   }
 }

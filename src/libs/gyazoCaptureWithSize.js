@@ -8,7 +8,7 @@ export default (request, sender, sendResponse) => {
   // XXX: Firefox WebExtension returns real size image
   if (browserInfo.firefox) request.data.s = 1
   const baseCanvas = document.createElement('canvas')
-  baseCanvas.height = request.data.h
+  baseCanvas.height = request.data.h * request.data.z * request.data.s
   baseCanvas.width = request.data.w * request.data.z * request.data.s
   const capture = async (scrollHeight, lastImageBottom, lastImageData) => {
     const imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s
