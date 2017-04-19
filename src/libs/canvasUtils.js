@@ -6,11 +6,11 @@ function imageLoader (imgSrc, callback) {
   img.src = imgSrc
 }
 
-export const appendImageToCanvas = function (argObj) {
+export const appendImageToCanvas = (argObj) => new Promise((resolve) => {
   const scale = argObj.scale || 1.0
   const zoom = argObj.zoom || 1.0
   const pageHeight = argObj.pageHeight * zoom
-  const {width, top, callback, imageHeight, imageSrc} = argObj
+  const {width, top, imageHeight, imageSrc} = argObj
   let {canvasData} = argObj
   // If 1st argument is Object (maybe <canvas>), convert to dataURL.
   if (typeof canvasData === 'object') {
@@ -25,12 +25,12 @@ export const appendImageToCanvas = function (argObj) {
     imageLoader(imageSrc, function (img) {
       ctx.drawImage(img, 0, 0, width * scale * zoom, imageHeight * scale * zoom, 0, top, img.width, img.height)
       const lastImageBottom = top + img.height
-      callback(canvas, lastImageBottom)
+      resolve(canvas, lastImageBottom)
     })
   })
-}
+})
 
-export const trimImage = function (argObj) {
+export const trimImage = (argObj) => new Promise((resolve) => {
   const scale = argObj.scale || 1.0
   const zoom = argObj.zoom || 1.0
   const {imageData} = argObj
@@ -38,40 +38,26 @@ export const trimImage = function (argObj) {
   let startY = argObj.startY * zoom * scale
   let width = argObj.width * zoom * scale
   let height = argObj.height * zoom * scale
-  const callback = argObj.callback || function () {}
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
   if (typeof imageData === 'string' && imageData.substr(0, 5) === 'data:') {
     imageLoader(imageData, function (img) {
-      const canvas = document.createElement('canvas')
       canvas.width = width
       canvas.height = height
-      const ctx = canvas.getContext('2d')
       ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height)
-      callback(canvas)
+      resolve(canvas)
     })
   } else if (typeof imageData === 'object') {
     // maybe <canvas>
-    this.appendImageToCanvas({
-      canvasData: document.createElement('canvas'),
-      imageSrc: imageData,
-      pageHeight: height,
-      imageHeight: height,
-      width,
-      top: 0,
-      scale,
-      zoom,
-      callback: function (canvas) {
-        const ctx = canvas.getContext('2d')
-        const originalWidth = width
-        const originalHeight = height
-        startX *= scale
-        startY *= scale
-        height *= scale * zoom
-        width *= scale * zoom
-        imageLoader(canvas.toDataURL('image/png'), function (img) {
-          ctx.drawImage(img, startX, startY, width, height, 0, 0, originalWidth, originalHeight)
-          callback(canvas)
-        })
-      }
-    })
+    const originalWidth = width
+    const originalHeight = height
+    startX *= scale
+    startY *= scale
+    height *= scale * zoom
+    width *= scale * zoom
+    canvas.width = width
+    canvas.height = height
+    ctx.drawImage(imageData, startX, startY, width, height, 0, 0, originalWidth, originalHeight)
+    resolve(canvas)
   }
-}
+})
