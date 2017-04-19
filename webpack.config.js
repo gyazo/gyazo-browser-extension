@@ -5,6 +5,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const exec = require('child_process').execSync
 
 const isProductionBuild = process.env.BUILD_TARGET === 'production'
+const isReview = process.env.BUILD_TARGET === 'review'
 
 let plugins = [
   new CopyWebpackPlugin([
@@ -24,7 +25,7 @@ let plugins = [
     exec('./node_modules/.bin/wemf -U --browser chrome dist/chrome/manifest.json')
     exec('./node_modules/.bin/wemf -U --browser edge dist/edge/manifest.json')
 
-    if (process.env.BUILD_TARGET === 'review') {
+    if (isReview) {
       const manifestPath = path.resolve(__dirname, './dist/firefox/manifest.json')
       let manifest = require(manifestPath)
       const d = new Date()
@@ -40,7 +41,7 @@ let plugins = [
   })
 ]
 
-if (isProductionBuild) plugins.push(new UglifyJSPlugin())
+if (isProductionBuild || isReview) plugins.push(new UglifyJSPlugin())
 
 module.exports = {
   devtool: isProductionBuild ? false : 'inline-source-map',
