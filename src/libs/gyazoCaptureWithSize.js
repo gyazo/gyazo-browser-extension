@@ -7,10 +7,9 @@ import waitForDelay from './waitForDelay'
 export default (request, sender, sendResponse) => {
   // XXX: Firefox WebExtension returns real size image
   if (browserInfo.firefox) request.data.s = 1
-  const c = document.createElement('canvas')
-  c.height = request.data.h
-  c.width = request.data.w * request.data.z * request.data.s
-  let canvasData = c.toDataURL()
+  const baseCanvas = document.createElement('canvas')
+  baseCanvas.height = request.data.h
+  baseCanvas.width = request.data.w * request.data.z * request.data.s
   const capture = function (scrollHeight, lastImageBottom, lastImageData) {
     const imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s
     const offsetTop = request.data.y - request.data.positionY
@@ -33,7 +32,7 @@ export default (request, sender, sendResponse) => {
         })
         .then((_canvas) => {
           return appendImageToCanvas({
-            canvasData: canvasData,
+            canvas: baseCanvas,
             imageSrc: _canvas.toDataURL(),
             pageHeight: request.data.h,
             imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
@@ -43,8 +42,7 @@ export default (request, sender, sendResponse) => {
             zoom: request.data.z
           })
         })
-        .then((_canvas) => {
-          canvasData = _canvas.toDataURL()
+        .then(() => {
           scrollHeight += request.data.innerHeight
           capture(scrollHeight)
         })
@@ -56,7 +54,7 @@ export default (request, sender, sendResponse) => {
         code: 'window.scrollTo(' + request.data.positionX + ', ' + request.data.positionY + ' )'
       })
       postToGyazo(request.tab.id, {
-        imageData: canvasData,
+        imageData: baseCanvas.toDataURL(),
         title: request.data.t,
         url: request.data.u,
         width: request.data.w,
@@ -95,7 +93,7 @@ export default (request, sender, sendResponse) => {
         })
         .then((_canvas) => {
           return appendImageToCanvas({
-            canvasData: canvasData,
+            canvas: baseCanvas,
             imageSrc: _canvas.toDataURL(),
             pageHeight: request.data.h,
             imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
@@ -105,8 +103,7 @@ export default (request, sender, sendResponse) => {
             zoom: request.data.z
           })
         })
-        .then((_canvas, lastImageBottom) => {
-          canvasData = _canvas.toDataURL()
+        .then((lastImageBottom) => {
           scrollHeight += request.data.innerHeight
           waitForDelay(function () {
             capture(scrollHeight, lastImageBottom, data)

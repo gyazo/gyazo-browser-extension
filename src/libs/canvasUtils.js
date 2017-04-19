@@ -9,24 +9,13 @@ function imageLoader (imgSrc, callback) {
 export const appendImageToCanvas = (argObj) => new Promise((resolve) => {
   const scale = argObj.scale || 1.0
   const zoom = argObj.zoom || 1.0
-  const pageHeight = argObj.pageHeight * zoom
-  const {width, top, imageHeight, imageSrc} = argObj
-  let {canvasData} = argObj
-  // If 1st argument is Object (maybe <canvas>), convert to dataURL.
-  if (typeof canvasData === 'object') {
-    canvasData = canvasData.toDataURL()
-  }
-  const canvas = document.createElement('canvas')
-  canvas.width = width * zoom * scale
-  canvas.height = pageHeight * scale
+  // const pageHeight = argObj.pageHeight * zoom
+  const {canvas, width, top, imageHeight, imageSrc} = argObj
   const ctx = canvas.getContext('2d')
-  imageLoader(canvasData, function (img) {
-    ctx.drawImage(img, 0, 0)
-    imageLoader(imageSrc, function (img) {
-      ctx.drawImage(img, 0, 0, width * scale * zoom, imageHeight * scale * zoom, 0, top, img.width, img.height)
-      const lastImageBottom = top + img.height
-      resolve(canvas, lastImageBottom)
-    })
+  imageLoader(imageSrc, function (img) {
+    ctx.drawImage(img, 0, 0, width * scale * zoom, imageHeight * scale * zoom, 0, top, img.width, img.height)
+    const lastImageBottom = top + img.height
+    resolve(lastImageBottom)
   })
 })
 
