@@ -7,25 +7,23 @@ import adjacentStyle from './lib/adjacentStyle'
 import waitFor from './lib/waitFor'
 
 function fetchImage (url, callback) {
-  thenChrome.runtime.sendMessage(chrome.runtime.id, {
+  const response = thenChrome.runtime.sendMessage(chrome.runtime.id, {
     target: 'main',
     action: 'gyazoGetImageBlob',
     gyazoUrl: url
   })
-  .then((response) => {
-    const xhr = new window.XMLHttpRequest()
-    xhr.open('GET', response.imageBlobUrl, true)
-    xhr.responseType = 'arraybuffer'
-    xhr.onload = () => {
-      const blob = new window.Blob([xhr.response], { type: 'image/png' })
+  const xhr = new window.XMLHttpRequest()
+  xhr.open('GET', response.imageBlobUrl, true)
+  xhr.responseType = 'arraybuffer'
+  xhr.onload = () => {
+    const blob = new window.Blob([xhr.response], { type: 'image/png' })
 
-      callback(null, blob)
-    }
-    xhr.onerror = (e) => {
-      callback(e)
-    }
-    xhr.send()
-  })
+    callback(null, blob)
+  }
+  xhr.onerror = (e) => {
+    callback(e)
+  }
+  xhr.send()
 }
 
 function createLoader (position = {}) {

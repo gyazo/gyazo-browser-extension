@@ -6,7 +6,7 @@ import restoreFixedElement from '../../libs/restoreFixedElement'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
 import {ESC_KEY_CODE, JACKUP_HEIGHT} from '../../constants'
 
-export default (request) => {
+export default async (request) => {
   if (document.querySelector('.gyazo-crop-select-element')) {
     return false
   }
@@ -150,18 +150,16 @@ export default (request) => {
       if (document.getElementsByClassName('gyazo-crop-select-element').length > 0) {
         return window.requestAnimationFrame(finish)
       }
-      window.requestAnimationFrame(function () {
-        thenChrome.runtime.sendMessage(chrome.runtime.id, {
+      window.requestAnimationFrame(async () => {
+        await thenChrome.runtime.sendMessage(chrome.runtime.id, {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
         })
-        .then(() => {
-          restoreFixedElement()
-          document.body.removeChild(jackup)
-          unlockScroll(overflow)
-        })
+        restoreFixedElement()
+        document.body.removeChild(jackup)
+        unlockScroll(overflow)
       })
     }
     window.requestAnimationFrame(finish)

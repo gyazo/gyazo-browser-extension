@@ -2,7 +2,7 @@ import thenChrome from 'then-chrome'
 import {lockScroll, unlockScroll} from '../../libs/scroll'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 
-export default (request) => {
+export default async (request) => {
   const overflow = lockScroll()
   const data = {}
   const scaleObj = getZoomAndScale()
@@ -18,15 +18,13 @@ export default (request) => {
   data.positionY = window.scrollY
   data.defaultPositon = window.scrollY
   data.innerHeight = window.innerHeight
-  window.requestAnimationFrame(() => {
-    thenChrome.runtime.sendMessage(chrome.runtime.id, {
+  window.requestAnimationFrame(async () => {
+    await thenChrome.runtime.sendMessage(chrome.runtime.id, {
       target: 'main',
       action: 'gyazoCaptureWithSize',
       data: data,
       tab: request.tab
     })
-    .then(() => {
-      unlockScroll(overflow)
-    })
+    unlockScroll(overflow)
   })
 }

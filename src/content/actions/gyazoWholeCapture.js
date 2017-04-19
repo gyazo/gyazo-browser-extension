@@ -2,7 +2,7 @@ import thenChrome from 'then-chrome'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll} from '../../libs/scroll'
 
-export default (request) => {
+export default async (request) => {
   const overflow = lockScroll()
   const data = {}
   const scaleObj = getZoomAndScale()
@@ -21,14 +21,12 @@ export default (request) => {
   jackup.classList.add('gyazo-jackup-element')
   document.body.appendChild(jackup)
   jackup.style.height = (data.h + 30) + 'px'
-  thenChrome.runtime.sendMessage(chrome.runtime.id, {
+  await thenChrome.runtime.sendMessage(chrome.runtime.id, {
     target: 'main',
     action: 'gyazoCaptureWithSize',
     data: data,
     tab: request.tab
   })
-  .then(() => {
-    document.body.removeChild(jackup)
-    unlockScroll(overflow)
-  })
+  document.body.removeChild(jackup)
+  unlockScroll(overflow)
 }

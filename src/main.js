@@ -27,27 +27,29 @@ chrome.contextMenus.create({
   contexts: ['image']
 })
 
-chrome.browserAction.onClicked.addListener(function (tab) {
+chrome.browserAction.onClicked.addListener(async (tab) => {
   if (tab.url.match(/chrome\.google\.com\/webstore\//)) {
     window.alert(chrome.i18n.getMessage('welcomeMessage'))
     return disableButton(tab.id)
   }
-  thenChrome.tabs.insertCSS(tab.id, {
+  await thenChrome.tabs.insertCSS(tab.id, {
     file: '/menu.css'
   })
-  .then(() => {
-    if (chrome.runtime.lastError && chrome.runtime.lastError.message.match(/cannot be scripted/)) {
-      window.alert('It is not allowed to use Gyazo extension in this page.')
-      return disableButton(tab.id)
-    }
-    chrome.tabs.sendMessage(tab.id, {target: 'content', action: 'insertMenu', tab: tab}, function () {
-      chrome && chrome.runtime && chrome.runtime.lastError &&
-      chrome.runtime.lastError.number !== -2147467259 &&
-      !chrome.runtime.lastError.message.match(/message port closed/) &&
-      window.confirm(chrome.i18n.getMessage('confirmReload')) &&
-      chrome.tabs.reload(tab.id)
-    })
-  })
+  if (chrome.runtime.lastError && chrome.runtime.lastError.message.match(/cannot be scripted/)) {
+    window.alert('It is not allowed to use Gyazo extension in this page.')
+    return disableButton(tab.id)
+  }
+  try {
+    await thenChrome.tabs.sendMessage(tab.id, {target: 'content', action: 'insertMenu', tab: tab})
+  } catch (e) {
+    window.confirm(chrome.i18n.getMessage('confirmReload')) &&
+    chrome.tabs.reload(tab.id)
+  }
+  chrome && chrome.runtime && chrome.runtime.lastError &&
+  chrome.runtime.lastError.number !== -2147467259 &&
+  !chrome.runtime.lastError.message.match(/message port closed/) &&
+  window.confirm(chrome.i18n.getMessage('confirmReload')) &&
+  chrome.tabs.reload(tab.id)
 })
 
 onMessageListener.add('gyazoGetImageBlob', (request, sender, sendResponse) => {

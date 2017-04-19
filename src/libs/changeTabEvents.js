@@ -20,39 +20,33 @@ const enableButton = function (tabId) {
   chrome.browserAction.enable(tabId)
 }
 
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-  thenChrome.tabs.get(activeInfo.tabId)
-  .then((tab) => {
-    if (tab.status === 'loading') {
-      return disableButton(tab.id)
-    }
-    if (tab.url.match(/^https?:/)) {
-      enableButton(tab.id)
-    } else {
-      disableButton(tab.id)
-    }
-  })
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const tab = await thenChrome.tabs.get(activeInfo.tabId)
+  if (tab.status === 'loading') {
+    return disableButton(tab.id)
+  }
+  if (tab.url.match(/^https?:/)) {
+    enableButton(tab.id)
+  } else {
+    disableButton(tab.id)
+  }
 })
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   if (changeInfo.status === 'loading') {
     disableButton(tabId)
   } else if (changeInfo.status === 'complete') {
-    thenChrome.tabs.get(tabId)
-    .then((tab) => {
-      if (!tab.url.match(/^https?:/)) {
-        throw new Error()
-      }
-      return thenChrome.tabs.executeScript(tabId, {
-        file: './content.js'
-      })
+    const tab = await thenChrome.tabs.get(tabId)
+    if (!tab.url.match(/^https?:/)) {
+      throw new Error()
+    }
+    await thenChrome.tabs.executeScript(tabId, {
+      file: './content.js'
     })
-    .then(() => {
-      return thenChrome.tabs.insertCSS(tabId, {
-        file: '/content.css'
-      })
+    await thenChrome.tabs.insertCSS(tabId, {
+      file: '/content.css'
     })
-    .then(() => enableButton(tabId))
+    enableButton(tabId)
   }
 })
 
