@@ -6,7 +6,7 @@ export default class UploadNotification {
   }
   update (option, callback) {
     callback = callback || function () {}
-    option.target = 'main'
+    option.target = 'content'
     option.action = 'notification'
     chrome.tabs.sendMessage(this.tabId, option, callback)
   }

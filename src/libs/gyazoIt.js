@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import postToGyazo from './postToGyazo'
 
 export default (tab, srcUrl) => {
   if (srcUrl.match(/^data:/)) {

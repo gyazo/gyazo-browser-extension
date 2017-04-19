@@ -1,13 +1,11 @@
-import $ from 'jquery'
 import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import {trimImage, appendImageToCanvas} from './libs/canvasUtils'
-import storage from './libs/storageSwitcher'
 import MessageListener from './libs/MessageListener'
 import postToGyazo from './libs/postToGyazo'
 import waitForDelay from './libs/waitForDelay'
 import gyazoIt from './libs/gyazoIt'
-import {enableButton, disableButton} from './libs/changeTabEvents'
+import {disableButton} from './libs/changeTabEvents'
 
 const onMessageListener = new MessageListener('main')
 
@@ -44,7 +42,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
       window.alert('It is not allowed to use Gyazo extension in this page.')
       return disableButton(tab.id)
     }
-    chrome.tabs.sendMessage(tab.id, {action: 'insertMenu', tab: tab}, function () {
+    chrome.tabs.sendMessage(tab.id, {target: 'content', action: 'insertMenu', tab: tab}, function () {
       chrome && chrome.runtime && chrome.runtime.lastError &&
       chrome.runtime.lastError.number !== -2147467259 &&
       !chrome.runtime.lastError.message.match(/message port closed/) &&
@@ -139,46 +137,47 @@ onMessageListener.add('gyazoCaptureWithSize', (request, sender, sendResponse) =>
     })
     .then(() => {
       return thenChrome.tabs.sendMessage(request.tab.id, {
+        target: 'content',
         action: 'changeFixedElementToAbsolute',
         scrollTo: {x: request.data.positionX, y: scrollHeight + request.data.y}
-    })
+      })
     .then(() => {
       return thenChrome.tabs.captureVisibleTab(null, {format: 'png'})
     .then((data) => {
-        if (lastImageData === data) {
+      if (lastImageData === data) {
           // retry
-          return capture(scrollHeight, lastImageBottom, data)
+        return capture(scrollHeight, lastImageBottom, data)
+      }
+      trimImage({
+        imageData: data,
+        scale: request.data.s,
+        zoom: request.data.z,
+        startX: request.data.x - request.data.positionX,
+        startY: 0,
+        width: request.data.w,
+        height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+        callback: function (_canvas) {
+          appendImageToCanvas({
+            canvasData: canvasData,
+            imageSrc: _canvas.toDataURL(),
+            pageHeight: request.data.h,
+            imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+            width: request.data.w,
+            top: imagePositionTop,
+            scale: request.data.s,
+            zoom: request.data.z,
+            callback: function (_canvas, lastImageBottom) {
+              canvasData = _canvas.toDataURL()
+              scrollHeight += request.data.innerHeight
+              waitForDelay(function () {
+                capture(scrollHeight, lastImageBottom, data)
+              })
+            }
+          })
         }
-        trimImage({
-          imageData: data,
-          scale: request.data.s,
-          zoom: request.data.z,
-          startX: request.data.x - request.data.positionX,
-          startY: 0,
-          width: request.data.w,
-          height: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-          callback: function (_canvas) {
-            appendImageToCanvas({
-              canvasData: canvasData,
-              imageSrc: _canvas.toDataURL(),
-              pageHeight: request.data.h,
-              imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
-              width: request.data.w,
-              top: imagePositionTop,
-              scale: request.data.s,
-              zoom: request.data.z,
-              callback: function (_canvas, lastImageBottom) {
-                canvasData = _canvas.toDataURL()
-                scrollHeight += request.data.innerHeight
-                waitForDelay(function () {
-                  capture(scrollHeight, lastImageBottom, data)
-                })
-              }
-            })
-          }
-        })
       })
-      })
+    })
+    })
     })
   }
   capture(0)

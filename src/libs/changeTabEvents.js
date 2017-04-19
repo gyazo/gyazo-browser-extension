@@ -41,7 +41,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
     thenChrome.tabs.get(tabId)
     .then((tab) => {
       if (!tab.url.match(/^https?:/)) {
-        return Promise.reject()
+        throw new Error()
       }
       return thenChrome.tabs.executeScript(tabId, {
         file: './content.js'
