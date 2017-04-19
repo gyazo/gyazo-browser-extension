@@ -58,17 +58,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
-        loader: 'babel-loader',
-        query: {
-          presets: [['env', {
-            'modules': false,
-            'loose': true,
-            'targets': {
-              'browsers': ['last 2 versions'],
-              'uglify': true
-            }
-          }]]
-        }
+        loader: 'babel-loader'
       }
     ]
   },
