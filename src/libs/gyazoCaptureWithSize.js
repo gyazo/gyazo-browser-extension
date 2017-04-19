@@ -49,6 +49,7 @@ export default (request, sender, sendResponse) => {
           capture(scrollHeight)
         })
       })
+      return
     }
     if (scrollHeight >= request.data.h) {
       chrome.tabs.executeScript(request.tab.id, {
