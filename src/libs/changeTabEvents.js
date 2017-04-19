@@ -1,3 +1,5 @@
+import thenChrome from 'then-chrome'
+
 const disableButton = function (tabId) {
   chrome.browserAction.setIcon({
     path: {
@@ -19,7 +21,8 @@ const enableButton = function (tabId) {
 }
 
 chrome.tabs.onActivated.addListener(function (activeInfo) {
-  chrome.tabs.get(activeInfo.tabId, function (tab) {
+  thenChrome.tabs.get(activeInfo.tabId)
+  .then((tab) => {
     if (tab.status === 'loading') {
       return disableButton(tab.id)
     }
@@ -35,18 +38,21 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   if (changeInfo.status === 'loading') {
     disableButton(tabId)
   } else if (changeInfo.status === 'complete') {
-    chrome.tabs.get(tabId, function (tab) {
+    thenChrome.tabs.get(tabId)
+    .then((tab) => {
       if (!tab.url.match(/^https?:/)) {
-        return
+        return Promise.reject()
       }
-      chrome.tabs.executeScript(tab.id, {
+      return thenChrome.tabs.executeScript(tabId, {
         file: './content.js'
-      }, function () {
-        chrome.tabs.insertCSS(tab.id, {
-          file: '/content.css'
-        }, () => enableButton(tab.id))
       })
     })
+    .then(() => {
+      return thenChrome.tabs.insertCSS(tabId, {
+        file: '/content.css'
+      })
+    })
+    .then(() => enableButton(tabId))
   }
 })
 

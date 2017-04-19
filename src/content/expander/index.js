@@ -1,3 +1,4 @@
+import thenChrome from 'then-chrome'
 import delegate from 'delegate'
 import css from 'dom-css'
 import extend from 'xtend'
@@ -6,11 +7,12 @@ import adjacentStyle from './lib/adjacentStyle'
 import waitFor from './lib/waitFor'
 
 function fetchImage (url, callback) {
-  chrome.runtime.sendMessage(chrome.runtime.id, {
+  thenChrome.runtime.sendMessage(chrome.runtime.id, {
     target: 'main',
     action: 'gyazoGetImageBlob',
     gyazoUrl: url
-  }, (response) => {
+  })
+  .then((response) => {
     const xhr = new window.XMLHttpRequest()
     xhr.open('GET', response.imageBlobUrl, true)
     xhr.responseType = 'arraybuffer'
@@ -62,54 +64,56 @@ function createImagePreview ({ url, boxStyle }) {
   return img
 }
 
-let previewIsShown = false
-delegate(document, 'a', 'mouseover', (event) => {
-  if (previewIsShown) return
+export default () => {
+  let previewIsShown = false
+  delegate(document, 'a', 'mouseover', (event) => {
+    if (previewIsShown) return
 
-  const element = event.target
-  const href = element.getAttribute('href')
+    const element = event.target
+    const href = element.getAttribute('href')
 
-  if (element.querySelector('img')) return
+    if (element.querySelector('img')) return
 
-  const isGyazoUrl = !!gyazoIdFromUrl(href)
-  if (isGyazoUrl) {
-    previewIsShown = true
+    const isGyazoUrl = !!gyazoIdFromUrl(href)
+    if (isGyazoUrl) {
+      previewIsShown = true
 
-    let container
+      let container
 
-    let loader = createLoader(adjacentStyle(element))
-    document.body.appendChild(loader)
+      let loader = createLoader(adjacentStyle(element))
+      document.body.appendChild(loader)
 
-    let leaved = false
+      let leaved = false
 
-    const onLeave = (event = {}) => {
-      leaved = true
+      const onLeave = (event = {}) => {
+        leaved = true
 
-      if (event.target && element !== event.target) return
-      if (container) document.body.removeChild(container)
-      if (loader) document.body.removeChild(loader)
+        if (event.target && element !== event.target) return
+        if (container) document.body.removeChild(container)
+        if (loader) document.body.removeChild(loader)
 
-      element.removeEventListener('mouseleave', onLeave)
-      previewIsShown = false
-    }
+        element.removeEventListener('mouseleave', onLeave)
+        previewIsShown = false
+      }
 
-    const cancel = waitFor(() => !element.offsetParent, onLeave)
+      const cancel = waitFor(() => !element.offsetParent, onLeave)
 
-    element.addEventListener('mouseleave', onLeave)
-    element.addEventListener('mouseleave', cancel)
+      element.addEventListener('mouseleave', onLeave)
+      element.addEventListener('mouseleave', cancel)
 
-    fetchImage(href, (e, blob) => {
-      if (leaved) return
+      fetchImage(href, (e, blob) => {
+        if (leaved) return
 
-      document.body.removeChild(loader)
-      loader = null
+        document.body.removeChild(loader)
+        loader = null
 
-      container = createImagePreview({
-        url: window.URL.createObjectURL(blob),
-        boxStyle: adjacentStyle(element)
+        container = createImagePreview({
+          url: window.URL.createObjectURL(blob),
+          boxStyle: adjacentStyle(element)
+        })
+
+        document.body.appendChild(container)
       })
-
-      document.body.appendChild(container)
-    })
-  }
-})
+    }
+  })
+}

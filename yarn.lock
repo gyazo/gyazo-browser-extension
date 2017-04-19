@@ -7368,6 +7368,10 @@ text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
+then-chrome@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/then-chrome/-/then-chrome-1.0.6.tgz#a7624c2f594c566c1ba64bdd8f9e8604f1dcffa7"
+
 thenify-all@^1.0.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/thenify-all/-/thenify-all-1.6.0.tgz#1a1918d402d8fc3f98fbf234db0bcc8cc10e9726"

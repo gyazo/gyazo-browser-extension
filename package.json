@@ -7,6 +7,7 @@
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",
     "jquery": "^3.2.1",
+    "then-chrome": "^1.0.6",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
@@ -42,9 +43,8 @@
     "pack": "./node_modules/.bin/npm-run-all clean build --parallel pack:*",
     "pack:chrome": "./node_modules/.bin/run-s pack:chrome:keygen pack:chrome:zip",
     "pack:chrome:zip": "./node_modules/.bin/crx pack -p build/key.pem -o build/scboloo.crx --zip-output build/scboloo.chrome.zip dist/chrome",
-    "pack:firefox": "./node_modules/.bin/web-ext build -a build -s dist/firefox -v",
-    "pack:chrome:keygen": "if [ ! -f tmp/key.pem ] ; then ./node_modules/.bin/crx keygen ./build ; fi",
     "pack:firefox": "./node_modules/.bin/web-ext build -s dist/firefox -a dist",
+    "pack:chrome:keygen": "if [ ! -f tmp/key.pem ] ; then ./node_modules/.bin/crx keygen ./build ; fi",
     "pack:msedge": "./node_modules/.bin/run-s pack:msedge:prepare pack:msedge:generate pack:msedge:finalize",
     "pack:msedge:prepare": "./node_modules/.bin/run-s pack:msedge:gen-manifest pack:msedge:replace-manifest",
     "pack:msedge:gen-manifest": "rm -rf build/Gyazo && ./node_modules/.bin/manifoldjs -l debug -p edgeextension -f edgeextension -m dist/edge/manifest.json && mv Gyazo build",

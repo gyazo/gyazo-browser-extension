@@ -1,5 +1,7 @@
+import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import storage from '../libs/storageSwitcher'
+import expander from './expander'
 
 (function () {
   if (window.__embededGyazoContentJS) {
@@ -28,7 +30,7 @@ import storage from '../libs/storageSwitcher'
   }
 
   function changeFixedElementToAbsolute () {
-    Array.prototype.slice.apply(document.querySelectorAll('*')).filter(function (item) {
+    Array.from(document.querySelectorAll('*')).filter(function (item) {
       return (window.getComputedStyle(item).position === 'fixed')
     }).forEach(function (item) {
       item.classList.add('gyazo-whole-capture-onetime-absolute')
@@ -38,7 +40,7 @@ import storage from '../libs/storageSwitcher'
 
   function restoreFixedElement () {
     const fixedElms = document.getElementsByClassName('gyazo-whole-capture-onetime-absolute')
-    Array.prototype.slice.apply(fixedElms).forEach(function (item) {
+    Array.from(fixedElms).forEach(function (item) {
       item.classList.remove('gyazo-whole-capture-onetime-absolute')
       item.style.position = 'fixed'
     })
@@ -327,14 +329,17 @@ import storage from '../libs/storageSwitcher'
         data.positionY = window.scrollY
         data.defaultPositon = window.scrollY
         data.innerHeight = window.innerHeight
-        window.requestAnimationFrame(() => chrome.runtime.sendMessage(chrome.runtime.id, {
-          target: 'main',
-          action: 'gyazoCaptureWithSize',
-          data: data,
-          tab: request.tab
-        }, function () {
-          unlockScroll(overflow)
-        }))
+        window.requestAnimationFrame(() => {
+          thenChrome.runtime.sendMessage(chrome.runtime.id, {
+            target: 'main',
+            action: 'gyazoCaptureWithSize',
+            data: data,
+            tab: request.tab
+          })
+          .then(() => {
+            unlockScroll(overflow)
+          })
+        })
       },
       gyazoSelectElm: function () {
         if (document.querySelector('.gyazo-crop-select-element')) {
@@ -354,10 +359,11 @@ import storage from '../libs/storageSwitcher'
         layer.style.position = 'fixed'
         layer.style.pointerEvents = 'none'
         layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
-        const allElms = Array.prototype.slice.apply(document.body.querySelectorAll('*')).filter(function (item) {
+        const allElms = Array.from(document.body.querySelectorAll('*'))
+          .filter(function (item) {
           return !item.classList.contains('gyazo-crop-select-element') &&
                  !item.classList.contains('gyazo-menu-element')
-        })
+          })
         allElms.forEach(function (item) {
           item.classList.add('gyazo-select-element-cursor-overwrite')
         })
@@ -480,12 +486,13 @@ import storage from '../libs/storageSwitcher'
               return window.requestAnimationFrame(finish)
             }
             window.requestAnimationFrame(function () {
-              chrome.runtime.sendMessage(chrome.runtime.id, {
+              thenChrome.runtime.sendMessage(chrome.runtime.id, {
                 target: 'main',
                 action: 'gyazoCaptureWithSize',
                 data: data,
                 tab: request.tab
-              }, function () {
+              })
+              .then(() => {
                 restoreFixedElement()
                 document.body.removeChild(jackup)
                 unlockScroll(overflow)
@@ -505,11 +512,12 @@ import storage from '../libs/storageSwitcher'
           window.removeEventListener('contextmenu', cancel)
           document.removeEventListener('keydown', keydownHandler)
           document.removeEventListener('keyup', keyUpHandler)
-          Array.prototype.slice.apply(document.querySelectorAll('.gyazo-select-element-cursor-overwrite')).forEach(function (item) {
-            item.classList.remove('gyazo-select-element-cursor-overwrite')
-            item.removeEventListener('mouseover', moveLayer)
-            item.removeEventListener('click', clickElement)
-          })
+          Array.from(document.querySelectorAll('.gyazo-select-element-cursor-overwrite'))
+            .forEach(function (item) {
+              item.classList.remove('gyazo-select-element-cursor-overwrite')
+              item.removeEventListener('mouseover', moveLayer)
+              item.removeEventListener('click', clickElement)
+            })
           restoreFixedElement()
         }
         let removedGyazoMenu = function () {
@@ -686,12 +694,13 @@ import storage from '../libs/storageSwitcher'
         jackup.classList.add('gyazo-jackup-element')
         document.body.appendChild(jackup)
         jackup.style.height = (data.h + 30) + 'px'
-        chrome.runtime.sendMessage(chrome.runtime.id, {
+        thenChrome.runtime.sendMessage(chrome.runtime.id, {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
           tab: request.tab
-        }, function () {
+        })
+        .then(() => {
           document.body.removeChild(jackup)
           unlockScroll(overflow)
         })
@@ -703,6 +712,5 @@ import storage from '../libs/storageSwitcher'
     return true
   })
   // XXX: Firefox can't embed moz-extension:// file in content
-  if (browserInfo.firefox) return
-  require('./expander')
+  if (!browserInfo.firefox) expander()
 })()
