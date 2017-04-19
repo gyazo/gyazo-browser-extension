@@ -1,4 +1,4 @@
-function disableButton (tabId) {
+const disableButton = function (tabId) {
   chrome.browserAction.setIcon({
     path: {
       19: '/icons/19_disable.png',
@@ -8,7 +8,7 @@ function disableButton (tabId) {
   chrome.browserAction.disable(tabId)
 }
 
-function enableButton (tabId) {
+const enableButton = function (tabId) {
   chrome.browserAction.setIcon({
     path: {
       19: '/icons/19.png',
@@ -49,3 +49,5 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
     })
   }
 })
+
+export {enableButton, disableButton}

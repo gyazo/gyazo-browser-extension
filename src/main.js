@@ -6,7 +6,7 @@ import MessageListener from './libs/MessageListener'
 import postToGyazo from './libs/postToGyazo'
 import waitForDelay from './libs/waitForDelay'
 import gyazoIt from './libs/gyazoIt'
-import './libs/changeTabEvents'
+import {enableButton, disableButton} from './libs/changeTabEvents'
 
 const onMessageListener = new MessageListener('main')
 
@@ -23,16 +23,12 @@ function onClickHandler (info, tab) {
   }
 }
 
-// XXX: Buggy contextMenus on Firefox < v49
-if (browserInfo.chrome || (browserInfo.firefox && browserInfo.version >= 49) || browserInfo.msedge) {
-  chrome.contextMenus.onClicked.addListener(onClickHandler)
-
-  chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('contextMenuImage'),
-    id: 'gyazoIt',
-    contexts: ['image']
-  })
-}
+chrome.contextMenus.onClicked.addListener(onClickHandler)
+chrome.contextMenus.create({
+  title: chrome.i18n.getMessage('contextMenuImage'),
+  id: 'gyazoIt',
+  contexts: ['image']
+})
 
 chrome.browserAction.onClicked.addListener(function (tab) {
   if (tab.url.match(/chrome\.google\.com\/webstore\//)) {

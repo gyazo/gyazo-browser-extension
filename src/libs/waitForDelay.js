@@ -1,3 +1,4 @@
+import storage from './storageSwitcher'
 const DELAY_TIMES = [0, 200, 400, 700, 1000]
 
 export default (callback) => {
