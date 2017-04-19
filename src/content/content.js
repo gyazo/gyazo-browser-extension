@@ -2,7 +2,12 @@ import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import storage from '../libs/storageSwitcher'
 import expander from './expander'
-import notification from '../notification'
+import notification from './notification'
+import isPressCommandKey from '../libs/isPressCommandKey'
+import changeFixedElementToAbsolute from '../libs/changeFixedElementToAbsolute'
+import restoreFixedElement from '../libs/restoreFixedElement'
+import {lockScroll, unlockScroll, packScrollBar} from '../libs/scroll'
+import getZoomAndScale from '../libs/getZoomAndScale'
 
 (function () {
   if (window.__embededGyazoContentJS) {
@@ -15,71 +20,6 @@ import notification from '../notification'
 
   if (/gyazo\.com/.test(location.hostname)) {
     document.documentElement.setAttribute('data-extension-installed', true)
-  }
-
-  function isPressCommandKey (event) {
-    //  Return true when
-    //  Press CommandKey on MacOSX or CtrlKey on Windows or Linux
-    if (!(event instanceof MouseEvent || event instanceof KeyboardEvent)) {
-      return false
-    }
-    if (navigator.platform.match(/mac/i)) {
-      return event.metaKey || event.keyIdentifier === 'Meta'
-    } else {
-      return event.ctrlKey || event.keyIdentifier === 'Control'
-    }
-  }
-
-  function changeFixedElementToAbsolute () {
-    Array.from(document.querySelectorAll('*')).filter(function (item) {
-      return (window.getComputedStyle(item).position === 'fixed')
-    }).forEach(function (item) {
-      item.classList.add('gyazo-whole-capture-onetime-absolute')
-      item.style.setProperty('position', 'absolute', 'important')
-    })
-  }
-
-  function restoreFixedElement () {
-    const fixedElms = document.getElementsByClassName('gyazo-whole-capture-onetime-absolute')
-    Array.from(fixedElms).forEach(function (item) {
-      item.classList.remove('gyazo-whole-capture-onetime-absolute')
-      item.style.position = 'fixed'
-    })
-  }
-
-  function lockScroll () {
-    const {overflow, overflowY, marginRight} = document.documentElement.style
-    const _w = document.documentElement.getBoundingClientRect().width
-    document.documentElement.style.overflow = 'hidden'
-    document.documentElement.style.overflowY = 'hidden'
-    const w = document.documentElement.getBoundingClientRect().width
-    const scrollBarWidth = w - _w
-    return {overflow: overflow, overflowY: overflowY, marginRight: marginRight, scrollBarWidth: scrollBarWidth}
-  }
-
-  function unlockScroll (old) {
-    old = old || {overflow: 'auto', overflowY: 'auto'}
-    document.documentElement.style.overflow = old.overflow
-    document.documentElement.style.overflowY = old.overflowY
-    document.documentElement.style.marginRight = old.marginRight
-  }
-
-  function packScrollBar (old) {
-    document.documentElement.style.marginRight = `${old.scrollBarWidth}px`
-  }
-
-  function getZoomAndScale () {
-    let zoom = Math.round(window.outerWidth / window.innerWidth * 100) / 100
-    // XXX: on Windows, when window is not maximum, it should tweak zoom.(Chrome zoom level 1 is 1.10)
-    const isMaximum = (window.outerHeight === screen.availHeight && window.outerWidth === screen.availWidth)
-    if (browserInfo.windows && !isMaximum && zoom > 1.00 && zoom < 1.05) {
-      zoom = 1.00
-    }
-    const scale = window.devicePixelRatio / zoom
-    return {
-      zoom: zoom,
-      scale: scale
-    }
   }
 
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
