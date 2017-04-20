@@ -6,8 +6,8 @@ import gyazoIdFromUrl from './lib/gyazoIdFromUrl'
 import adjacentStyle from './lib/adjacentStyle'
 import waitFor from './lib/waitFor'
 
-function fetchImage (url, callback) {
-  const response = thenChrome.runtime.sendMessage(chrome.runtime.id, {
+const fetchImage = async (url, callback) => {
+  const response = await thenChrome.runtime.sendMessage(chrome.runtime.id, {
     target: 'main',
     action: 'gyazoGetImageBlob',
     gyazoUrl: url
