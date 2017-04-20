@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import postToGyazo from './postToGyazo'
 
 export default (tab, srcUrl) => {
@@ -9,7 +8,7 @@ export default (tab, srcUrl) => {
       url: tab.url
     })
   } else {
-    const xhr = $.ajaxSettings.xhr()
+    const xhr = new XMLHttpRequest()
     xhr.open('GET', srcUrl, true)
     xhr.responseType = 'blob'
     xhr.onreadystatechange = function () {

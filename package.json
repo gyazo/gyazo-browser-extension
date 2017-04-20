@@ -6,7 +6,6 @@
     "chrome-browser-object-polyfill": "^0.2.2",
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",
-    "jquery": "^3.2.1",
     "then-chrome": "^1.0.6",
     "xtend": "^4.0.1"
   },
