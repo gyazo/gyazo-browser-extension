@@ -32,7 +32,7 @@
     "uglifyjs-webpack-plugin": "^0.4.3",
     "web-ext": "^1.0.1",
     "webpack": "^2.4.1",
-    "wemf": "^1.0.0"
+    "wemf": "^1.1.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/run-p test:**",
@@ -78,8 +78,8 @@
     "require": [
       "babel-register",
       "babel-polyfill",
-       "./test/helpers/browserEnv.js",
-       "./test/helpers/chromeMock.js"
+      "./test/helpers/browserEnv.js",
+      "./test/helpers/chromeMock.js"
     ],
     "babel": "inherit"
   },
