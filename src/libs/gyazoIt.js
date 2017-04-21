@@ -8,7 +8,7 @@ export default (tab, srcUrl) => {
       url: tab.url
     })
   } else {
-    const xhr = new XMLHttpRequest()
+    const xhr = new window.XMLHttpRequest()
     xhr.open('GET', srcUrl, true)
     xhr.responseType = 'blob'
     xhr.onreadystatechange = function () {

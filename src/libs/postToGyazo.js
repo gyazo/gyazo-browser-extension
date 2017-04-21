@@ -11,14 +11,13 @@ const errorAlert = (status, message) => {
 export default async (tabId, data) => {
   const notification = new UploadNotification(tabId)
   notification.update({message: ''})
-  const formdata = new FormData()
+  const formdata = new window.FormData()
   formdata.append('client_id', clientId)
   formdata.append('image_url', data.imageData)
   formdata.append('title', data.title)
   formdata.append('referer_url', data.url)
   formdata.append('scale', data.scale || '')
   formdata.append('desc', data.desc ? data.desc.replace(/\t/, ' ').replace(/(^\s+| +$)/gm, '') : '')
-
 
   const response = await window.fetch(apiEndpoint, {
     method: 'POST',
