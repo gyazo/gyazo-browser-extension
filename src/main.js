@@ -42,6 +42,7 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
   try {
     await thenChrome.tabs.sendMessage(tab.id, {target: 'content', action: 'insertMenu', tab: tab})
   } catch (e) {
+    e.message.match(/Could not establish connection/) &&
     window.confirm(chrome.i18n.getMessage('confirmReload')) &&
     chrome.tabs.reload(tab.id)
   }
