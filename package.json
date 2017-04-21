@@ -34,7 +34,7 @@
   "scripts": {
     "test": "./node_modules/.bin/run-p test:**",
     "test:lint": "./node_modules/.bin/standard \"./**/*.js\"",
-    "test:ava": "./node_modules/.bin/ava",
+    "test:ava": "BABEL_ENV=test ./node_modules/.bin/ava",
     "test:lint:package:firefox": "yarn run build > /dev/null && ./node_modules/.bin/web-ext lint -s dist/firefox",
     "clean": "rm -rf dist/{chrome,firefox,common,edge}/* build/*",
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
@@ -70,6 +70,13 @@
       "MouseEvent",
       "KeyboardEvent"
     ]
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ],
+    "babel": "inherit"
   },
   "repository": "https://github.com/gyazo/gyazo-browser-extension.git",
   "author": "NOTA Inc <contact@gyazo.com>",

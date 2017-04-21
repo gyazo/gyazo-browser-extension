@@ -2,8 +2,6 @@ export default function () {
   global.document = require('jsdom').jsdom()
   global.window = document.defaultView
 
-  propagateKeysToGlobal(window)
-
   function propagateKeysToGlobal (window) {
     const blacklist = Object.keys(global)
 
@@ -14,4 +12,6 @@ export default function () {
       }
     })
   }
+
+  propagateKeysToGlobal(window)
 }
