@@ -40,6 +40,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (!tab.url.match(/^https?:/)) {
       throw new Error()
     }
+    if ((await thenChrome.tabs.executeScript(tabId, {
+      scripts: ['window.__embededGyazoContentJS']
+    }))[0]) return
     await thenChrome.tabs.executeScript(tabId, {
       file: './content.js'
     })
