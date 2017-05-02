@@ -21,6 +21,8 @@ import {changeFixedElementToAbsolute} from './actions'
   onMessageListener.add('changeFixedElementToAbsolute', changeFixedElementToAbsolute)
 
   chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))
-  // XXX: Firefox can't embed moz-extension:// file in content
-  if (!browserInfo.firefox) expander()
+  if (
+    !browserInfo.firefox && // XXX: Firefox can't embed moz-extension:// file in content
+    !(/^(.+\.)?gyazo\.com$/).test(window.location.host)  // Prevent showing preview on gyazo.com
+  ) expander()
 })()
