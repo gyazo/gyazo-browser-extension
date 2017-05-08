@@ -41,7 +41,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
       throw new Error()
     }
     if ((await thenChrome.tabs.executeScript(tabId, {
-      scripts: ['window.__embededGyazoContentJS']
+      code: 'window.__embededGyazoContentJS'
     }))[0]) return
     await thenChrome.tabs.executeScript(tabId, {
       file: './content.js'

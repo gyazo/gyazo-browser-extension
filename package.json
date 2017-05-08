@@ -35,10 +35,10 @@
     "wemf": "^1.1.2"
   },
   "scripts": {
-    "test": "./node_modules/.bin/run-p test:**",
+    "test": "yarn run build > /dev/null && ./node_modules/.bin/run-p test:**",
     "test:lint": "./node_modules/.bin/standard \"./**/*.js\"",
     "test:ava": "BABEL_ENV=test ./node_modules/.bin/ava --verbose",
-    "test:lint:package:firefox": "yarn run build > /dev/null && ./node_modules/.bin/web-ext lint -s dist/firefox",
+    "test:lint:package:firefox": "./node_modules/.bin/web-ext lint -s dist/firefox",
     "clean": "rm -rf dist/{chrome,firefox,common,edge}/* build/*",
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
     "watch": "yarn run build -- --watch",

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 var fs = require('fs')
-var request = require('request-promise')
 var upload = require('./libs/upload')
 
 var crxfile, xpifile = null

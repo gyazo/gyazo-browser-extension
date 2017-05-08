@@ -14,7 +14,7 @@ test.beforeEach(() => {
 })
 
 test('should sendMessage to content on update', async (t) => {
-  t.pass(1)
+  t.plan(1)
   notification.update({title: 'test'})
   t.truthy(chrome.tabs.sendMessage.withArgs(100, {target: 'content', action: 'notification', title: 'test'}).calledOnce)
 })
