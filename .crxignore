@@ -1,7 +1,0 @@
-node_modules
-.DS_Store
-.gitignore
-circle.yml
-script
-build
-README.md

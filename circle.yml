@@ -1,15 +1,22 @@
 machine:
   node:
     version: 6.1.0
+dependencies:
+  override:
+    - yarn
+  cache_directories:
+    - ~/.cache/yarn
 test:
+  override:
+    - yarn test
   post:
     - |
       if [ -z "$CIRCLE_PR_NUMBER" ]; then
         echo $GCS_KEY | base64 --decode > gcs_key.json
         gcloud auth activate-service-account --key-file gcs_key.json
-        BUILD_TARGET=review npm run build-firefox
-        npm run pack-chrome
-        web-ext sign -a build -s dist/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+        BUILD_TARGET=review npm run build
+        npm run pack:chrome
+        ./node_modules/.bin/web-ext sign -a build -s dist/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
         ./script/build_and_upload_branch
       fi
 deployment:
