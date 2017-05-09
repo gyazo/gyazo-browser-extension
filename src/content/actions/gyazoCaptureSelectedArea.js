@@ -40,6 +40,7 @@ export default (request) => {
     position: 'absolute'
   })
   const cancelGyazo = function () {
+    if (!(layer.parentNode && jackup.parentNode)) return
     document.body.removeChild(layer)
     document.body.removeChild(jackup)
     document.body.style.webkitUserSelect = tempUserSelect
