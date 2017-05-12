@@ -158,7 +158,7 @@ export default async (request) => {
           tab: request.tab
         })
         restoreFixedElement()
-        document.body.removeChild(jackup)
+        if (document.body.contains(jackup)) document.body.removeChild(jackup)
         unlockScroll(overflow)
       })
     }

@@ -1,4 +1,5 @@
 import thenChrome from 'then-chrome'
+import browserInfo from 'bowser'
 
 const disableButton = function (tabId) {
   chrome.browserAction.setIcon({
@@ -38,14 +39,23 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   } else if (changeInfo.status === 'complete') {
     const tab = await thenChrome.tabs.get(tabId)
     if (!tab.url.match(/^https?:/)) {
-      throw new Error()
+      throw new Error('This Extension can run only on https? pages: ' + location.href)
     }
-    if ((await thenChrome.tabs.executeScript(tabId, {
-      code: 'window.__embededGyazoContentJS'
-    }))[0]) return enableButton(tabId)
-    await thenChrome.tabs.executeScript(tabId, {
-      file: './content.js'
-    })
+    let loaded = [false]
+    try {
+      loaded = (await thenChrome.tabs.executeScript(tabId, {
+        code: 'window.__embededGyazoContentJS'
+      }))
+    } catch (e) {}
+    if (loaded[0]) return enableButton(tabId)
+    try {
+      await thenChrome.tabs.executeScript(tabId, {
+        file: './content.js'
+      })
+    } catch (e) {
+      if (browserInfo.msedge && e.number === -2147467259) return
+      throw e
+    }
     await thenChrome.tabs.insertCSS(tabId, {
       file: '/content.css'
     })

@@ -68,6 +68,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   border-bottom: 1px solid #ccc !important;
 }
 .gyazo-notification .image {
+  max-width: 100% !important;
   padding: 0 !important;
   margin: 23px 0 !important;
   max-width: 200px !important;
