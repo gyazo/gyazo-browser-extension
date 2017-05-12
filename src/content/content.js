@@ -3,7 +3,7 @@ import MessageListener from '../libs/MessageListener'
 import expander from './expander'
 import notification from './notification'
 import insertMenu from './insertMenu'
-import {changeFixedElementToAbsolute} from './actions'
+import {gyazocaptureWindow, gyazoCaptureSelectedArea, gyazoSelectElm, gyazoWholeCapture, changeFixedElementToAbsolute} from './actions'
 
 (function () {
   if (window.__embededGyazoContentJS) {
@@ -19,6 +19,10 @@ import {changeFixedElementToAbsolute} from './actions'
   onMessageListener.add('notification', notification)
   onMessageListener.add('insertMenu', insertMenu)
   onMessageListener.add('changeFixedElementToAbsolute', changeFixedElementToAbsolute)
+  onMessageListener.add('captureWindow', gyazocaptureWindow)
+  onMessageListener.add('captureSelectArea', gyazoCaptureSelectedArea)
+  onMessageListener.add('captureElement', gyazoSelectElm)
+  onMessageListener.add('captureWholePage', gyazoWholeCapture)
 
   chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))
   if (

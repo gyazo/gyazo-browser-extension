@@ -4,28 +4,9 @@ import MessageListener from './libs/MessageListener'
 import gyazoIt from './libs/gyazoIt'
 import {disableButton} from './libs/changeTabEvents'
 import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize'
+import './contextMenu'
 
 const onMessageListener = new MessageListener('main')
-
-function onClickHandler (info, tab) {
-  chrome.tabs.insertCSS(tab.id, {
-    file: '/menu.css'
-  })
-  const GyazoFuncs = {
-    gyazoIt: () => gyazoIt(tab, info.srcUrl)
-  }
-
-  if (info.menuItemId in GyazoFuncs) {
-    GyazoFuncs[info.menuItemId]()
-  }
-}
-
-chrome.contextMenus.onClicked.addListener(onClickHandler)
-chrome.contextMenus.create({
-  title: chrome.i18n.getMessage('contextMenuImage'),
-  id: 'gyazoIt',
-  contexts: ['image']
-})
 
 chrome.browserAction.onClicked.addListener(async (tab) => {
   if (tab.url.match(/chrome\.google\.com\/webstore\//)) {
