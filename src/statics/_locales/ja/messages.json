@@ -34,5 +34,8 @@
   },
   "myImage": {
     "message": "ホーム"
+  },
+  "contextMenuSetting": {
+    "message": "コンテキストメニューに機能呼び出しメニューを追加する"
   }
 }

@@ -4,7 +4,7 @@ import MessageListener from './libs/MessageListener'
 import gyazoIt from './libs/gyazoIt'
 import {disableButton} from './libs/changeTabEvents'
 import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize'
-import './contextMenu'
+import './libs/contextMenu'
 
 const onMessageListener = new MessageListener('main')
 

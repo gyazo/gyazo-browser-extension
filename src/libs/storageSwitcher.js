@@ -11,6 +11,13 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
       this.storageType = enabledSyncStorage ? 'sync' : 'local'
       this.checkEnv = true
     })()
+
+    this.onChanged = {
+      addListener: (...args) => {this.addListener(...args)},
+      removeListener: (...args) => {this.removeListener(...args)},
+      hasListener: (...args) => {this.hasListener(...args)}
+    }
+
   }
 
   tryToGetSyncStatus () {
@@ -72,6 +79,22 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     if (!this.checkEnv) return this.waitForCheckEnv(() => this.clear(...args))
     return this.storageObject(args).clear(...args)
   }
+
+  addListener (...args) {
+    if (!this.checkEnv) return this.waitForCheckEnv(() => this.addListener(...args))
+    return chrome.storage.onChanged.addListener(...args)
+  }
+
+  removeListener (...args) {
+    if (!this.checkEnv) return this.waitForCheckEnv(() => this.removeListener(...args))
+    return chrome.storage.onChanged.removeListener(...args)
+  }
+
+  hasListener (...args) {
+    if (!this.checkEnv) return this.waitForCheckEnv(() => this.hasListener(...args))
+    return chrome.storage.onChanged.hasListener(...args)
+  }
+
 }
 const storage = new ExtensionStorageWrapper()
 

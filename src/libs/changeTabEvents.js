@@ -34,6 +34,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 })
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
+  checkContextMenuEnabled()
   if (changeInfo.status === 'loading') {
     disableButton(tabId)
   } else if (changeInfo.status === 'complete') {
