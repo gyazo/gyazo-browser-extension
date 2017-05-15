@@ -13,11 +13,10 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     })()
 
     this.onChanged = {
-      addListener: (...args) => {this.addListener(...args)},
-      removeListener: (...args) => {this.removeListener(...args)},
-      hasListener: (...args) => {this.hasListener(...args)}
+      addListener: (...args) => { this.addListener(...args) },
+      removeListener: (...args) => { this.removeListener(...args) },
+      hasListener: (...args) => { this.hasListener(...args) }
     }
-
   }
 
   tryToGetSyncStatus () {
@@ -94,7 +93,6 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     if (!this.checkEnv) return this.waitForCheckEnv(() => this.hasListener(...args))
     return chrome.storage.onChanged.hasListener(...args)
   }
-
 }
 const storage = new ExtensionStorageWrapper()
 
