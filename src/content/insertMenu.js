@@ -5,7 +5,7 @@ import {ESC_KEY_CODE} from '../constants'
 
 const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')
 
-export default (request, sender, sendResponse) => {
+export default async (request, sender, sendResponse) => {
   let gyazoMenu = document.querySelector('.gyazo-menu:not(.gyazo-notification)')
   if (gyazoMenu) {
     document.body.removeChild(gyazoMenu)
@@ -74,20 +74,17 @@ export default (request, sender, sendResponse) => {
     }
   }
   window.addEventListener('keydown', hotKey)
+  let settings = {behavior: 'element'}
   try {
-    // Provide access to chrome.storage at content script https://bugzilla.mozilla.org/show_bug.cgi?id=1197346
-    storage.get({behavior: 'element'}, function (item) {
-      if (item.behavior === 'element') {
-        // Default behavior is select element
-        selectElementBtn.classList.add('gyazo-button-active')
-        window.requestAnimationFrame(() => gyazoSelectElm(request, sender, sendResponse))
-      } else if (item.behavior === 'area') {
-        // Default behavior is select area
-        selectAreaBtn.classList.add('gyazo-button-active')
-        gyazoCaptureSelectedArea(request, sender, sendResponse)
-      }
-    })
-  } catch (e) {
+    settings = (await storage.get({behavior: 'element'}))
+  } catch (e) {}
+  const {behavior} = settings
+  if (behavior === 'element') {
+    // Default behavior is select element
+    selectElementBtn.classList.add('gyazo-button-active')
+    window.requestAnimationFrame(() => gyazoSelectElm(request, sender, sendResponse))
+  } else if (behavior === 'area') {
+    // Default behavior is select area
     selectAreaBtn.classList.add('gyazo-button-active')
     gyazoCaptureSelectedArea(request, sender, sendResponse)
   }
