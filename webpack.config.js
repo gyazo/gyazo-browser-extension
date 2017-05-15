@@ -4,7 +4,7 @@ const WebpackOnBuildPlugin = require('on-build-webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const exec = require('child_process').execSync
 
-const isProductionBuild = process.env.BUILD_TARGET === 'production'
+const isProductionBuild = process.env.BUILD_TARGET === 'production' || process.env.NODE_ENV === 'production'
 const isReview = process.env.BUILD_TARGET === 'review'
 
 let plugins = [
