@@ -1,5 +1,6 @@
 {
   "name": "Gyazo",
+  "version": "inherit",
   "description": "Grab any image on the web and share it instantly.",
   "short_name": "Gyazo",
   "author": "Nota inc.",
@@ -9,10 +10,17 @@
     "notifications",
     "contextMenus",
     "tabs",
+    "cookies",
     "clipboardWrite",
     "clipboardRead",
     "storage"
   ],
+  "applications": {
+    "gecko": {
+      "id": "gyazo-extension@gyazo.com",
+      "strict_min_version": "47.0a1"
+    }
+  },
   "background": {
     "scripts": ["main.js"],
     "persistent": false

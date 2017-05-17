@@ -1,43 +1,61 @@
 {
   "name": "Gyazo-Extension",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "dependencies": {
     "bowser": "^1.3.0",
+    "chrome-browser-object-polyfill": "^0.2.2",
     "delegate": "^3.0.0",
     "dom-css": "^2.0.0",
-    "jquery": "^2.1.4",
+    "then-chrome": "^1.0.6",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "ava": "^0.9.1",
-    "browserify": "^12.0.1",
-    "chrome-webstore-manager": "^0.1.1",
-    "crx": "github:pastak/crx",
-    "jsdom": "^7.2.2",
-    "request-promise": "^1.0.2",
-    "standard": "^4.5.4",
+    "ava": "^0.19.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-register": "^6.24.1",
+    "browser-env": "^2.0.30",
+    "browserify": "^14.3.0",
+    "chrome-webstore-manager": "^0.4.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "crx": "^3.2.1",
+    "jsdom": "^9.12.0",
+    "manifoldjs": "^0.7.5",
+    "npm-run-all": "^4.0.2",
+    "on-build-webpack": "^0.1.0",
+    "request-promise": "^4.2.0",
+    "sinon": "^2.1.0",
+    "sinon-chrome": "^2.2.0",
+    "standard": "^10.0.2",
+    "uglifyjs-webpack-plugin": "^0.4.3",
     "web-ext": "^1.0.1",
-    "wemf": "^0.3.3"
+    "webpack": "^2.4.1",
+    "wemf": "^1.1.3"
   },
   "scripts": {
-    "test": "standard \"./**/*.js\" && ava",
-    "build": "npm run build-chrome && npm run build-firefox",
-    "build-chrome": "mkdir -p dist/chrome && rm -rf dist/chrome/* && script/generate_manifest && cp -r src/statics/* dist/chrome && browserify src/normal/index.js -o dist/chrome/main.js && browserify src/common/content/content.js -o dist/chrome/content.js",
-    "build-firefox": "mkdir -p dist/firefox && rm -rf dist/firefox/* && TARGET=firefox script/generate_manifest && wemf dist/firefox/manifest.json -U && cp -r src/statics/* dist/firefox && browserify src/normal/index.js -o dist/firefox/main.js && browserify src/common/content/content.js -o dist/firefox/content.js",
-    "pack": "npm run pack-chrome && npm run pack-firefox",
-    "pack-chrome": "npm run build-chrome && crx pack ./dist/chrome --zip-output ./build/chrome.zip -o ./build/chrome.crx",
-    "pack-firefox": "npm run build-firefox && web-ext build -a build -s dist/firefox -v"
-  },
-  "webextension": {
-    "applications": {
-      "gecko": {
-        "id": "gyazo-extension@gyazo.com",
-        "strict_min_version": "47.0a1"
-      }
-    },
-    "options_ui": {
-      "page": "option/options.html"
-    }
+    "test": "yarn run build > /dev/null && ./node_modules/.bin/run-p test:**",
+    "test:lint": "./node_modules/.bin/standard \"./**/*.js\"",
+    "test:ava": "BABEL_ENV=test ./node_modules/.bin/ava --verbose",
+    "test:lint:package:firefox": "./node_modules/.bin/web-ext lint -s dist/firefox",
+    "clean": "rm -rf dist/{chrome,firefox,common,edge}/* build/*",
+    "build": "./node_modules/.bin/webpack --config webpack.config.js",
+    "watch": "yarn run build -- --watch",
+    "pack": "./node_modules/.bin/npm-run-all clean build --parallel pack:*",
+    "pack:chrome": "./node_modules/.bin/run-s pack:chrome:keygen pack:chrome:zip",
+    "pack:chrome:zip": "./node_modules/.bin/crx pack -p build/key.pem -o build/gyazo.crx --zip-output build/gyazo.chrome.zip dist/chrome",
+    "pack:firefox": "./node_modules/.bin/web-ext build -s dist/firefox -a dist",
+    "pack:chrome:keygen": "if [ ! -f tmp/key.pem ] ; then ./node_modules/.bin/crx keygen ./build ; fi",
+    "pack:msedge": "./node_modules/.bin/run-s pack:msedge:prepare pack:msedge:generate pack:msedge:finalize",
+    "pack:msedge:prepare": "./node_modules/.bin/run-s pack:msedge:gen-manifest pack:msedge:replace-manifest",
+    "pack:msedge:gen-manifest": "rm -rf build/Gyazo && ./node_modules/.bin/manifoldjs -l debug -p edgeextension -f edgeextension -m dist/edge/manifest.json && mv Gyazo build",
+    "pack:msedge:replace-manifest": "./node_modules/.bin/run-s pack:msedge:replace-manifest:*",
+    "pack:msedge:replace-manifest:01": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-NAME-HERE|$MS_PACKAGE_ID|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:replace-manifest:02": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-PUBLISHER-HERE|$MS_PUBLISHER_IDENTITY|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:replace-manifest:03": "sed -i -e \"s|INSERT-YOUR-PACKAGE-PROPERTIES-PUBLISHERDISPLAYNAME-HERE|$MS_PUBLISHER_DNAME|\" build/Gyazo/edgeextension/manifest/appxmanifest.xml",
+    "pack:msedge:generate": "./node_modules/.bin/manifoldjs -l debug -p edgeextension package build/Gyazo/edgeextension/manifest",
+    "pack:msedge:finalize": "mv build/Gyazo/edgeextension/package/edgeExtension.appx build"
   },
   "standard": {
     "global": [
@@ -55,5 +73,17 @@
       "MouseEvent",
       "KeyboardEvent"
     ]
-  }
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "babel-polyfill",
+      "./test/helpers/browserEnv.js",
+      "./test/helpers/chromeMock.js"
+    ],
+    "babel": "inherit"
+  },
+  "repository": "https://github.com/gyazo/gyazo-browser-extension.git",
+  "author": "NOTA Inc <contact@gyazo.com>",
+  "license": "MIT"
 }
