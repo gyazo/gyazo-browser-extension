@@ -109,13 +109,12 @@ export default (request) => {
     data.z = scaleObj.zoom
     data.positionX = window.scrollX
     data.positionY = window.scrollY
-    data.innerHeight = window.innerHeight
     document.body.removeChild(layer)
     if (document.querySelector('.gyazo-menu')) {
       document.body.removeChild(document.querySelector('.gyazo-menu'))
     }
     let overflow = {}
-    if (data.h > data.innerHeight) {
+    if (data.h > data.tab.height) {
       overflow = lockScroll()
       packScrollBar(overflow)
     }

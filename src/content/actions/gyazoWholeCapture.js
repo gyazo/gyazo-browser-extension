@@ -16,7 +16,6 @@ export default async (request) => {
   data.z = scaleObj.zoom
   data.positionX = window.scrollX
   data.positionY = window.scrollY
-  data.innerHeight = window.innerHeight
   const jackup = document.createElement('div')
   jackup.classList.add('gyazo-jackup-element')
   document.body.appendChild(jackup)

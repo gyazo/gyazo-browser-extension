@@ -10,15 +10,15 @@ export default (request, sender, sendResponse) => {
   const baseCanvas = document.createElement('canvas')
   baseCanvas.height = request.data.h * request.data.z * request.data.s
   baseCanvas.width = request.data.w * request.data.z * request.data.s
-  const capture = async (scrollHeight, lastImageBottom, lastImageData) => {
+  const capture = async (scrollHeight = 0, scrollWidth = 0, lastImageBottom, lastImageData) => {
     const imagePositionTop = lastImageBottom || scrollHeight * request.data.z * request.data.s
     const offsetTop = request.data.y - request.data.positionY
-    if (scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.data.innerHeight) {
+    if (scrollHeight === 0 && offsetTop >= 0 && offsetTop + request.data.h <= request.tab.height) {
       // Capture in window (not require scroll)
       const captureData = await thenChrome.tabs.captureVisibleTab(null, {format: 'png'})
       if (lastImageData === captureData) {
         // retry
-        return capture(scrollHeight, lastImageBottom, captureData)
+        return capture(scrollHeight, scrollWidth, lastImageBottom, captureData)
       }
       const trimedImageCanvas = await trimImage({
         imageData: captureData,
@@ -27,20 +27,20 @@ export default (request, sender, sendResponse) => {
         startX: request.data.x - request.data.positionX,
         startY: offsetTop,
         width: request.data.w,
-        height: Math.min(request.data.innerHeight, request.data.h - scrollHeight)
+        height: Math.min(request.tab.height, request.data.h - scrollHeight)
       })
       await appendImageToCanvas({
         canvas: baseCanvas,
         imageSrc: trimedImageCanvas.toDataURL(),
         pageHeight: request.data.h,
-        imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+        imageHeight: Math.min(request.tab.height, request.data.h - scrollHeight),
         width: request.data.w,
         top: 0,
         scale: request.data.s,
         zoom: request.data.z
       })
-      scrollHeight += request.data.innerHeight
-      capture(scrollHeight)
+      scrollHeight += request.tab.height
+      capture(scrollHeight, scrollWidth)
       return
     }
     if (scrollHeight >= request.data.h) {
@@ -69,7 +69,7 @@ export default (request, sender, sendResponse) => {
     const data = await thenChrome.tabs.captureVisibleTab(null, {format: 'png'})
     if (lastImageData === data) {
       // retry
-      return capture(scrollHeight, lastImageBottom, data)
+      return capture(scrollHeight, scrollWidth, lastImageBottom, data)
     }
     const trimedImageCanvas = await trimImage({
       imageData: data,
@@ -78,22 +78,22 @@ export default (request, sender, sendResponse) => {
       startX: request.data.x - request.data.positionX,
       startY: 0,
       width: request.data.w,
-      height: Math.min(request.data.innerHeight, request.data.h - scrollHeight)
+      height: Math.min(request.tab.height, request.data.h - scrollHeight)
     })
     const _lastImageBottom = await appendImageToCanvas({
       canvas: baseCanvas,
       imageSrc: trimedImageCanvas.toDataURL(),
       pageHeight: request.data.h,
-      imageHeight: Math.min(request.data.innerHeight, request.data.h - scrollHeight),
+      imageHeight: Math.min(request.tab.height, request.data.h - scrollHeight),
       width: request.data.w,
       top: imagePositionTop,
       scale: request.data.s,
       zoom: request.data.z
     })
-    scrollHeight += request.data.innerHeight
+    scrollHeight += request.tab.height
     waitForDelay(function () {
-      capture(scrollHeight, _lastImageBottom, data)
+      capture(scrollHeight, scrollWidth, _lastImageBottom, data)
     })
   }
-  capture(0)
+  capture()
 }

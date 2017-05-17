@@ -116,7 +116,6 @@ export default async (request) => {
     data.z = scaleObj.zoom
     data.positionX = window.scrollX
     data.positionY = window.scrollY
-    data.innerHeight = window.innerHeight
     data.desc = dupTarget.textContent
     if (document.body.contains(layer)) {
       document.body.removeChild(layer)
@@ -142,7 +141,7 @@ export default async (request) => {
       }, function () {})
     }
     let overflow = {}
-    if (data.y + data.h > data.innerHeight + data.positionY) {
+    if (data.y + data.h > window.innerHeight + data.positionY) {
       overflow = lockScroll()
       packScrollBar(overflow)
     }
