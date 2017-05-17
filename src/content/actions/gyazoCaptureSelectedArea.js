@@ -1,7 +1,7 @@
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
-import {ESC_KEY_CODE, JACKUP_HEIGHT} from '../../constants'
+import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
 
 export default (request) => {
   if (document.querySelector('.gyazo-jackup-element')) {
@@ -114,12 +114,12 @@ export default (request) => {
       document.body.removeChild(document.querySelector('.gyazo-menu'))
     }
     let overflow = {}
-    if (data.h > data.tab.height) {
+    if (data.h > window.innerHeight) {
       overflow = lockScroll()
       packScrollBar(overflow)
     }
-    jackup.style.height = (window.innerHeight + JACKUP_HEIGHT) + 'px'
-          // wait for rewrite by removeChild
+    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    // wait for rewrite by removeChild
     let finish = function () {
       if (document.getElementsByClassName('gyazo-select-layer').length > 0) {
         return window.requestAnimationFrame(finish)
