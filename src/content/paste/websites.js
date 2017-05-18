@@ -1,6 +1,6 @@
 const websites = [
   {
-    host: /^github\.com/,
+    host: /^github\.com$/,
     className: 'comment-form-textarea'
   }
 ]

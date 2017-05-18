@@ -1,27 +1,27 @@
 import storage from '../../libs/storageSwitcher'
-import defaultWebsitesInfo from './websitesInfo'
+import defaultWebsites from './websites'
 
 export default async () => {
   let usersSettings
   try {
     usersSettings = (await storage.get({
-      pasteWebsitesInfo: [],
+      pasteWebsites: [],
       pasteSupport: true
     }))
   } catch (e) {}
 
   if (!usersSettings.pasteSupport) return
 
-  const usersWebsiteSettings = usersSettings ? usersSettings.pasteWebsitesInfo : []
+  const usersWebsiteSettings = usersSettings ? usersSettings.pasteWebsites : []
 
-  const websitesInfo = usersWebsiteSettings.concat(defaultWebsitesInfo)
+  const websites = usersWebsiteSettings.concat(defaultWebsites)
 
-  const websiteInfo = websitesInfo.find((e) => e && e.host.test(location.hostname))
-  if (!websiteInfo) return
+  const website = websites.find((e) => e && e.host.test(location.hostname))
+  if (!website) return
 
   document.addEventListener('paste', (event) => {
     const element = event.target
-    if (!element.classList.contains(websiteInfo.className)) return
+    if (!element.classList.contains(website.className)) return
 
     const pasteText = event.clipboardData.getData('text/plain')
 
