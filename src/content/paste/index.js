@@ -4,8 +4,14 @@ import defaultWebsitesInfo from './websitesInfo'
 export default async () => {
   let usersSettings
   try {
-    usersSettings = (await storage.get({pasteWebsitesInfo: []}))
+    usersSettings = (await storage.get({
+      pasteWebsitesInfo: [],
+      pasteSupport: true
+    }))
   } catch (e) {}
+
+  if (!usersSettings.pasteSupport) return
+
   const usersWebsiteSettings = usersSettings ? usersSettings.pasteWebsitesInfo : []
 
   const websitesInfo = usersWebsiteSettings.concat(defaultWebsitesInfo)
