@@ -12,6 +12,7 @@ storage.get({behavior: 'element', delay: 1, pasteSupport: true})
   })
 document.getElementById('element').textContent = chrome.i18n.getMessage('selectElement')
 document.getElementById('area').textContent = chrome.i18n.getMessage('selectArea')
+document.getElementById('pasteSupportSettingText').textContent = chrome.i18n.getMessage('pasteSupportSettingText')
 
 selector.addEventListener('change', function (event) {
   storage.set({behavior: event.target.value})
