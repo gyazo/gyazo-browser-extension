@@ -16,12 +16,19 @@ export default async () => {
 
   const websites = usersWebsiteSettings.concat(defaultWebsites)
 
-  const website = websites.find((e) => e && e.host.test(location.hostname))
+  const website = websites.some((e) => e && e.host.test(location.hostname))
   if (!website) return
 
   document.addEventListener('paste', (event) => {
     const element = event.target
-    if (!element.classList.contains(website.className)) return
+    if (typeof website.className === 'string') {
+      if (!element.classList.contains(website.className)) return
+    } else if (Array.isArray(website.className)) {
+      const containsEnabledClassName = website.className.some((className) => element.classList.contains(className))
+      if (!containsEnabledClassName) return
+    } else {
+      return
+    }
 
     const pasteText = event.clipboardData.getData('text/plain')
 
