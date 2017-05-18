@@ -2,7 +2,7 @@ import storage from '../../libs/storageSwitcher'
 import defaultWebsites from './websites'
 
 export default async () => {
-  let usersSettings
+  let usersSettings = {}
   try {
     usersSettings = (await storage.get({
       pasteWebsites: [],
@@ -16,7 +16,7 @@ export default async () => {
 
   const websites = usersWebsiteSettings.concat(defaultWebsites)
 
-  const website = websites.some((e) => e && e.host.test(location.hostname))
+  const website = websites.find((e) => e && e.host.test(location.hostname))
   if (!website) return
 
   document.addEventListener('paste', (event) => {
