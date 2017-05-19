@@ -34,5 +34,8 @@
   },
   "myImage": {
     "message": "Home"
+  },
+  "pasteSupportSettingText": {
+    "message": "Replace Gyazo's URL to markdown style when it's pasted."
   }
 }

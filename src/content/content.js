@@ -1,6 +1,7 @@
 import browserInfo from 'bowser'
 import MessageListener from '../libs/MessageListener'
 import expander from './expander'
+import pasteUtil from './paste'
 import notification from './notification'
 import insertMenu from './insertMenu'
 import {changeFixedElementToAbsolute} from './actions'
@@ -25,4 +26,6 @@ import {changeFixedElementToAbsolute} from './actions'
     !browserInfo.firefox && // XXX: Firefox can't embed moz-extension:// file in content
     !(/^(.+\.)?gyazo\.com$/).test(window.location.host)  // Prevent showing preview on gyazo.com
   ) expander()
+
+  pasteUtil()
 })()
