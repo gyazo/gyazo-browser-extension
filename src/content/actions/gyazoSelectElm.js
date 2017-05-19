@@ -4,7 +4,7 @@ import getZoomAndScale from '../../libs/getZoomAndScale'
 import changeFixedElementToAbsolute from '../../libs/changeFixedElementToAbsolute'
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
-import {ESC_KEY_CODE, JACKUP_HEIGHT} from '../../constants'
+import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
 
 export default async (request) => {
   if (document.querySelector('.gyazo-crop-select-element')) {
@@ -116,7 +116,6 @@ export default async (request) => {
     data.z = scaleObj.zoom
     data.positionX = window.scrollX
     data.positionY = window.scrollY
-    data.innerHeight = window.innerHeight
     data.desc = dupTarget.textContent
     if (document.body.contains(layer)) {
       document.body.removeChild(layer)
@@ -124,7 +123,7 @@ export default async (request) => {
     if (document.querySelector('.gyazo-menu')) {
       document.body.removeChild(document.querySelector('.gyazo-menu'))
     }
-    jackup.style.height = (window.innerHeight + JACKUP_HEIGHT) + 'px'
+    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
     window.removeEventListener('contextmenu', cancel)
     window.removeEventListener('keydown', keydownHandler)
     document.removeEventListener('keyup', keyUpHandler)
@@ -142,7 +141,7 @@ export default async (request) => {
       }, function () {})
     }
     let overflow = {}
-    if (data.y + data.h > data.innerHeight + data.positionY) {
+    if (data.y + data.h > window.innerHeight + data.positionY) {
       overflow = lockScroll()
       packScrollBar(overflow)
     }

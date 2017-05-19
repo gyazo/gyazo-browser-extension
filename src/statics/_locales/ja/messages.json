@@ -37,5 +37,8 @@
   },
   "contextMenuSetting": {
     "message": "コンテキストメニューに機能呼び出しメニューを追加する"
+  },
+  "pasteSupportSettingText": {
+    "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
   }
 }

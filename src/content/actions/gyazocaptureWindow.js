@@ -17,7 +17,6 @@ export default async (request) => {
   data.positionX = window.scrollX
   data.positionY = window.scrollY
   data.defaultPositon = window.scrollY
-  data.innerHeight = window.innerHeight
   window.requestAnimationFrame(async () => {
     await thenChrome.runtime.sendMessage(chrome.runtime.id, {
       target: 'main',

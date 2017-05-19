@@ -37,5 +37,8 @@
   },
   "contextMenuSetting": {
     "message": "Enable to add menu items to context menu"
+  },
+  "pasteSupportSettingText": {
+    "message": "Replace Gyazo's URL to markdown style when it's pasted."
   }
 }
