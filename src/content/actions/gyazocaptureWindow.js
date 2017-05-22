@@ -22,7 +22,7 @@ export default async (request) => {
       target: 'main',
       action: 'gyazoCaptureWithSize',
       data: data,
-      tab: request.tab
+      tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
     })
     unlockScroll(overflow)
   })
