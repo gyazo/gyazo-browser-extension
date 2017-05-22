@@ -74,6 +74,7 @@ export default async (request) => {
   const clickElement = function (event) {
     event.stopPropagation()
     event.preventDefault()
+    layer.style.opacity = 0
     document.body.classList.remove('gyazo-select-element-mode')
     allElms.forEach(function (item) {
       if (item.classList.contains('gyazo-select-element-cursor-overwrite')) {
