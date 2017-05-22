@@ -137,7 +137,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   padding: 0 !important;
 }
 
-.gyazo-menu > .gyazo-button > .gyazo-button-icon > svg {
+.gyazo-menu > .gyazo-button > .gyazo-button-icon > * {
   fill: #4D4D4D !important;
   width: 20px !important;
   height: 20px !important;
