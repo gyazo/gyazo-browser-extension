@@ -101,6 +101,7 @@ export default (request) => {
       cancelGyazo()
       return false
     }
+    layer.style.opacity = 0
     data.x = rect.left + window.scrollX
     data.y = rect.top + window.scrollY
     data.t = document.title
