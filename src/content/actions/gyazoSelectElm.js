@@ -137,7 +137,7 @@ export default async (request) => {
         target: 'main',
         action: 'gyazoSendRawImage',
         data: {srcUrl: layer.getAttribute('data-img-url')},
-        tab: request.tab
+        tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
       }, function () {})
     }
     let overflow = {}
@@ -154,7 +154,7 @@ export default async (request) => {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
-          tab: request.tab
+          tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         })
         restoreFixedElement()
         if (document.body.contains(jackup)) document.body.removeChild(jackup)
