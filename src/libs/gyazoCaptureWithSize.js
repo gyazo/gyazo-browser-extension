@@ -76,36 +76,57 @@ export default (request, sender, sendResponse) => {
       capture(scrollHeight, scrollWidth)
       return
     }
-    const scrollToX = scrollWidth + request.data.x
-    const scrollToY = scrollHeight + request.data.y
-
-    await thenChrome.tabs.executeScript(request.tab.id, {
-      code: `window.scrollTo(${scrollToX}, ${scrollToY})`
-    })
     await thenChrome.tabs.sendMessage(request.tab.id, {
       target: 'content',
-      action: 'changeFixedElementToAbsolute',
-      scrollTo: {x: scrollToX, y: scrollToY}
+      action: 'changeFixedElementToAbsolute'
     })
+
+    let scrollToX = scrollWidth + request.data.x
+    let scrollToY = scrollHeight + request.data.y
+
+    if (scrollToX + request.tab.width > request.data.documentWidth) {
+      if (request.tab.width === request.data.documentWidth) {
+        scrollToX = 0
+      } else {
+        scrollToX = scrollWidth + (scrollToX + request.tab.width - request.data.documentWidth)
+      }
+    }
+
+    await thenChrome.tabs.sendMessage(request.tab.id, {
+      target: 'content',
+      action: 'waitScroll',
+      scrollToX,
+      scrollToY
+    })
+
     const data = await thenChrome.tabs.captureVisibleTab(null, {format: 'png'})
     if (lastImageData === data) {
       // retry
       return capture(scrollHeight, scrollWidth, lastImageBottom, lastImageRight, data)
     }
+    let startX = 0
+    let width = lastLineWidth || request.tab.width
+    if (lastLineWidth) {
+      startX = request.tab.width - lastLineWidth
+    } else if (scrollToX === 0) {
+      startX = request.data.x
+      width -= request.data.x
+    }
+
     const trimedImageCanvas = await trimImage({
       imageData: data,
       scale: request.data.s,
       zoom: request.data.z,
-      startX: lastLineWidth ? (request.tab.width - lastLineWidth) : 0,
+      startX,
       startY: 0,
-      width: lastLineWidth || request.tab.width,
+      width,
       height: Math.min(request.tab.height, request.data.h - scrollHeight)
     })
     let [_lastImageBottom, _lastImageRight] = await appendImageToCanvas({
       canvas: baseCanvas,
       imageSrc: trimedImageCanvas.toDataURL(),
       height: Math.min(request.tab.height, request.data.h - scrollHeight),
-      width: lastLineWidth || request.tab.width,
+      width,
       top: imagePositionTop,
       left: imagePositionLeft,
       scale: request.data.s,
