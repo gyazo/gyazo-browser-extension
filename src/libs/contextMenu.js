@@ -76,7 +76,7 @@ const checkContextMenuEnabled = async () => {
   }
   try {
     await thenChrome.contextMenus.create({
-      title: 'Capture',
+      title: chrome.i18n.getMessage('captureParentTitle'),
       id: 'captureParent',
       contexts: ['all']
     })

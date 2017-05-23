@@ -40,5 +40,8 @@
   },
   "pasteSupportSettingText": {
     "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
+  },
+  "captureParentTitle": {
+    "message": "Gyazoでキャプチャ"
   }
 }
