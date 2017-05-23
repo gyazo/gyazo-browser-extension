@@ -38,7 +38,7 @@ export default async (request, sender, sendResponse) => {
     .then((res) => res.text())
     .then((text) => { closeBtnIcon.innerHTML = text })
   } catch (e) {
-    closeBtnIcon.innerHTML = `<img src='${chrome.runtime.getURL('imgs/cross.svg')}' />`
+    closeBtnIcon.innerHTML = `<img src='${chrome.runtime.getURL('imgs/cross.svg')}' class='gyazo-menu-element' />`
   }
   closeBtn.setAttribute('title', 'Press: Escape')
 
