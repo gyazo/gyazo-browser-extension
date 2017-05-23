@@ -101,12 +101,14 @@ export default (request) => {
       cancelGyazo()
       return false
     }
+    layer.style.opacity = 0
     data.x = rect.left + window.scrollX
     data.y = rect.top + window.scrollY
     data.t = document.title
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
+    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     document.body.removeChild(layer)
@@ -129,7 +131,7 @@ export default (request) => {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
-          tab: request.tab
+          tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         }, function () {
           document.body.removeChild(jackup)
           unlockScroll(overflow)

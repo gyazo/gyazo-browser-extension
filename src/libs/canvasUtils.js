@@ -33,7 +33,6 @@ export const trimImage = (argObj) => new Promise((resolve) => {
   const ctx = canvas.getContext('2d')
   if (typeof imageData === 'string' && imageData.substr(0, 5) === 'data:') {
     imageLoader(imageData, function (img) {
-      console.log(width, height, startX)
       ctx.drawImage(img, startX, startY, width, height, 0, 0, width, height)
       resolve(canvas)
     })

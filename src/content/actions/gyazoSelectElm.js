@@ -74,6 +74,7 @@ export default async (request) => {
   const clickElement = function (event) {
     event.stopPropagation()
     event.preventDefault()
+    layer.style.opacity = 0
     document.body.classList.remove('gyazo-select-element-mode')
     allElms.forEach(function (item) {
       if (item.classList.contains('gyazo-select-element-cursor-overwrite')) {
@@ -114,6 +115,7 @@ export default async (request) => {
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
+    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     data.desc = dupTarget.textContent
@@ -137,7 +139,7 @@ export default async (request) => {
         target: 'main',
         action: 'gyazoSendRawImage',
         data: {srcUrl: layer.getAttribute('data-img-url')},
-        tab: request.tab
+        tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
       }, function () {})
     }
     let overflow = {}
@@ -154,7 +156,7 @@ export default async (request) => {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
-          tab: request.tab
+          tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         })
         restoreFixedElement()
         if (document.body.contains(jackup)) document.body.removeChild(jackup)

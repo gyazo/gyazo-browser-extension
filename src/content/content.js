@@ -4,7 +4,7 @@ import expander from './expander'
 import pasteUtil from './paste'
 import notification from './notification'
 import insertMenu from './insertMenu'
-import {gyazocaptureWindow, gyazoCaptureSelectedArea, gyazoSelectElm, gyazoWholeCapture, changeFixedElementToAbsolute} from './actions'
+import {gyazocaptureWindow, gyazoCaptureSelectedArea, gyazoSelectElm, gyazoWholeCapture, changeFixedElementToAbsolute, waitScroll} from './actions'
 
 (function () {
   if (window.__embededGyazoContentJS) {
@@ -24,6 +24,7 @@ import {gyazocaptureWindow, gyazoCaptureSelectedArea, gyazoSelectElm, gyazoWhole
   onMessageListener.add('captureSelectArea', gyazoCaptureSelectedArea)
   onMessageListener.add('captureElement', gyazoSelectElm)
   onMessageListener.add('captureWholePage', gyazoWholeCapture)
+  onMessageListener.add('waitScroll', waitScroll)
 
   chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))
   if (

@@ -10,6 +10,7 @@ export default async (request) => {
   data.w = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.h = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
   data.x = 0
+  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.y = 0
   data.t = document.title
   data.u = location.href
@@ -20,12 +21,12 @@ export default async (request) => {
   const jackup = document.createElement('div')
   jackup.classList.add('gyazo-jackup-element')
   document.body.appendChild(jackup)
-  jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+  jackup.setAttribute('style', `height: ${window.innerHeight + JACKUP_MARGIN}px`)
   await thenChrome.runtime.sendMessage(chrome.runtime.id, {
     target: 'main',
     action: 'gyazoCaptureWithSize',
     data: data,
-    tab: request.tab
+    tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
   })
   document.body.removeChild(jackup)
   unlockScroll(overflow)
