@@ -10,6 +10,7 @@ export default async (request) => {
   data.w = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.h = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
   data.x = 0
+  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.y = 0
   data.t = document.title
   data.u = location.href

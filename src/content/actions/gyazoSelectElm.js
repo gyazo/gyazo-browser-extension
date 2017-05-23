@@ -115,6 +115,7 @@ export default async (request) => {
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
+    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     data.desc = dupTarget.textContent

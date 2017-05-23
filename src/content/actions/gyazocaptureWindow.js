@@ -7,6 +7,7 @@ export default async (request) => {
   const data = {}
   const scaleObj = getZoomAndScale()
   data.w = window.innerWidth
+  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.h = window.innerHeight
   data.x = window.scrollX
   data.y = window.scrollY

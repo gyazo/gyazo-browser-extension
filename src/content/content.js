@@ -4,7 +4,7 @@ import expander from './expander'
 import pasteUtil from './paste'
 import notification from './notification'
 import insertMenu from './insertMenu'
-import {changeFixedElementToAbsolute} from './actions'
+import {changeFixedElementToAbsolute, waitScroll} from './actions'
 
 (function () {
   if (window.__embededGyazoContentJS) {
@@ -20,6 +20,7 @@ import {changeFixedElementToAbsolute} from './actions'
   onMessageListener.add('notification', notification)
   onMessageListener.add('insertMenu', insertMenu)
   onMessageListener.add('changeFixedElementToAbsolute', changeFixedElementToAbsolute)
+  onMessageListener.add('waitScroll', waitScroll)
 
   chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))
   if (
