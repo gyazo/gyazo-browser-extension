@@ -93,11 +93,6 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   color: #8e8e8e !important;
   padding: 0 !important;
 }
-.gyazo-menu > .gyazo-close-button {
-  padding: 0 !important;
-  width: 20px !important;
-  float: right !important;
-}
 .gyazo-menu > .gyazo-button {
   box-sizing: border-box !important;
   text-align: center !important;
@@ -166,24 +161,25 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   box-sizing: border-box !important;
   text-align: center !important;
   margin: 0 !important;
-  padding: 0 !important;
   width: 25px !important;
   height: 53px !important;
   float: left !important;
   cursor: pointer !important;
-  padding-top: 6px !important;
-  padding: 0 !important;
+  padding: 5px 0 !important;
 }
 .gyazo-menu > .gyazo-close-button:hover > .gyazo-icon-cross > svg {
   fill: #000 !important;
+  cursor: pointer !important;
 }
 .gyazo-menu > .gyazo-close-button > .gyazo-icon-cross > svg {
   fill: #aaa !important;
+  cursor: pointer !important;
   width: 15px !important;
   height: 15px !important;
 }
 .gyazo-menu > .gyazo-close-button > .gyazo-icon-cross {
   width: 100% !important;
+  cursor: pointer !important;
   display: inline-block !important;
 }
 .gyazo-menu .gyazo-spin {
