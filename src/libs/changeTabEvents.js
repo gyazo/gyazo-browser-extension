@@ -39,7 +39,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   } else if (changeInfo.status === 'complete') {
     const tab = await thenChrome.tabs.get(tabId)
     if (!tab.url.match(/^https?:/)) {
-      throw new Error('This Extension can run only on https? pages: ' + location.href)
+      return console.error('This Extension can run only on https? pages: ' + location.href)
     }
     let loaded = [false]
     try {

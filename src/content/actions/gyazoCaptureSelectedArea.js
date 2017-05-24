@@ -1,7 +1,7 @@
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
-import {ESC_KEY_CODE, JACKUP_HEIGHT} from '../../constants'
+import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
 
 export default (request) => {
   if (document.querySelector('.gyazo-jackup-element')) {
@@ -101,26 +101,27 @@ export default (request) => {
       cancelGyazo()
       return false
     }
+    layer.style.opacity = 0
     data.x = rect.left + window.scrollX
     data.y = rect.top + window.scrollY
     data.t = document.title
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
+    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
     data.positionX = window.scrollX
     data.positionY = window.scrollY
-    data.innerHeight = window.innerHeight
     document.body.removeChild(layer)
     if (document.querySelector('.gyazo-menu')) {
       document.body.removeChild(document.querySelector('.gyazo-menu'))
     }
     let overflow = {}
-    if (data.h > data.innerHeight) {
+    if (data.h > window.innerHeight) {
       overflow = lockScroll()
       packScrollBar(overflow)
     }
-    jackup.style.height = (window.innerHeight + JACKUP_HEIGHT) + 'px'
-          // wait for rewrite by removeChild
+    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    // wait for rewrite by removeChild
     let finish = function () {
       if (document.getElementsByClassName('gyazo-select-layer').length > 0) {
         return window.requestAnimationFrame(finish)
@@ -130,7 +131,7 @@ export default (request) => {
           target: 'main',
           action: 'gyazoCaptureWithSize',
           data: data,
-          tab: request.tab
+          tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         }, function () {
           document.body.removeChild(jackup)
           unlockScroll(overflow)

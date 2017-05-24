@@ -34,5 +34,8 @@
   },
   "myImage": {
     "message": "ホーム"
+  },
+  "pasteSupportSettingText": {
+    "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
   }
 }

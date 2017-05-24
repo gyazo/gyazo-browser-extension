@@ -9,13 +9,13 @@ function imageLoader (imgSrc, callback) {
 export const appendImageToCanvas = (argObj) => new Promise((resolve) => {
   const scale = argObj.scale || 1.0
   const zoom = argObj.zoom || 1.0
-  // const pageHeight = argObj.pageHeight * zoom
-  const {canvas, width, top, imageHeight, imageSrc} = argObj
+  const {canvas, width, top, left, height, imageSrc} = argObj
   const ctx = canvas.getContext('2d')
   imageLoader(imageSrc, function (img) {
-    ctx.drawImage(img, 0, 0, width * scale * zoom, imageHeight * scale * zoom, 0, top, img.width, img.height)
+    ctx.drawImage(img, 0, 0, width * scale * zoom, height * scale * zoom, left, top, img.width, img.height)
     const lastImageBottom = top + img.height
-    resolve(lastImageBottom)
+    const lastImageRight = left + img.width
+    resolve([lastImageBottom, lastImageRight])
   })
 })
 

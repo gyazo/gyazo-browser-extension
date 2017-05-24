@@ -7,6 +7,7 @@ export default async (request) => {
   const data = {}
   const scaleObj = getZoomAndScale()
   data.w = window.innerWidth
+  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
   data.h = window.innerHeight
   data.x = window.scrollX
   data.y = window.scrollY
@@ -17,13 +18,12 @@ export default async (request) => {
   data.positionX = window.scrollX
   data.positionY = window.scrollY
   data.defaultPositon = window.scrollY
-  data.innerHeight = window.innerHeight
   window.requestAnimationFrame(async () => {
     await thenChrome.runtime.sendMessage(chrome.runtime.id, {
       target: 'main',
       action: 'gyazoCaptureWithSize',
       data: data,
-      tab: request.tab
+      tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
     })
     unlockScroll(overflow)
   })
