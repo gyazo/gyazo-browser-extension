@@ -38,6 +38,8 @@ export default async () => {
     const mdText = `[![${pasteText}](${pasteText}/raw)](${pasteText})`
     const value = element.value
     const replacedText = value.substr(0, element.selectionStart) + mdText + value.substr(element.selectionEnd, value.length)
+    const newCursorPos = element.selectionStart + mdText.length
     element.value = replacedText
+    element.selectionEnd = newCursorPos
   })
 }
