@@ -23,5 +23,5 @@ deployment:
   production:
     branch: production
     commands:
-      - npm run pack
+      - BUILD_TARGET=production npm run pack
       - curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
