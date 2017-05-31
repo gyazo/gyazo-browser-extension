@@ -5,15 +5,6 @@ import storage from './storageSwitcher'
 
 const onContextMenuClickListener = new MessageListener('contextmenu')
 
-thenChrome.contextMenus.create({
-  title: chrome.i18n.getMessage('contextMenuImage'),
-  id: 'gyazoIt',
-  contexts: ['image']
-})
-.catch((e) => {
-  if (!e.message.match('duplicate id')) console.error(e)
-})
-
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   chrome.tabs.insertCSS(tab.id, {
     file: '/menu.css'
@@ -70,15 +61,33 @@ const checkContextMenuEnabled = async () => {
 
   if (!contextMenuEnabled) {
     try {
-      await thenChrome.contextMenus.remove('captureParent')
+      await thenChrome.contextMenus.removeAll()
+      await thenChrome.contextMenus.create({
+        title: chrome.i18n.getMessage('contextMenuImage'),
+        id: 'gyazoIt',
+        contexts: ['image']
+      })
     } catch (e) {}
     return
   }
   try {
+    await thenChrome.contextMenus.removeAll()
     await thenChrome.contextMenus.create({
       title: chrome.i18n.getMessage('captureParentTitle'),
       id: 'captureParent',
       contexts: ['all']
+    })
+    await thenChrome.contextMenus.create({
+      parentId: 'captureParent',
+      title: chrome.i18n.getMessage('thisImage'),
+      id: 'gyazoIt',
+      contexts: ['image']
+    })
+    await thenChrome.contextMenus.create({
+      parentId: 'captureParent',
+      id: 'gyazoContextMenuSeparator',
+      type: 'separator',
+      contexts: ['image']
     })
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',

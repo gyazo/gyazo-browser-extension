@@ -12,7 +12,10 @@
     "message": "お待ちください"
   },
   "contextMenuImage": {
-    "message": "この画像をアップロード"
+    "message": "この画像をキャプチャ"
+  },
+  "thisImage": {
+    "message": "この画像をキャプチャ"
   },
   "selectArea": {
     "message": "範囲選択"
