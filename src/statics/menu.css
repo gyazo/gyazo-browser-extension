@@ -49,20 +49,24 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 
 .gyazo-menu.gyazo-notification {
+  font-family: Helvetica, Arial, sans-serif !important;
   padding: 30px 38px !important;
   text-align: center !important;
   margin: 0 !important;
 }
 
 .gyazo-notification > div {
+  font-family: Helvetica, Arial, sans-serif !important;
   width: 100% !important;
 }
 
 .gyazo-notification .gyazo-notification-title {
+  font-family: Helvetica, Arial, sans-serif !important;
   padding: 0 !important;
   font-size: 22px !important;
 }
 .gyazo-notification .gyazo-notification-message {
+  font-family: Helvetica, Arial, sans-serif !important;
   font-size: 13px !important;
   padding: 5px 0 15px !important;
   border-bottom: 1px solid #ccc !important;
@@ -82,6 +86,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   font-size: 13px !important;
   font-weight: bold !important;
   padding: 0 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
 }
 .gyazo-notification .gyazo-notification-image-host {
   margin-top: 4px !important;
@@ -92,6 +97,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   font-size: 13px !important;
   color: #8e8e8e !important;
   padding: 0 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
 }
 .gyazo-menu > .gyazo-button {
   box-sizing: border-box !important;
@@ -103,6 +109,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   float: left !important;
   font-size: 12px !important;
   cursor: pointer !important;
+  font-family: Helvetica, Arial, sans-serif !important;
 }
 .gyazo-menu > .gyazo-button.gyazo-menu-myimage {
   border-left: 1px solid #cccccc !important;
@@ -156,6 +163,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   text-overflow: ellipsis !important;
   overflow: hidden !important;
   padding: 0 !important;
+  font-family: Helvetica, Arial, sans-serif !important;
 }
 .gyazo-menu > .gyazo-close-button {
   box-sizing: border-box !important;
