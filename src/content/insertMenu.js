@@ -89,12 +89,14 @@ export default async (request, sender, sendResponse) => {
     gyazoCaptureSelectedArea(request, sender, sendResponse)
   }
   selectAreaBtn.addEventListener('click', function () {
+    if (behavior === 'area') return
     hideMenu()
     window.requestAnimationFrame(function () {
       gyazoCaptureSelectedArea(request, sender, sendResponse)
     })
   })
   selectElementBtn.addEventListener('click', function () {
+    if (behavior === 'element') return
     hideMenu()
     window.requestAnimationFrame(function () {
       gyazoSelectElm(request, sender, sendResponse)
