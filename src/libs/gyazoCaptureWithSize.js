@@ -142,5 +142,5 @@ export default (request, sender, sendResponse) => {
       capture(scrollHeight, scrollWidth, _lastImageBottom, _lastImageRight, data)
     })
   }
-  capture()
+  waitForDelay(capture)
 }
