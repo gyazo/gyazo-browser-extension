@@ -14,6 +14,9 @@
   "contextMenuImage": {
     "message": "Capture this image"
   },
+  "thisImage": {
+    "message": "This image"
+  },
   "selectArea": {
     "message": "Free Selection"
   },
@@ -35,7 +38,13 @@
   "myImage": {
     "message": "Home"
   },
+  "contextMenuSetting": {
+    "message": "Enable to add menu items to context menu"
+  },
   "pasteSupportSettingText": {
     "message": "Replace Gyazo's URL to markdown style when it's pasted."
+  },
+  "captureParentTitle": {
+    "message": "Capture"
   }
 }

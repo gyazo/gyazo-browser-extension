@@ -12,7 +12,10 @@
     "message": "お待ちください"
   },
   "contextMenuImage": {
-    "message": "この画像をアップロード"
+    "message": "この画像をキャプチャ"
+  },
+  "thisImage": {
+    "message": "この画像をキャプチャ"
   },
   "selectArea": {
     "message": "範囲選択"
@@ -35,7 +38,13 @@
   "myImage": {
     "message": "ホーム"
   },
+  "contextMenuSetting": {
+    "message": "コンテキストメニューに機能呼び出しメニューを追加する"
+  },
   "pasteSupportSettingText": {
     "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
+  },
+  "captureParentTitle": {
+    "message": "キャプチャ"
   }
 }
