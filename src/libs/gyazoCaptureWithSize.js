@@ -1,6 +1,7 @@
 import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import {trimImage, appendImageToCanvas} from './canvasUtils'
+import {UPLOAD_LIMIT_VOLUME} from '../constants'
 import postToGyazo from './postToGyazo'
 import waitForDelay from './waitForDelay'
 import toJpegDataURL from './convertAdjustmentJpegQuality'
@@ -19,7 +20,7 @@ export default (request, sender, sendResponse) => {
         code: 'window.scrollTo(' + request.data.positionX + ', ' + request.data.positionY + ' )'
       })
       let uploadImage = baseCanvas.toDataURL()
-      if (uploadImage.length > 3 * 1024 * 1024 /* = 3 MB */) {
+      if (uploadImage.length > UPLOAD_LIMIT_VOLUME) {
         uploadImage = toJpegDataURL(baseCanvas)
       }
       postToGyazo(request.tab.id, {
