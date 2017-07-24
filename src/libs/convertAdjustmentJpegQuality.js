@@ -11,9 +11,9 @@ export default (canvas) => {
   for (let i = 0; i < 5; i++) {
     result = canvas.toDataURL('image/jpeg', quality)
     if (result.length <= LIMIT_VOLUME) {
-      quality += (QUALITY_MAX = QUALITY_MIN) / Math.pow(i + 2)
+      quality += (QUALITY_MAX - QUALITY_MIN) / Math.pow(i + 2)
     } else {
-      quality -= (QUALITY_MAX = QUALITY_MIN) / Math.pow(i + 2)
+      quality -= (QUALITY_MAX - QUALITY_MIN) / Math.pow(i + 2)
     }
   }
   return result
