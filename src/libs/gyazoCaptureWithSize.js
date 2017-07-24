@@ -17,8 +17,12 @@ export default (request, sender, sendResponse) => {
       chrome.tabs.executeScript(request.tab.id, {
         code: 'window.scrollTo(' + request.data.positionX + ', ' + request.data.positionY + ' )'
       })
+      let uploadImage = baseCanvas.toDataURL()
+      if (uploadImage.length > 5 * 1024 * 1024 /* = 5 MB */) {
+        uploadImage = baseCanvas.toDataURL('image/jpeg')
+      }
       postToGyazo(request.tab.id, {
-        imageData: baseCanvas.toDataURL(),
+        imageData: uploadImage,
         title: request.data.t,
         url: request.data.u,
         width: request.data.w,
