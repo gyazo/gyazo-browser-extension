@@ -3,6 +3,7 @@ import browserInfo from 'bowser'
 import {trimImage, appendImageToCanvas} from './canvasUtils'
 import postToGyazo from './postToGyazo'
 import waitForDelay from './waitForDelay'
+import toJpegDataURL from './convertAdjustmentJpegQuality'
 
 export default (request, sender, sendResponse) => {
   // XXX: Firefox WebExtension returns real size image
@@ -18,8 +19,8 @@ export default (request, sender, sendResponse) => {
         code: 'window.scrollTo(' + request.data.positionX + ', ' + request.data.positionY + ' )'
       })
       let uploadImage = baseCanvas.toDataURL()
-      if (uploadImage.length > 5 * 1024 * 1024 /* = 5 MB */) {
-        uploadImage = baseCanvas.toDataURL('image/jpeg')
+      if (uploadImage.length > 3 * 1024 * 1024 /* = 3 MB */) {
+        uploadImage = toJpegDataURL(baseCanvas)
       }
       postToGyazo(request.tab.id, {
         imageData: uploadImage,
