@@ -1,16 +1,18 @@
 import storage from '../../libs/storageSwitcher'
 
 let selector = document.getElementById('selector')
+let fileSizeLimit = document.getElementById('fileSizeLimit')
 let delaySelector = document.getElementById('delay')
 let contextMenuSetting = document.getElementById('contextMenuSetting')
 let pasteSupportSetting = document.getElementById('pasteSupportSetting')
 
-storage.get({behavior: 'element', delay: 1, contextMenu: true, pasteSupport: true})
+storage.get()
   .then((item) => {
     selector.value = item.behavior
     delaySelector.value = item.delay
     pasteSupportSetting.checked = item.pasteSupport
     contextMenuSetting.checked = item.contextMenu
+    fileSizeLimit.value = item.fileSizeLimit
   })
 document.getElementById('element').textContent = chrome.i18n.getMessage('selectElement')
 document.getElementById('area').textContent = chrome.i18n.getMessage('selectArea')
@@ -27,6 +29,16 @@ selector.addEventListener('change', function (event) {
       document.querySelector('.selector-save').textContent = 'Saved'
       window.setTimeout(function () {
         document.querySelector('.selector-save').textContent = ''
+      }, 2500)
+    })
+})
+
+fileSizeLimit.addEventListener('change', function (event) {
+  storage.set({fileSizeLimit: event.target.value})
+    .then(() => {
+      document.querySelector('.file-size-limit-save-alert').textContent = 'Saved'
+      window.setTimeout(function () {
+        document.querySelector('.file-size-limit-save-alert').textContent = ''
       }, 2500)
     })
 })
