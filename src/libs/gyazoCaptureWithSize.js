@@ -1,8 +1,10 @@
 import thenChrome from 'then-chrome'
 import browserInfo from 'bowser'
 import {trimImage, appendImageToCanvas} from './canvasUtils'
+import {UPLOAD_LIMIT_VOLUME} from '../constants'
 import postToGyazo from './postToGyazo'
 import waitForDelay from './waitForDelay'
+import toJpegDataURL from './convertAdjustmentJpegQuality'
 
 export default (request, sender, sendResponse) => {
   // XXX: Firefox WebExtension returns real size image
@@ -17,8 +19,12 @@ export default (request, sender, sendResponse) => {
       chrome.tabs.executeScript(request.tab.id, {
         code: 'window.scrollTo(' + request.data.positionX + ', ' + request.data.positionY + ' )'
       })
+      let uploadImage = baseCanvas.toDataURL()
+      if (uploadImage.length > UPLOAD_LIMIT_VOLUME) {
+        uploadImage = toJpegDataURL(baseCanvas)
+      }
       postToGyazo(request.tab.id, {
-        imageData: baseCanvas.toDataURL(),
+        imageData: uploadImage,
         title: request.data.t,
         url: request.data.u,
         width: request.data.w,
