@@ -1,6 +1,6 @@
 import storage from '../../libs/storageSwitcher'
 
-const DELAY_WORDING = ['Short', 'Normal', 'Long', 'Very Long']
+const DELAY_WORDING = ['Short', 'Normal', 'Long']
 
 let selector = document.getElementById('selector')
 let fileSizeLimit = document.getElementById('fileSizeLimit')
@@ -24,6 +24,7 @@ document.getElementById('element').textContent = chrome.i18n.getMessage('selectE
 document.getElementById('area').textContent = chrome.i18n.getMessage('selectArea')
 document.getElementById('contextMenuSettingMessage').textContent = chrome.i18n.getMessage('contextMenuSetting')
 document.getElementById('pasteSupportSettingText').textContent = chrome.i18n.getMessage('pasteSupportSettingText')
+document.getElementById('fileSizeLimitText').textContent = chrome.i18n.getMessage('fileSizeLimitText')
 
 contextMenuSetting.addEventListener('change', (event) => {
   storage.set({contextMenu: event.target.checked})
