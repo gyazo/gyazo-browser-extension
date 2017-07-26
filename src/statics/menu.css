@@ -34,11 +34,11 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   font-family: Helvetica, Arial, sans-serif !important;
   letter-spacing: 0 !important;
   animation-duration: 0.3s !important;
-  animation-name: slidein !important;
+  animation-name: gyazo-slidein !important;
   animation-timing-function: ease-out !important;
 }
 
-@keyframes slidein {
+@keyframes gyazo-slidein {
   from {
     top: -60px !important;
   }
