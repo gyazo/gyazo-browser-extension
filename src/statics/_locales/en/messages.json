@@ -39,7 +39,7 @@
     "message": "Home"
   },
   "contextMenuSetting": {
-    "message": "Enable to add menu items to context menu"
+    "message": "Always show Gyazo in context menu"
   },
   "pasteSupportSettingText": {
     "message": "Replace Gyazo's URL to markdown style when it's pasted."
