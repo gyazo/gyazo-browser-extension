@@ -2,6 +2,7 @@ import storage from '../../libs/storageSwitcher'
 
 let selector = document.getElementById('selector')
 let fileSizeLimit = document.getElementById('fileSizeLimit')
+let fileSizeLimitCurrentSetting = document.getElementById('fileSizeLimitCurrentSetting')
 let delaySelector = document.getElementById('delay')
 let contextMenuSetting = document.getElementById('contextMenuSetting')
 let pasteSupportSetting = document.getElementById('pasteSupportSetting')
@@ -13,6 +14,7 @@ storage.get()
     pasteSupportSetting.checked = item.pasteSupport
     contextMenuSetting.checked = item.contextMenu
     fileSizeLimit.value = item.fileSizeLimit
+    fileSizeLimitCurrentSetting.textContent = item.fileSizeLimit + ' MB'
   })
 document.getElementById('element').textContent = chrome.i18n.getMessage('selectElement')
 document.getElementById('area').textContent = chrome.i18n.getMessage('selectArea')
@@ -36,6 +38,7 @@ selector.addEventListener('change', function (event) {
 fileSizeLimit.addEventListener('change', function (event) {
   storage.set({fileSizeLimit: event.target.value})
     .then(() => {
+      fileSizeLimitCurrentSetting.textContent = event.target.value + ' MB'
       document.querySelector('.file-size-limit-save-alert').textContent = 'Saved'
       window.setTimeout(function () {
         document.querySelector('.file-size-limit-save-alert').textContent = ''
