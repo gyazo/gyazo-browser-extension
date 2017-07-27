@@ -10,6 +10,7 @@ const isReview = process.env.BUILD_TARGET === 'review'
 let plugins = [
   new CopyWebpackPlugin([
     {from: './src/statics/option/options.html', to: 'option/options.html'},
+    {from: './src/statics/option/option.css', to: 'option/option.css'},
     {from: './src/statics/_locales', to: '_locales'},
     {from: './src/statics/imgs', to: 'imgs'},
     {from: './src/statics/icons', to: 'icons'},

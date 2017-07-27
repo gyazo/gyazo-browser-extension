@@ -38,16 +38,31 @@
   "myImage": {
     "message": "Home"
   },
-  "contextMenuSetting": {
+  "contextMenuSettingLabel": {
     "message": "Always show Gyazo in context menu"
   },
-  "pasteSupportSettingText": {
+  "pasteSupportSettingLabel": {
     "message": "Replace Gyazo's URL to markdown style when it's pasted."
   },
   "captureParentTitle": {
     "message": "Capture"
   },
-  "fileSizeLimitText": {
-    "message": "Upper limit file size to upload(file whose size is larger will be compressed)"
+  "fileSizeLimitLabel": {
+    "message": "Upper limit file size to upload"
+  },
+  "fileSizeLimitHelpText": {
+    "message": "file whose size is larger will be compressed"
+  },
+  "defaultActionLabel": {
+    "message": "Default action"
+  },
+  "pageScrollDelayLabel": {
+    "message": "Page scroll delay"
+  },
+  "pageScrollDelayHelpText": {
+    "message": "Please set slow if capture is broken"
+  },
+  "pageScrollDelayWords": {
+    "message": "Short,Normal,Long"
   }
 }

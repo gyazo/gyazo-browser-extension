@@ -38,16 +38,31 @@
   "myImage": {
     "message": "ホーム"
   },
-  "contextMenuSetting": {
+  "contextMenuSettingLabel": {
     "message": "コンテキストメニューに機能呼び出しメニューを追加する"
   },
-  "pasteSupportSettingText": {
+  "pasteSupportSettingLabel": {
     "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
   },
   "captureParentTitle": {
     "message": "キャプチャ"
   },
-  "fileSizeLimitText": {
-    "message": "アップロードサイズの上限(このサイズ以上の画像は圧縮されます)"
+  "fileSizeLimitLabel": {
+    "message": "アップロードサイズの上限"
+  },
+  "fileSizeLimitHelpText": {
+    "message": "このサイズ以上の画像は圧縮されます"
+  },
+  "defaultActionLabel": {
+    "message": "デフォルトのアクション"
+  },
+  "pageScrollDelayLabel": {
+    "message": "スクロール速度"
+  },
+  "pageScrollDelayHelpText": {
+    "message": "画像が崩れるときは、ゆっくりに設定してください。"
+  },
+  "pageScrollDelayWords": {
+    "message": "早い,普通,ゆっくり"
   }
 }
