@@ -48,10 +48,10 @@
     "message": "Capture"
   },
   "fileSizeLimitLabel": {
-    "message": "Upper limit file size to upload"
+    "message": "Maximum file size to upload"
   },
   "fileSizeLimitHelpText": {
-    "message": "file whose size is larger will be compressed"
+    "message": "Files larger than this size will be compressed"
   },
   "defaultActionLabel": {
     "message": "Default action"
