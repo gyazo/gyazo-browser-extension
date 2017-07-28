@@ -57,12 +57,12 @@
     "message": "Default action"
   },
   "pageScrollDelayLabel": {
-    "message": "Page scroll delay"
+    "message": "Page scroll speed"
   },
   "pageScrollDelayHelpText": {
-    "message": "Please set slow if capture is broken"
+    "message": "Please set slow if images are broken"
   },
   "pageScrollDelayWords": {
-    "message": "Short,Normal,Long"
+    "message": "Fast,Normal,Slow"
   }
 }

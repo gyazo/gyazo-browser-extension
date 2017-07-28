@@ -4,6 +4,10 @@ html, body {
   padding: 0;
 }
 
+body {
+  border-top: 3px solid #D7D7D7;
+}
+
 section {
   display: flex;
   justify-content: space-between;
