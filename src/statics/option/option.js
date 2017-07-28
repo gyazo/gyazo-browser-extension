@@ -1,21 +1,33 @@
 import storage from '../../libs/storageSwitcher'
 
-let selector = document.getElementById('selector')
-let delaySelector = document.getElementById('delay')
+const DELAY_WORDING = chrome.i18n.getMessage('pageScrollDelayWords').split(',')
+
+let selector = document.getElementById('defaultAction')
+let fileSizeLimit = document.getElementById('fileSizeLimitRange')
+let fileSizeLimitCurrentSetting = document.getElementById('fileSizeLimitCurrentSetting')
+let delaySelector = document.getElementById('pageScrollDelayRange')
+let delayCurrentSetting = document.getElementById('delayCurrentSetting')
 let contextMenuSetting = document.getElementById('contextMenuSetting')
 let pasteSupportSetting = document.getElementById('pasteSupportSetting')
 
-storage.get({behavior: 'element', delay: 1, contextMenu: true, pasteSupport: true})
+storage.get()
   .then((item) => {
     selector.value = item.behavior
     delaySelector.value = item.delay
+    delayCurrentSetting.textContent = DELAY_WORDING[item.delay]
     pasteSupportSetting.checked = item.pasteSupport
     contextMenuSetting.checked = item.contextMenu
+    fileSizeLimit.value = item.fileSizeLimit
+    fileSizeLimitCurrentSetting.textContent = item.fileSizeLimit + ' MB'
   })
-document.getElementById('element').textContent = chrome.i18n.getMessage('selectElement')
-document.getElementById('area').textContent = chrome.i18n.getMessage('selectArea')
-document.getElementById('contextMenuSettingMessage').textContent = chrome.i18n.getMessage('contextMenuSetting')
-document.getElementById('pasteSupportSettingText').textContent = chrome.i18n.getMessage('pasteSupportSettingText')
+;[
+  'defaultActionLabel', 'selectElement', 'selectArea',
+  'contextMenuSettingLabel', 'pasteSupportSettingLabel',
+  'fileSizeLimitLabel', 'fileSizeLimitHelpText', 'pageScrollDelayLabel',
+  'pageScrollDelayHelpText'
+].forEach((id) => {
+  document.getElementById(id).textContent = chrome.i18n.getMessage(id)
+})
 
 contextMenuSetting.addEventListener('change', (event) => {
   storage.set({contextMenu: event.target.checked})
@@ -23,21 +35,19 @@ contextMenuSetting.addEventListener('change', (event) => {
 
 selector.addEventListener('change', function (event) {
   storage.set({behavior: event.target.value})
+})
+
+fileSizeLimit.addEventListener('change', function (event) {
+  storage.set({fileSizeLimit: event.target.value})
     .then(() => {
-      document.querySelector('.selector-save').textContent = 'Saved'
-      window.setTimeout(function () {
-        document.querySelector('.selector-save').textContent = ''
-      }, 2500)
+      fileSizeLimitCurrentSetting.textContent = event.target.value + ' MB'
     })
 })
 
 delaySelector.addEventListener('change', function (event) {
   storage.set({delay: event.target.value})
     .then(() => {
-      document.querySelector('.scroll-delay-save').textContent = 'Saved'
-      window.setTimeout(function () {
-        document.querySelector('.scroll-delay-save').textContent = ''
-      }, 2500)
+      delayCurrentSetting.textContent = DELAY_WORDING[event.target.value]
     })
 })
 

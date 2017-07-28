@@ -1,6 +1,6 @@
 import thenChrome from 'then-chrome'
 import storage from './storageSwitcher'
-const DELAY_TIMES = [0, 200, 400, 700, 1000]
+const DELAY_TIMES = [0, 200, 700, 700]
 
 export default async (callback) => {
   // Force reflow on browser content

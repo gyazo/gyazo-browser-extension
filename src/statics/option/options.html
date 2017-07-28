@@ -1,43 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    .alert-message {
-      float: right;
-      color: rgb(9, 132, 222);
-    }
-  </style>
+  <link rel='stylesheet' href='./option.css' />
 </head>
-<body style='font-size: 14px; margin: 20px 8px'>
-  <div class='alert-message selector-save'></div>
+<body>
+  <section id='defaultAction'>
+    <label id='defaultActionLabel'></label>
+    <span class='user-input'>
+      <select id='defaultActionSelector'>
+       <option value='element' id='selectElement'></option>
+       <option value='area' id='selectArea'></option>
+      </select>
+    </span>
+  </section>
 
-  Change default action:
-  <select id="selector">
-   <option value="element" id='element'></option>
-   <option value="area" id='area'></option>
-  </select>
-  <br /><br />
+  <section id='fileSizeLimit'>
+    <label>
+      <span id='fileSizeLimitLabel'></span><br />
+      <span id='fileSizeLimitHelpText' class='help-text'></span>
+    </label>
+    <span class='user-input'>
+      <span id='fileSizeLimitCurrentSetting' class='current-setting'></span>
+      <input type='range' min='1' max='5' step='1' id='fileSizeLimitRange' />
+    </span>
+  </section>
 
+  <section id='pageScrollDelay'>
+    <label>
+      <span id='pageScrollDelayLabel'></span><br />
+      <span id='pageScrollDelayHelpText' class='help-text'></span>
+    </label>
+    <span class='user-input'>
+      <span id='delayCurrentSetting' class='current-setting'></span>
+      <input type='range' min='0' max='2' step='1' id='pageScrollDelayRange'/>
+    </span>
+  </section>
 
-  <label><input type='checkbox' id='contextMenuSetting' /> <span id='contextMenuSettingMessage'></span></label>
+  <section>
+    <label id='contextMenuSettingLabel' for='contextMenuSetting'></label>
+    <span class='user-input'>
+      <input type='checkbox' id='contextMenuSetting' />
+    </span>
+  </section>
 
-  <br /><br />
+  <section>
+    <label id='pasteSupportSettingLabel' for='pasteSupportSetting'></label>
+    <span class='user-input'>
+      <input id='pasteSupportSetting' type='checkbox' />
+    </span>
+  </section>
 
-  <div class='alert-message scroll-delay-save'></div>
-
-  Page scroll delay:<br />
-  <span style='font-size: 12px;'>Short</span>
-  <input type='range' min='0' max='3' step='1' id='delay'/>
-  <span style='font-size: 12px;'>Long</span>
-  <br />
-  <span style='font-size: 12px'>Please set longer if your image is broken.</span>
-
-  <br /><br />
-
-  <label>
-    <input id='pasteSupportSetting' type='checkbox' /><span id='pasteSupportSettingText'></span>
-  </label>
-
-  <script src="/option.js"></script>
+  <script src='/option.js'></script>
 </body>
 </html>
