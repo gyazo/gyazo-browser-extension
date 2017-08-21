@@ -24,7 +24,7 @@ let plugins = [
     exec('cp -R dist/common/* dist/edge')
     exec('./node_modules/.bin/wemf -U --browser firefox dist/firefox/manifest.json')
     exec('./node_modules/.bin/wemf -U --browser chrome dist/chrome/manifest.json')
-    exec('./node_modules/.bin/wemf -U --browser edge dist/edge/manifest.json')
+    exec(`./node_modules/.bin/wemf -U --browser edge dist/edge/manifest.json --data '${JSON.stringify({name: 'Gyazo Extension for Edge'})}'`)
 
     if (isReview) {
       const manifestPath = path.resolve(__dirname, './dist/firefox/manifest.json')
