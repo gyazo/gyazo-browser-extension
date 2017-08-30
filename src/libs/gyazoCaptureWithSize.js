@@ -7,8 +7,9 @@ import waitForDelay from './waitForDelay'
 import toJpegDataURL from './convertAdjustmentJpegQuality'
 
 export default (request, sender, sendResponse) => {
-  // XXX: Firefox and Edge returns real size image
-  if (browserInfo.firefox || browserInfo.msedge) request.data.s = 1
+  // XXX: Firefox returns real size image
+  if (browserInfo.firefox) request.data.s = 1.00
+  if (browserInfo.msedge && request.data.s === 1.25) request.data.s = 1.00
   const baseCanvas = document.createElement('canvas')
   baseCanvas.height = request.data.h * request.data.z * request.data.s
   baseCanvas.width = request.data.w * request.data.z * request.data.s
