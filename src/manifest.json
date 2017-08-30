@@ -41,10 +41,16 @@
     "imgs/window.svg"
   ],
   "icons": {
+    "19": "icons/19.png",
     "16": "icons/16.png",
+    "30": "icons/30.png",
     "32": "icons/16@2x.png",
+    "38": "icons/19@2x.png",
+    "44": "icons/44.png",
     "48": "icons/48.png",
+    "50": "icons/50.png",
     "96": "icons/48@2x.png",
+    "150": "icons/150.png",
     "128": "icons/128.png",
     "256": "icons/128@2x.png"
   },
