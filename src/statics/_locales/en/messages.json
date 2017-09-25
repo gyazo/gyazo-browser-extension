@@ -64,5 +64,14 @@
   },
   "pageScrollDelayWords": {
     "message": "Fast,Normal,Slow"
+  },
+  "installApp": {
+    "message": "It enable to you after install latest version of $appName$ then launch it once.",
+    "placeholders": {
+      "appName": {
+        "content": "$1",
+        "example": "Gyazo.app"
+      }
+    }
   }
 }

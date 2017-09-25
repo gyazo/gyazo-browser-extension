@@ -64,5 +64,14 @@
   },
   "pageScrollDelayWords": {
     "message": "早い,普通,ゆっくり"
+  },
+  "installApp": {
+    "message": "最新版の$appName$をインストールした後に1度アプリケーションを起動すると有効になります。",
+    "placeholders": {
+      "appName": {
+        "content": "$1",
+        "example": "Gyazo.app"
+      }
+    }
   }
 }
