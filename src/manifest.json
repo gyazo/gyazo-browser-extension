@@ -13,7 +13,8 @@
     "cookies",
     "clipboardWrite",
     "clipboardRead",
-    "storage"
+    "storage",
+    "nativeMessaging"
   ],
   "applications": {
     "gecko": {
@@ -38,7 +39,9 @@
     "imgs/selection.svg",
     "imgs/spinner.svg",
     "imgs/window-scroll.svg",
-    "imgs/window.svg"
+    "imgs/window.svg",
+    "imgs/gyazo-logo.png",
+    "imgs/gyazo-gif-logo.png"
   ],
   "icons": {
     "19": "icons/19.png",

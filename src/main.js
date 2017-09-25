@@ -4,6 +4,7 @@ import MessageListener from './libs/MessageListener'
 import gyazoIt from './libs/gyazoIt'
 import {disableButton} from './libs/changeTabEvents'
 import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize'
+import {launchGyazo, launchGyazoGif} from './libs/launchApp'
 import './libs/contextMenu'
 
 const onMessageListener = new MessageListener('main')
@@ -53,5 +54,7 @@ onMessageListener.add('gyazoSendRawImage', (request, sender, sendResponse) => {
 })
 
 onMessageListener.add('gyazoCaptureWithSize', gyazoCaptureWithSize)
+onMessageListener.add('launchGyazo', launchGyazo)
+onMessageListener.add('launchGyazoGif', launchGyazoGif)
 
 chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))

@@ -7971,9 +7971,9 @@ webpack@^2.4.1:
     webpack-sources "^0.2.3"
     yargs "^6.0.0"
 
-wemf@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/wemf/-/wemf-1.2.0.tgz#14b49afc79a04e20019918aa84223ff214f73a0d"
+wemf@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/wemf/-/wemf-1.2.1.tgz#5b606df6569e50d1c12c0021333a717edec8e39b"
   dependencies:
     commander "^2.9.0"
     guid "0.0.12"

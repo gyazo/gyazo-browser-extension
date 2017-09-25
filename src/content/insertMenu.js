@@ -1,6 +1,14 @@
-import createButton from './createButtonOnMenu'
+import browserInfo from 'bowser'
+import {wideButton, regularButton} from './createButtonOnMenu'
 import storage from '../libs/storageSwitcher'
-import {gyazocaptureWindow, gyazoCaptureSelectedArea, gyazoSelectElm, gyazoWholeCapture} from './actions'
+import {
+  gyazocaptureWindow,
+  gyazoCaptureSelectedArea,
+  gyazoSelectElm,
+  gyazoWholeCapture,
+  launchGyazo,
+  launchGyazoGif
+} from './actions'
 import {ESC_KEY_CODE} from '../constants'
 
 const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')
@@ -22,11 +30,14 @@ export default async (request, sender, sendResponse) => {
   gyazoMenu = document.createElement('div')
   gyazoMenu.className = 'gyazo-menu gyazo-menu-element'
 
-  let selectElementBtn = createButton('selection', chrome.i18n.getMessage('selectElement'), 'E')
-  let selectAreaBtn = createButton('crop', chrome.i18n.getMessage('selectArea'), 'S')
-  let windowCaptureBtn = createButton('window', chrome.i18n.getMessage('captureWindow'), 'P')
-  let wholeCaptureBtn = createButton('window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
-  let myImageBtn = createButton('grid', chrome.i18n.getMessage('myImage'))
+  let selectElementBtn = regularButton('selection', chrome.i18n.getMessage('selectElement'), 'E')
+  let selectAreaBtn = regularButton('crop', chrome.i18n.getMessage('selectArea'), 'S')
+  let windowCaptureBtn = regularButton('window', chrome.i18n.getMessage('captureWindow'), 'P')
+  let wholeCaptureBtn = regularButton('window-scroll', chrome.i18n.getMessage('topToBottom'), 'W')
+  let myImageBtn = regularButton('grid', chrome.i18n.getMessage('myImage'))
+  let launchGyazoBtn = wideButton('gyazo-logo.png', 'Capture Desktop')
+  let launchGyazoGifBtn = wideButton('gyazo-gif-logo.png', 'Record Desktop')
+
   myImageBtn.classList.add('gyazo-menu-myimage')
   let closeBtn = document.createElement('div')
   closeBtn.className = 'gyazo-close-button gyazo-menu-element'
@@ -121,4 +132,16 @@ export default async (request, sender, sendResponse) => {
     hideMenu()
     window.open('https://gyazo.com/')
   })
+  if (browserInfo.mac) {
+    gyazoMenu.appendChild(launchGyazoBtn)
+    gyazoMenu.appendChild(launchGyazoGifBtn)
+    launchGyazoBtn.addEventListener('click', () => {
+      hideMenu()
+      launchGyazo()
+    })
+    launchGyazoGifBtn.addEventListener('click', () => {
+      hideMenu()
+      launchGyazoGif()
+    })
+  }
 }

@@ -111,6 +111,10 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
   cursor: pointer !important;
   font-family: Helvetica, Arial, sans-serif !important;
 }
+.gyazo-menu > .gyazo-button.gyazo-wide-button {
+  width: 50% !important;
+}
+
 .gyazo-menu > .gyazo-button.gyazo-menu-myimage {
   border-left: 1px solid #cccccc !important;
 }

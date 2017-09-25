@@ -32,7 +32,7 @@
     "uglifyjs-webpack-plugin": "^0.4.3",
     "web-ext": "^1.0.1",
     "webpack": "^2.4.1",
-    "wemf": "^1.2.0"
+    "wemf": "^1.2.1"
   },
   "scripts": {
     "test": "yarn run build > /dev/null && ./node_modules/.bin/run-p test:**",
