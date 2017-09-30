@@ -1,16 +1,17 @@
 import thenChrome from 'then-chrome'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll} from '../../libs/scroll'
+import {width as pageWidth, height as pageHeight} from '../../libs/pageScrollSize'
 import {JACKUP_MARGIN} from '../../constants'
 
 export default async (request) => {
   const overflow = lockScroll()
   const data = {}
   const scaleObj = getZoomAndScale()
-  data.w = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
-  data.h = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
+  data.w = pageWidth()
+  data.h = pageHeight()
   data.x = 0
-  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
+  data.documentWidth = pageWidth()
   data.y = 0
   data.t = document.title
   data.u = location.href
