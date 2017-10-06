@@ -1,5 +1,6 @@
 import thenChrome from 'then-chrome'
 import {lockScroll, unlockScroll} from '../../libs/scroll'
+import {width as pageWidth} from '../../libs/pageScrollSize'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 
 export default async (request) => {
@@ -7,7 +8,7 @@ export default async (request) => {
   const data = {}
   const scaleObj = getZoomAndScale()
   data.w = window.innerWidth
-  data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
+  data.documentWidth = pageWidth()
   data.h = window.innerHeight
   data.x = window.scrollX
   data.y = window.scrollY

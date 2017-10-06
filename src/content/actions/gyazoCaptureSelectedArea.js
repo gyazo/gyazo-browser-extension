@@ -1,6 +1,7 @@
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
+import {height as pageHeight, width as pageWidth} from '../../libs/pageScrollSize'
 import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
 
 export default (request) => {
@@ -14,15 +15,11 @@ export default (request) => {
   const jackup = document.createElement('div')
   jackup.classList.add('gyazo-jackup-element')
   document.body.appendChild(jackup)
-  const pageHeight = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
   layer.style.position = 'absolute'
   layer.style.left = document.body.clientLeft + 'px'
   layer.style.top = document.body.clientTop + 'px'
-  layer.style.width = Math.max(
-          document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth,
-          document.documentElement.clientWidth, document.documentElement.offsetWidth, document.documentElement.scrollWidth
-        ) + 'px'
-  layer.style.height = pageHeight + 'px'
+  layer.style.width = pageWidth() + 'px'
+  layer.style.height = pageHeight() + 'px'
   layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
   layer.style.cursor = 'crosshair'
   layer.className = 'gyazo-select-layer'
@@ -108,7 +105,7 @@ export default (request) => {
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
-    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
+    data.documentWidth = pageWidth()
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     document.body.removeChild(layer)

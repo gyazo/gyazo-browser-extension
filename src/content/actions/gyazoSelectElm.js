@@ -4,6 +4,7 @@ import getZoomAndScale from '../../libs/getZoomAndScale'
 import changeFixedElementToAbsolute from '../../libs/changeFixedElementToAbsolute'
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
+import {width as pageWidth} from '../../libs/pageScrollSize'
 import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
 
 export default async (request) => {
@@ -115,7 +116,7 @@ export default async (request) => {
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
-    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
+    data.documentWidth = pageWidth()
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     data.desc = dupTarget.textContent
