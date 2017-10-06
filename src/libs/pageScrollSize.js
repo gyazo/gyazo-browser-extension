@@ -1,4 +1,4 @@
-export const height =  () => Math.max(
+export const height = () => Math.max(
   document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight,
   document.documentElement.clientHeight, document.documentElement.offsetHeight, document.documentElement.scrollHeight
 )
