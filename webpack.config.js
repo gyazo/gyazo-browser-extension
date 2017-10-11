@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackOnBuildPlugin = require('on-build-webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const exec = require('child_process').execSync
-
 const isProductionBuild = process.env.BUILD_TARGET === 'production' || process.env.NODE_ENV === 'production'
 const isReview = process.env.BUILD_TARGET === 'review'
 
@@ -19,15 +18,15 @@ let plugins = [
     {from: './src/manifest.json'}
   ]),
   new WebpackOnBuildPlugin(() => {
-    exec('cp -R dist/common/* dist/chrome')
-    exec('cp -R dist/common/* dist/firefox')
-    exec('cp -R dist/common/* dist/edge')
-    exec('./node_modules/.bin/wemf -U --browser firefox dist/firefox/manifest.json')
-    exec('./node_modules/.bin/wemf -U --browser chrome dist/chrome/manifest.json')
-    exec(`./node_modules/.bin/wemf -U --browser edge dist/edge/manifest.json --data '${JSON.stringify({name: 'Gyazo Extension for Edge'})}'`)
+    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/chrome`)
+    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/firefox`)
+    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/edge`)
+    exec(`./node_modules/.bin/wemf -U --browser firefox dist/${process.env.BUILD_EXTENSION_TYPE}/firefox/manifest.json`)
+    exec(`./node_modules/.bin/wemf -U --browser chrome dist/${process.env.BUILD_EXTENSION_TYPE}/chrome/manifest.json`)
+    exec(`./node_modules/.bin/wemf -U --browser edge dist/${process.env.BUILD_EXTENSION_TYPE}/edge/manifest.json --data '${JSON.stringify({name: 'Gyazo Extension for Edge'})}'`)
 
     if (isReview) {
-      const manifestPath = path.resolve(__dirname, './dist/firefox/manifest.json')
+      const manifestPath = path.resolve(__dirname, `./dist/${process.env.BUILD_EXTENSION_TYPE}/firefox/manifest.json`)
       let manifest = require(manifestPath)
       const d = new Date()
       const packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`
@@ -53,7 +52,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist/common')
+    path: path.resolve(__dirname, `dist/${process.env.BUILD_EXTENSION_TYPE}/common`)
   },
   module: {
     rules: [
