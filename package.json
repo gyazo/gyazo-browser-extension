@@ -44,7 +44,7 @@
     "watch": "yarn run build -- --watch",
     "build:personal": "BUILD_EXTENSION_TYPE=personal webpack --config webpack.config.js",
     "build:teams": "BUILD_EXTENSION_TYPE=teams webpack --config webpack.config.js",
-    "pack": "npm-run-all clean build --parallel pack-personal pack-teams",
+    "pack": "npm-run-all clean build pack-personal pack-teams",
     "pack-personal": "BUILD_EXTENSION_TYPE=personal npm-run-all clean build:personal pack:*",
     "pack-teams": "BUILD_EXTENSION_TYPE=teams npm-run-all clean build:teams pack:*",
     "pack:chrome": "run-s pack:chrome:keygen pack:chrome:zip",

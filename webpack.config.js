@@ -18,9 +18,9 @@ let plugins = [
     {from: './src/manifest.json'}
   ]),
   new WebpackOnBuildPlugin(() => {
-    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/chrome`)
-    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/firefox`)
-    exec(`cp -R dist/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/edge`)
+    exec(`cp -R dist/${process.env.BUILD_EXTENSION_TYPE}/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/chrome`)
+    exec(`cp -R dist/${process.env.BUILD_EXTENSION_TYPE}/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/firefox`)
+    exec(`cp -R dist/${process.env.BUILD_EXTENSION_TYPE}/common/* dist/${process.env.BUILD_EXTENSION_TYPE}/edge`)
     exec(`./node_modules/.bin/wemf -U --browser firefox dist/${process.env.BUILD_EXTENSION_TYPE}/firefox/manifest.json`)
     exec(`./node_modules/.bin/wemf -U --browser chrome dist/${process.env.BUILD_EXTENSION_TYPE}/chrome/manifest.json`)
     exec(`./node_modules/.bin/wemf -U --browser edge dist/${process.env.BUILD_EXTENSION_TYPE}/edge/manifest.json --data '${JSON.stringify({name: 'Gyazo Extension for Edge'})}'`)
