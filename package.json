@@ -38,7 +38,7 @@
     "test": "yarn run build > /dev/null && run-p test:**",
     "test:lint": "standard \"./**/*.js\"",
     "test:ava": "BABEL_ENV=test ava --verbose",
-    "test:lint:package:firefox": "web-ext lint -s dist/firefox",
+    "test:lint:package:firefox": "web-ext lint -s dist/personal/firefox && web-ext lint -s dist/teams/firefox",
     "clean": "rm -rf dist/{personal,teams}/{chrome,firefox,common,edge}/* build/{personal,teams}/*",
     "build": "run-p build:*",
     "watch": "yarn run build -- --watch",

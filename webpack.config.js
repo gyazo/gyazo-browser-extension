@@ -40,7 +40,7 @@ let plugins = [
       let manifest = require(manifestPath)
       const d = new Date()
       const packageVer = `${(d.getUTCFullYear() + '').substr(2)}.${d.getUTCMonth() + 1}.${d.getUTCDate()}.${d.getUTCHours()}${d.getUTCMinutes()}`
-      manifest.applications = {gecko: {id: 'gyazo-extension-dev@gyazo.com'}}
+      manifest.applications = {gecko: {id: `gyazo-extension-${process.env.BUILD_EXTENSION_TYPE}-dev@gyazo.com`}}
       manifest.version = packageVer
 
       require('fs').writeFileSync(
