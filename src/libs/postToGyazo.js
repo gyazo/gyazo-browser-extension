@@ -19,6 +19,8 @@ export default async (tabId, data) => {
   formdata.append('scale', data.scale || '')
   formdata.append('desc', data.desc ? data.desc.replace(/\t/, ' ').replace(/(^\s+| +$)/gm, '') : '')
 
+  if (process.env.BUILD_EXTENSION_TYPE === 'teams') formdata.append('is_teams', 1)
+
   const response = await window.fetch(apiEndpoint, {
     method: 'POST',
     body: formdata,
