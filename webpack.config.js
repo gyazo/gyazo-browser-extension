@@ -28,12 +28,14 @@ let plugins = [
     {from: './src/manifest.json'}
   ]),
   new WebpackOnBuildPlugin(() => {
+    const wemfCommand = './node_modules/.bin/wemf -U'
+    const extensionBaseName = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'Gyazo Teams' : 'Gyazo'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
     exec(`cp -R ${distPathCommon}/* ${distPathEdge}`)
-    exec(`./node_modules/.bin/wemf -U --browser firefox ${distPathFirefox}/manifest.json`)
-    exec(`./node_modules/.bin/wemf -U --browser chrome ${distPathChrome}/manifest.json`)
-    exec(`./node_modules/.bin/wemf -U --browser edge ${distPathEdge}/manifest.json --data '${JSON.stringify({name: 'Gyazo Extension for Edge'})}'`)
+    exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
+    exec(`${wemfCommand} --browser chrome ${distPathChrome}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
+    exec(`${wemfCommand} --browser edge ${distPathEdge}/manifest.json --data '${JSON.stringify({name: extensionBaseName + ' Extension for Edge'})}'`)
 
     if (isReview) {
       const manifestPath = path.resolve(__dirname, `./${distPathFirefox}/manifest.json`)
