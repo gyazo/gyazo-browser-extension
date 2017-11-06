@@ -22,7 +22,7 @@ let plugins = [
     {from: './src/statics/option/option.css', to: 'option/option.css'},
     {from: './src/statics/_locales', to: '_locales'},
     {from: './src/statics/imgs', to: 'imgs'},
-    {from: './src/statics/icons', to: 'icons'},
+    {from: `./src/icons/${process.env.BUILD_EXTENSION_TYPE}`, to: 'icons'},
     {from: './src/statics/content.css'},
     {from: './src/statics/menu.css'},
     {from: './src/manifest.json'}
