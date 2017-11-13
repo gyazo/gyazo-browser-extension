@@ -64,5 +64,14 @@
   },
   "pageScrollDelayWords": {
     "message": "Fast,Normal,Slow"
+  },
+  "selectDefaultTeamLabel": {
+    "message": "Select team to upload"
+  },
+  "requireLoginTeams": {
+    "message": "Require login to Gyazo Teams"
+  },
+  "selectTeamToLogin": {
+    "message": "Select team to upload on extension's option page"
   }
 }

@@ -4,6 +4,8 @@ import MessageListener from './libs/MessageListener'
 import gyazoIt from './libs/gyazoIt'
 import {disableButton} from './libs/changeTabEvents'
 import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize'
+import getTeams from './libs/getTeams'
+import storage from './libs/storageSwitcher'
 import './libs/contextMenu'
 
 const onMessageListener = new MessageListener('main')
@@ -32,6 +34,24 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
   !chrome.runtime.lastError.message.match(/message port closed/) &&
   window.confirm(chrome.i18n.getMessage('confirmReload')) &&
   chrome.tabs.reload(tab.id)
+})
+
+onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
+  const teams = await getTeams()
+  let team = teams[0]
+
+  const savedTeam = await storage.get({team: null})
+  // teamが選択済みならばそのチーム情報を返す
+  if (savedTeam.team) {
+    team = teams.find((t) => t.name === savedTeam.team.name)
+  } else if (teams.length > 1) {
+    // 選択済みチームが無く、ログイン済みチーム数が2つ以上の場合オプション画面を開く
+    alert(chrome.i18n.getMessage('selectTeamToLogin'))
+    chrome.tabs.create({url: chrome.runtime.getURL('option/options.html')})
+    team = {}
+  }
+  storage.set({team})
+  sendResponse({team})
 })
 
 onMessageListener.add('gyazoGetImageBlob', (request, sender, sendResponse) => {

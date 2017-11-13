@@ -64,5 +64,14 @@
   },
   "pageScrollDelayWords": {
     "message": "早い,普通,ゆっくり"
+  },
+  "selectDefaultTeamLabel": {
+    "message": "アップロード先のチームを選択してください"
+  },
+  "requireLoginTeams": {
+    "message": "Gyazo Teamsへのログインが必要です"
+  },
+  "selectTeamToLogin": {
+    "message": "Gyazo Teams拡張のオプションからアップロード先のチームを選択してください"
   }
 }
