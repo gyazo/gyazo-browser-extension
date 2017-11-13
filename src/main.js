@@ -46,7 +46,7 @@ onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
     team = teams.find((t) => t.name === savedTeam.team.name)
   } else if (teams.length > 1) {
     // 選択済みチームが無く、ログイン済みチーム数が2つ以上の場合オプション画面を開く
-    alert(chrome.i18n.getMessage('selectTeamToLogin'))
+    window.alert(chrome.i18n.getMessage('selectTeamToLogin'))
     chrome.tabs.create({url: chrome.runtime.getURL('option/options.html')})
     team = {}
   }

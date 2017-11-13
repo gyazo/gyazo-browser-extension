@@ -5,7 +5,8 @@ const defaultOptions = {
   delay: 1,
   contextMenu: true,
   pasteSupport: true,
-  fileSizeLimit: 2
+  fileSizeLimit: 2,
+  team: {}
 }
 
 const ExtensionStorageWrapper = class ExtensionStorageWrapper {

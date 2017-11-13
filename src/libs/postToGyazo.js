@@ -1,5 +1,6 @@
 import UploadNotification from './UploadNotification'
 import saveToClipboard from './saveToClipboard'
+import storage from './storageSwitcher'
 
 const apiEndpoint = 'https://upload.gyazo.com/api/upload/easy_auth'
 const clientId = 'df9edab530e84b4c56f9fcfa209aff1131c7d358a91d85cc20b9229e515d67dd'
@@ -19,7 +20,10 @@ export default async (tabId, data) => {
   formdata.append('scale', data.scale || '')
   formdata.append('desc', data.desc ? data.desc.replace(/\t/, ' ').replace(/(^\s+| +$)/gm, '') : '')
 
-  if (process.env.BUILD_EXTENSION_TYPE === 'teams') formdata.append('is_teams', 1)
+  if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
+    const {team} = await storage.get()
+    formdata.append('team_name', team.name)
+  }
 
   const response = await window.fetch(apiEndpoint, {
     method: 'POST',

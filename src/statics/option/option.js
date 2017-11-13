@@ -46,9 +46,9 @@ if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
         selectDefaultTeam.appendChild(optionElm)
       })
     })
-    selectDefaultTeam.addEventListener('change', (event) => {
-      storage.set({team: JSON.parse(event.target.value)})
-    })
+  selectDefaultTeam.addEventListener('change', (event) => {
+    storage.set({team: JSON.parse(event.target.value)})
+  })
 } else {
   document.getElementById('selectDefaultTeam').style.display = 'none'
 }
