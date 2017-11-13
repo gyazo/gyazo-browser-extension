@@ -41,11 +41,11 @@ onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
   let team = teams[0]
 
   const savedTeam = await storage.get({team: null})
-  // teamが選択済みならばそのチーム情報を返す
+  // Return team info if saved default team
   if (savedTeam.team) {
     team = teams.find((t) => t.name === savedTeam.team.name)
   } else if (teams.length > 1) {
-    // 選択済みチームが無く、ログイン済みチーム数が2つ以上の場合オプション画面を開く
+    // if haven't saved team info and logged in to more than 2 teams
     window.alert(chrome.i18n.getMessage('selectTeamToLogin'))
     chrome.tabs.create({url: chrome.runtime.getURL('option/options.html')})
     team = {}
