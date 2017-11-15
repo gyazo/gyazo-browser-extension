@@ -43,7 +43,7 @@ onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
   const savedTeam = await storage.get({team: null})
   // Return team info if saved default team
   if (savedTeam.team) {
-    team = teams.find((t) => t.name === savedTeam.team.name)
+    team = teams.find((t) => t.name === savedTeam.team.name) || team // prevent undefined
   } else if (teams.length > 1) {
     // if haven't saved team info and logged in to more than 2 teams
     window.alert(chrome.i18n.getMessage('selectTeamToLogin'))
