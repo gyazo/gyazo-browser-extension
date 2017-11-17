@@ -65,13 +65,16 @@
   "pageScrollDelayWords": {
     "message": "早い,普通,ゆっくり"
   },
-  "selectDefaultTeamLabel": {
-    "message": "アップロード先のチームを選択してください"
+  "currentTeamLabel": {
+    "message": "現在のアップロード先チーム"
   },
   "requireLoginTeams": {
     "message": "Gyazo Teamsへのログインが必要です"
   },
   "selectTeamToLogin": {
     "message": "Gyazo Teams拡張のオプションからアップロード先のチームを選択してください"
+  },
+  "loginToTeamsLink": {
+    "message": "他のチームにアップロードしたい場合はこちらからログインすると変更できます"
   }
 }
