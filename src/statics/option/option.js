@@ -1,8 +1,9 @@
 import storage from '../../libs/storageSwitcher'
+import getTeams from '../../libs/getTeams'
 
 const DELAY_WORDING = chrome.i18n.getMessage('pageScrollDelayWords').split(',')
 
-let selector = document.getElementById('defaultAction')
+let selector = document.getElementById('defaultActionSelector')
 let fileSizeLimit = document.getElementById('fileSizeLimitRange')
 let fileSizeLimitCurrentSetting = document.getElementById('fileSizeLimitCurrentSetting')
 let delaySelector = document.getElementById('pageScrollDelayRange')
@@ -24,10 +25,26 @@ storage.get()
   'defaultActionLabel', 'selectElement', 'selectArea',
   'contextMenuSettingLabel', 'pasteSupportSettingLabel',
   'fileSizeLimitLabel', 'fileSizeLimitHelpText', 'pageScrollDelayLabel',
-  'pageScrollDelayHelpText'
+  'pageScrollDelayHelpText', 'currentTeamLabel', 'loginToTeamsLink'
 ].forEach((id) => {
   document.getElementById(id).textContent = chrome.i18n.getMessage(id)
 })
+
+if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
+  getTeams()
+    .then(async () => {
+      const {team} = await storage.get()
+      document.getElementById('currentTeamName').textContent = team.name
+    })
+    .catch((error) => {
+      if (error.status === 403) {
+        window.alert(error.message)
+        chrome.tabs.create({url: 'https://gyazo.com/teams/login'})
+      }
+    })
+} else {
+  document.getElementById('currentTeam').style.display = 'none'
+}
 
 contextMenuSetting.addEventListener('change', (event) => {
   storage.set({contextMenu: event.target.checked})

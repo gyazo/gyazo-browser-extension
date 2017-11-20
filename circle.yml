@@ -14,9 +14,11 @@ test:
       if [ -z "$CIRCLE_PR_NUMBER" ]; then
         echo $GCS_KEY | base64 --decode > gcs_key.json
         gcloud auth activate-service-account --key-file gcs_key.json
-        BUILD_TARGET=review npm run build
-        npm run pack:chrome
-        ./node_modules/.bin/web-ext sign -a build -s dist/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+        BUILD_TARGET=review yarn build
+        BUILD_EXTENSION_TYPE=personal yarn pack:chrome
+        BUILD_EXTENSION_TYPE=teams yarn pack:chrome
+        ./node_modules/.bin/web-ext sign -a build/personal -s dist/personal/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+        ./node_modules/.bin/web-ext sign -a build/teams -s dist/teams/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
         ./script/build_and_upload_branch
       fi
 deployment:
