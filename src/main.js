@@ -37,7 +37,8 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
 })
 
 onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
-  const teams = await getTeams()
+  const {teams, error} = await getTeams()
+  if (error) return sendResponse({error})
   let team = teams[0]
 
   const savedTeam = await storage.get({team: null})

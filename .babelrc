@@ -1,12 +1,16 @@
 {
   "env": {
-    "development": {
+    "default": {
       "presets": [
         ["env", {
           "modules": false,
           "loose": true,
           "targets": {
-            "browsers": ["last 2 versions"],
+            "browsers": [
+              "last 1 Chrome version",
+              "last 1 Firefox version",
+              "last 1 Edge version"
+            ],
             "uglify": true
           }
         }]

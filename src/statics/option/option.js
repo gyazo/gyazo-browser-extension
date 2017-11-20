@@ -32,9 +32,15 @@ storage.get()
 
 if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
   getTeams()
-    .then(async (teams) => {
+    .then(async () => {
       const {team} = await storage.get()
       document.getElementById('currentTeamName').textContent = team.name
+    })
+    .catch((error) => {
+      if (error.status === 403) {
+        window.alert(error.message)
+        chrome.tabs.create({url: 'https://gyazo.com/teams/login'})
+      }
     })
 } else {
   document.getElementById('currentTeam').style.display = 'none'

@@ -9,10 +9,17 @@ const REMOVE_GYAZOMENU_EVENT = new window.Event('removeGyazoMenu')
 export default async (request, sender, sendResponse) => {
   let capturesPageUrl = 'https://gyazo.com/'
   if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
-    const {team} = await thenChrome.runtime.sendMessage(chrome.runtime.id, {
+    const {error, team} = await thenChrome.runtime.sendMessage(chrome.runtime.id, {
       target: 'main',
       action: 'getTeam'
     })
+    if (error) {
+      if (error.status === 403) {
+        window.alert(error.message)
+        window.open('https://gyazo.com/teams/login')
+      }
+      return
+    }
     const teamName = team.name
     if (!teamName) return
     capturesPageUrl = `https://${teamName}.gyazo.com`

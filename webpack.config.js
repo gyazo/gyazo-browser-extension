@@ -30,6 +30,7 @@ let plugins = [
   new WebpackOnBuildPlugin(() => {
     const wemfCommand = './node_modules/.bin/wemf -U'
     const extensionBaseName = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'Gyazo Teams' : 'Gyazo'
+    const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-extension-teams@gyazo.com' : 'gyazo-extension@gyazo.com'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
     exec(`cp -R ${distPathCommon}/* ${distPathEdge}`)
