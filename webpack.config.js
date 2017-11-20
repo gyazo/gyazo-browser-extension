@@ -34,7 +34,7 @@ let plugins = [
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
     exec(`cp -R ${distPathCommon}/* ${distPathEdge}`)
-    exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
+    exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data '${JSON.stringify({name: extensionBaseName, applications: {gecko: {id: extensionId}}})}'`)
     exec(`${wemfCommand} --browser chrome ${distPathChrome}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
     exec(`${wemfCommand} --browser edge ${distPathEdge}/manifest.json --data '${JSON.stringify({name: extensionBaseName + ' Extension for Edge'})}'`)
 
