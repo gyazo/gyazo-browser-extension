@@ -29,7 +29,7 @@
     "sinon": "^2.1.0",
     "sinon-chrome": "^2.2.0",
     "standard": "^10.0.2",
-    "uglifyjs-webpack-plugin": "^0.4.3",
+    "uglifyjs-webpack-plugin": "^1.1.0",
     "web-ext": "^1.0.1",
     "webpack": "^2.4.1",
     "wemf": "^1.2.0"
