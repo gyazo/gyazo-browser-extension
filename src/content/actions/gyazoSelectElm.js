@@ -3,9 +3,10 @@ import isPressCommandKey from '../../libs/isPressCommandKey'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import changeFixedElementToAbsolute from '../../libs/changeFixedElementToAbsolute'
 import restoreFixedElement from '../../libs/restoreFixedElement'
+import JackupElement from '../../libs/jackupElement'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
 import {width as pageWidth} from '../../libs/pageScrollSize'
-import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
+import {ESC_KEY_CODE} from '../../constants'
 
 export default async (request) => {
   if (document.querySelector('.gyazo-crop-select-element')) {
@@ -13,9 +14,7 @@ export default async (request) => {
   }
   const MARGIN = 3
   document.body.classList.add('gyazo-select-element-mode')
-  const jackup = document.createElement('div')
-  jackup.classList.add('gyazo-jackup-element')
-  document.body.appendChild(jackup)
+  const jackup = new JackupElement()
   const layer = document.createElement('div')
   layer.className = 'gyazo-crop-select-element'
   document.body.appendChild(layer)
@@ -126,7 +125,7 @@ export default async (request) => {
     if (document.querySelector('.gyazo-menu')) {
       document.body.removeChild(document.querySelector('.gyazo-menu'))
     }
-    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    jackup.height = window.innerHeight
     window.removeEventListener('contextmenu', cancel)
     window.removeEventListener('keydown', keydownHandler)
     document.removeEventListener('keyup', keyUpHandler)
@@ -160,15 +159,15 @@ export default async (request) => {
           tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         })
         restoreFixedElement()
-        if (document.body.contains(jackup)) document.body.removeChild(jackup)
+        if (document.body.contains(jackup.element)) jackup.remove()
         unlockScroll(overflow)
       })
     }
     window.requestAnimationFrame(finish)
   }
   const cancel = function () {
-    if (document.body.contains(jackup)) {
-      document.body.removeChild(jackup)
+    if (document.body.contains(jackup.element)) {
+      jackup.remove()
     }
     if (document.body.contains(layer)) {
       document.body.removeChild(layer)

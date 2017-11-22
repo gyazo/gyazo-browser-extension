@@ -2,7 +2,8 @@ import restoreFixedElement from '../../libs/restoreFixedElement'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
 import {height as pageHeight, width as pageWidth} from '../../libs/pageScrollSize'
-import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
+import JackupElement from '../../libs/jackupElement'
+import {ESC_KEY_CODE} from '../../constants'
 
 export default (request) => {
   if (document.querySelector('.gyazo-jackup-element')) {
@@ -12,9 +13,7 @@ export default (request) => {
   let data = {}
   const tempUserSelect = document.body.style.webkitUserSelect
   const layer = document.createElement('div')
-  const jackup = document.createElement('div')
-  jackup.classList.add('gyazo-jackup-element')
-  document.body.appendChild(jackup)
+  const jackup = new JackupElement()
   layer.style.position = 'absolute'
   layer.style.left = document.body.clientLeft + 'px'
   layer.style.top = document.body.clientTop + 'px'
@@ -37,9 +36,9 @@ export default (request) => {
     position: 'absolute'
   })
   const cancelGyazo = function () {
-    if (!(layer.parentNode && jackup.parentNode)) return
+    if (!(layer.parentNode && jackup.element.parentNode)) return
     document.body.removeChild(layer)
-    document.body.removeChild(jackup)
+    jackup.remove()
     document.body.style.webkitUserSelect = tempUserSelect
     document.removeEventListener('keydown', keydownHandler)
     window.removeEventListener('contextmenu', cancelGyazo)
@@ -117,7 +116,7 @@ export default (request) => {
       overflow = lockScroll()
       packScrollBar(overflow)
     }
-    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    jackup.height = window.innerHeight
     // wait for rewrite by removeChild
     let finish = function () {
       if (document.getElementsByClassName('gyazo-select-layer').length > 0) {
@@ -130,7 +129,7 @@ export default (request) => {
           data: data,
           tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         }, function () {
-          document.body.removeChild(jackup)
+          jackup.remove()
           unlockScroll(overflow)
           restoreFixedElement()
         })
