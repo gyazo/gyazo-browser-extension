@@ -33,7 +33,7 @@ export default (request) => {
   }
   selectionElm.styleUpdate({
     background: 'rgba(92, 92, 92, 0.3)',
-    position: 'absolute'
+    position: 'fixed'
   })
   const cancelGyazo = function () {
     if (!(layer.parentNode && jackup.element.parentNode)) return
@@ -79,7 +79,7 @@ export default (request) => {
       width: (Math.abs(e.pageX - startX) - 1) + 'px',
       height: (Math.abs(e.pageY - startY) - 1) + 'px',
       left: Math.min(e.pageX, startX) + 'px',
-      top: Math.min(e.pageY, startY) + 'px'
+      top: Math.min(e.pageY, startY) - window.scrollY + 'px'
     })
   }
   const mouseupHandler = function (e) {
