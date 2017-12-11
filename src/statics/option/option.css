@@ -1,0 +1,47 @@
+html, body {
+  width: 600px;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  border-top: 3px solid #D7D7D7;
+}
+
+section {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #D7D7D7;
+  padding: 15px 10px 15px 15px;
+  margin: 0;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+label {
+  display: inline-block;
+  color: #2F3942;
+  font-size: 14px;
+  line-height: 2em;
+}
+
+label > .help-text {
+  font-size: 12px;
+}
+
+label > a.help-text {
+  color: blue;
+  text-decoration: none;
+}
+
+.user-input {
+  display: flex;
+  align-items: center;
+}
+
+.user-input > .current-setting {
+  font-size: 12px;
+  margin-right: 5px;
+}

@@ -1,5 +1,14 @@
 import thenChrome from 'then-chrome'
 
+const defaultOptions = {
+  behavior: 'element',
+  delay: 1,
+  contextMenu: true,
+  pasteSupport: true,
+  fileSizeLimit: 2,
+  team: {}
+}
+
 const ExtensionStorageWrapper = class ExtensionStorageWrapper {
   constructor () {
     // Firefox requires webextensions.storage.sync.enabled to true in about:config
@@ -54,9 +63,10 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     return thenChrome.storage[this.storageType]
   }
 
-  get (...args) {
-    if (!this.checkEnv) return this.waitForCheckEnv(() => this.get(...args))
-    return this.storageObject(args).get(...args)
+  get (defaultValue, ...args) {
+    if (!defaultValue) defaultValue = defaultOptions
+    if (!this.checkEnv) return this.waitForCheckEnv(() => this.get(defaultValue, ...args))
+    return this.storageObject(args).get(defaultValue, ...args)
   }
 
   set (...args) {

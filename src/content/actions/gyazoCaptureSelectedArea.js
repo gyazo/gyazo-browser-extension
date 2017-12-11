@@ -1,7 +1,9 @@
 import restoreFixedElement from '../../libs/restoreFixedElement'
 import getZoomAndScale from '../../libs/getZoomAndScale'
 import {lockScroll, unlockScroll, packScrollBar} from '../../libs/scroll'
-import {ESC_KEY_CODE, JACKUP_MARGIN} from '../../constants'
+import {height as pageHeight, width as pageWidth} from '../../libs/pageScrollSize'
+import JackupElement from '../../libs/jackupElement'
+import {ESC_KEY_CODE} from '../../constants'
 
 export default (request) => {
   if (document.querySelector('.gyazo-jackup-element')) {
@@ -11,18 +13,12 @@ export default (request) => {
   let data = {}
   const tempUserSelect = document.body.style.webkitUserSelect
   const layer = document.createElement('div')
-  const jackup = document.createElement('div')
-  jackup.classList.add('gyazo-jackup-element')
-  document.body.appendChild(jackup)
-  const pageHeight = Math.max(document.body.clientHeight, document.body.offsetHeight, document.body.scrollHeight)
+  const jackup = new JackupElement()
   layer.style.position = 'absolute'
   layer.style.left = document.body.clientLeft + 'px'
   layer.style.top = document.body.clientTop + 'px'
-  layer.style.width = Math.max(
-          document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth,
-          document.documentElement.clientWidth, document.documentElement.offsetWidth, document.documentElement.scrollWidth
-        ) + 'px'
-  layer.style.height = pageHeight + 'px'
+  layer.style.width = pageWidth() + 'px'
+  layer.style.height = pageHeight() + 'px'
   layer.style.zIndex = 2147483646 // Maximun number of 32bit Int - 1
   layer.style.cursor = 'crosshair'
   layer.className = 'gyazo-select-layer'
@@ -37,12 +33,12 @@ export default (request) => {
   }
   selectionElm.styleUpdate({
     background: 'rgba(92, 92, 92, 0.3)',
-    position: 'absolute'
+    position: 'fixed'
   })
   const cancelGyazo = function () {
-    if (!(layer.parentNode && jackup.parentNode)) return
+    if (!(layer.parentNode && jackup.element.parentNode)) return
     document.body.removeChild(layer)
-    document.body.removeChild(jackup)
+    jackup.remove()
     document.body.style.webkitUserSelect = tempUserSelect
     document.removeEventListener('keydown', keydownHandler)
     window.removeEventListener('contextmenu', cancelGyazo)
@@ -83,7 +79,7 @@ export default (request) => {
       width: (Math.abs(e.pageX - startX) - 1) + 'px',
       height: (Math.abs(e.pageY - startY) - 1) + 'px',
       left: Math.min(e.pageX, startX) + 'px',
-      top: Math.min(e.pageY, startY) + 'px'
+      top: Math.min(e.pageY, startY) - window.scrollY + 'px'
     })
   }
   const mouseupHandler = function (e) {
@@ -108,7 +104,7 @@ export default (request) => {
     data.u = location.href
     data.s = scaleObj.scale
     data.z = scaleObj.zoom
-    data.documentWidth = Math.max(document.body.clientWidth, document.body.offsetWidth, document.body.scrollWidth)
+    data.documentWidth = pageWidth()
     data.positionX = window.scrollX
     data.positionY = window.scrollY
     document.body.removeChild(layer)
@@ -120,7 +116,7 @@ export default (request) => {
       overflow = lockScroll()
       packScrollBar(overflow)
     }
-    jackup.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    jackup.height = window.innerHeight
     // wait for rewrite by removeChild
     let finish = function () {
       if (document.getElementsByClassName('gyazo-select-layer').length > 0) {
@@ -133,7 +129,7 @@ export default (request) => {
           data: data,
           tab: Object.assign({width: window.innerWidth, height: window.innerHeight}, request.tab)
         }, function () {
-          document.body.removeChild(jackup)
+          jackup.remove()
           unlockScroll(overflow)
           restoreFixedElement()
         })

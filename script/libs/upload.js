@@ -28,7 +28,7 @@ module.exports = function ({targetEnv, fileName, path}) {
     if (res.statusCode < 400) {
       try {
         var ext = fileName.split('.').pop()
-        exec(`gsutil cp -z ${ext} -a public-read build/${fileName} gs://${path}`)
+        exec(`gsutil cp -z ${ext} -a public-read build/${fileName} gs://${path}${fileName}`)
       } catch (e) {
         err = true
       }
