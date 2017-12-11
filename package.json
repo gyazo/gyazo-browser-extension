@@ -1,6 +1,6 @@
 {
   "name": "Gyazo-Extension",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "dependencies": {
     "bowser": "^1.3.0",
     "chrome-browser-object-polyfill": "^0.2.2",
@@ -47,8 +47,8 @@
     "build:personal": "BUILD_EXTENSION_TYPE=personal webpack --config webpack.config.js",
     "build:teams": "BUILD_EXTENSION_TYPE=teams webpack --config webpack.config.js",
     "pack": "npm-run-all clean build pack-personal pack-teams",
-    "pack-personal": "BUILD_EXTENSION_TYPE=personal npm-run-all clean build:personal pack:*",
-    "pack-teams": "BUILD_EXTENSION_TYPE=teams npm-run-all clean build:teams pack:*",
+    "pack-personal": "BUILD_EXTENSION_TYPE=personal npm-run-all build:personal pack:*",
+    "pack-teams": "BUILD_EXTENSION_TYPE=teams npm-run-all build:teams pack:*",
     "pack:chrome": "run-s pack:chrome:keygen pack:chrome:zip",
     "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:keygen": "if [ ! -f build/$BUILD_EXTENSION_TYPE/key.pem ] ; then crx keygen ./build/$BUILD_EXTENSION_TYPE ; fi",
