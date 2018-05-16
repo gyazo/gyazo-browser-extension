@@ -13,7 +13,7 @@ export default (tab, srcUrl) => {
     xhr.responseType = 'blob'
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        let mineType = ''
+        let mineType = xhr.response.type
         if (/png$/.test(srcUrl)) {
           mineType = 'image/png'
         } else if (/jpe?g$/.test(srcUrl)) {
