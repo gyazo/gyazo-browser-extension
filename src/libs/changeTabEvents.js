@@ -53,7 +53,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
         file: './content.js'
       })
     } catch (e) {
-      console.error(e)
       if (browserInfo.msedge && e.number === -2147467259) return enableButton(tabId)
       throw e
     }
