@@ -13,7 +13,15 @@ export default (tab, srcUrl) => {
     xhr.responseType = 'blob'
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        const blob = xhr.response
+        let mineType = ''
+        if (/png$/.test(srcUrl)) {
+          mineType = 'image/png'
+        } else if (/jpe?g$/.test(srcUrl)) {
+          mineType = 'image/jpeg'
+        } else if (/gif$/.test(srcUrl)) {
+          mineType = 'image/gif'
+        }
+        const blob = new Blob([xhr.response], {type: mineType})
         const fileReader = new FileReader()
         fileReader.onload = function (e) {
           postToGyazo(tab.id, {
