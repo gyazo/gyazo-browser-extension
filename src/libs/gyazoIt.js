@@ -21,7 +21,7 @@ export default (tab, srcUrl) => {
         } else if (/gif$/.test(srcUrl)) {
           mineType = 'image/gif'
         }
-        const blob = new Blob([xhr.response], {type: mineType})
+        const blob = new window.Blob([xhr.response], {type: mineType})
         const fileReader = new FileReader()
         fileReader.onload = function (e) {
           postToGyazo(tab.id, {
