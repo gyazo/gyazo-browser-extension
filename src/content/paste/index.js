@@ -2,6 +2,9 @@ import storage from '../../libs/storageSwitcher'
 import defaultWebsites from './websites'
 
 export default async () => {
+  if (document.body.dataset.__gyazoExtensionAddedPasteSupport) return
+  document.body.dataset.__gyazoExtensionAddedPasteSupport = true
+
   let usersSettings = {}
   try {
     usersSettings = (await storage.get({
