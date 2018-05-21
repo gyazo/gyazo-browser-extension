@@ -14,7 +14,10 @@ export default class JackupElement {
     const html = document.querySelector('html')
     const body = document.querySelector('body')
 
-    this.element.style.height = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    const cssVal = (window.innerHeight + JACKUP_MARGIN) + 'px'
+    this.element.style.height = cssVal
+    this.element.style.maxHeight = cssVal
+    this.element.style.minHeight = cssVal
 
     const htmlHeight = window.getComputedStyle(html).getPropertyValue('height')
     const bodyHeight = window.getComputedStyle(body).getPropertyValue('height')
