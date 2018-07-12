@@ -1,0 +1,50 @@
+version: 2
+
+workflows:
+  version: 2
+  test-and-release:
+    jobs:
+    - test
+    - release:
+        requires:
+        - test
+        filters:
+          branches:
+            only: production
+
+jobs:
+  test:
+    docker:
+    - image: circleci/node:6.14.3-browsers
+    steps:
+    - checkout
+    - run: yarn
+    - run: yarn test
+    - run:
+        name: build and upload to gcs to be able to download and test
+        command: |
+          if [ -z "$CIRCLE_PR_NUMBER" ]; then
+            echo $GCS_KEY | base64 --decode > gcs_key.json
+            gcloud auth activate-service-account --key-file gcs_key.json
+            BUILD_TARGET=review yarn build
+            BUILD_EXTENSION_TYPE=personal yarn pack:chrome
+            BUILD_EXTENSION_TYPE=teams yarn pack:chrome
+            ./node_modules/.bin/web-ext sign -a build/personal -s dist/personal/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+            ./node_modules/.bin/web-ext sign -a build/teams -s dist/teams/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
+            ./script/build_and_upload_branch
+          fi
+  #   - persist_to_workspace:
+  #       root: .
+  #       paths:
+  #       - build
+
+  # release:
+  #   docker:
+  #   - image: circleci/node:6.14.3-browsers
+  #   steps:
+  #   - attach_workspace:
+  #       at: .
+  #   - run:
+  #       command: |
+  #         BUILD_TARGET=production npm run pack
+  #         curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
