@@ -21,11 +21,17 @@ jobs:
     - run: yarn
     - run: yarn test
     - run:
+        name: Install gcloud
+        command: |
+          curl https://sdk.cloud.google.com | CLOUDSDK_CORE_DISABLE_PROMPTS=true bash
+          echo 'source ~/google-cloud-sdk/path.bash.inc' >> $BASH_ENV
+          source $BASH_ENV
+          echo $GCS_KEY | base64 --decode > gcs_key.json
+          gcloud auth activate-service-account --key-file gcs_key.json
+    - run:
         name: build and upload to gcs to be able to download and test
         command: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then
-            echo $GCS_KEY | base64 --decode > gcs_key.json
-            gcloud auth activate-service-account --key-file gcs_key.json
             BUILD_TARGET=review yarn build
             BUILD_EXTENSION_TYPE=personal yarn pack:chrome
             BUILD_EXTENSION_TYPE=teams yarn pack:chrome
