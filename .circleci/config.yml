@@ -2,18 +2,18 @@ version: 2
 
 workflows:
   version: 2
-  test-and-release:
+  build-and-release:
     jobs:
-    - test
+    - build
     - release:
         requires:
-        - test
+        - build
         filters:
           branches:
             only: production
 
 jobs:
-  test:
+  build:
     docker:
     - image: circleci/node:6.14.3-browsers
     steps:
