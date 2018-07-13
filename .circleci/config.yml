@@ -10,7 +10,7 @@ workflows:
         - test
         filters:
           branches:
-            only: production
+            only: circleci-2.0-release-test
 
 jobs:
   test:
@@ -51,7 +51,7 @@ jobs:
     - attach_workspace:
         at: .
     - run: find build
-    - run:
-        command: |
-          BUILD_TARGET=production npm run pack
-          curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
+    # - run:
+    #     command: |
+    #       BUILD_TARGET=production npm run pack
+    #       curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
