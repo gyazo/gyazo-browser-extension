@@ -46,7 +46,7 @@ jobs:
 
   release:
     docker:
-    - image: circleci/node:6.14.3-browsers
+    - image: circleci/node
     steps:
     - attach_workspace:
         at: .
