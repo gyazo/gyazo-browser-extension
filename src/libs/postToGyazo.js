@@ -45,8 +45,10 @@ export default async (tabId, data) => {
       errorAlert(xhr.status, xhr.statusText)
     }
     if (xhr.responseURL) {
-      saveToClipboard(xhr.responseURL)
-      notification.finish(xhr.responseURL, data.imageData)
+      saveToClipboard(xhr.responseURL, data.imageData)
+        .then(() => {
+          notification.finish(xhr.responseURL, data.imageData)
+        })
     }
   }
   xhr.send()
