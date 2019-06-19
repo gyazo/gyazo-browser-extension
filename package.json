@@ -10,12 +10,12 @@
     "xtend": "^4.0.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "ava": "^0.19.1",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-register": "^6.24.1",
+    "babel-loader": "^8.0.0",
     "browser-env": "^2.0.30",
     "browserify": "^14.3.0",
     "chrome-webstore-manager": "^0.4.1",
@@ -86,8 +86,8 @@
   },
   "ava": {
     "require": [
-      "babel-register",
-      "babel-polyfill",
+      "@babel/register",
+      "@babel/polyfill",
       "./test/helpers/browserEnv.js",
       "./test/helpers/chromeMock.js"
     ],

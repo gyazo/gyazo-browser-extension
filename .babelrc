@@ -2,21 +2,26 @@
   "env": {
     "default": {
       "presets": [
-        ["env", {
-          "modules": false,
-          "loose": true,
-          "targets": {
-            "browsers": [
-              "last 1 Chrome version",
-              "last 1 Firefox version",
-              "last 1 Edge version"
-            ]
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "loose": true,
+            "targets": {
+              "browsers": [
+                "last 1 Chrome version",
+                "last 1 Firefox version",
+                "last 1 Edge version"
+              ]
+            }
           }
-        }]
+        ]
       ]
     },
     "test": {
-      "presets": ["env"]
+      "presets": [
+        "@babel/preset-env"
+      ]
     }
   }
 }
