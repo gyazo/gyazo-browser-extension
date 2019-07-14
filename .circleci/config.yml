@@ -18,8 +18,8 @@ jobs:
     - image: circleci/node
     steps:
     - checkout
-    - run: yarn
-    - run: yarn test
+    - run: npm ci
+    - run: npm test
     - run:
         name: Install gcloud
         command: |
@@ -32,9 +32,9 @@ jobs:
         name: build and upload to gcs to be able to download and test
         command: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then
-            BUILD_TARGET=review yarn build
-            BUILD_EXTENSION_TYPE=personal yarn pack:chrome
-            BUILD_EXTENSION_TYPE=teams yarn pack:chrome
+            BUILD_TARGET=review npm run build
+            BUILD_EXTENSION_TYPE=personal npm run pack:chrome
+            BUILD_EXTENSION_TYPE=teams npm run pack:chrome
             ./node_modules/.bin/web-ext sign -a build/personal -s dist/personal/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
             ./node_modules/.bin/web-ext sign -a build/teams -s dist/teams/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
             ./script/build_and_upload_branch
