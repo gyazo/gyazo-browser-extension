@@ -2,7 +2,7 @@ import test from 'ava'
 
 import adjacentStyle from '../../../../src/content/expander/lib/adjacentStyle'
 
-test.skip(t => {
+test.skip('adjacentStyle', t => {
   const div = document.createElement('div')
   document.body.appendChild(div)
 

@@ -59,9 +59,9 @@ if (isProductionBuild || isReview) plugins.push(new UglifyJSPlugin())
 module.exports = {
   devtool: isProductionBuild ? false : 'inline-source-map',
   entry: {
-    main: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/main.js'],
-    content: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/content/content.js'],
-    option: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/statics/option/option.js']
+    main: ['chrome-browser-object-polyfill', './src/main.js'],
+    content: ['chrome-browser-object-polyfill', './src/content/content.js'],
+    option: ['chrome-browser-object-polyfill', './src/statics/option/option.js']
   },
   output: {
     filename: '[name].js',

@@ -20,12 +20,11 @@ test('should sendMessage to content on update', async (t) => {
 })
 
 test('should sendMessage with correct args on finish', async (t) => {
-  t.plan(2)
+  t.plan(1)
   const imagePageUrl = 'https://test/test.html'
   const imageDataUrl = 'data: aaaa'
   const scale = 2
   notification.finish(imagePageUrl, imageDataUrl, scale)
-  t.truthy(chrome.tabs.sendMessage.calledOnce)
   t.truthy(chrome.tabs.sendMessage.withArgs(100, {
     target: 'content',
     action: 'notification',

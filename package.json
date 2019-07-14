@@ -10,21 +10,22 @@
     "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "ava": "^0.19.1",
-    "babel-core": "^6.24.1",
-    "babel-loader": "^6.4.1",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "babel-register": "^6.24.1",
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "ava": "^2.2.0",
+    "babel-loader": "^8.0.0",
     "browser-env": "^2.0.30",
     "browserify": "^14.3.0",
     "chrome-webstore-manager": "^0.4.2",
     "copy-webpack-plugin": "^4.0.1",
-    "crx": "^3.2.1",
+    "core-js": "^3.1.4",
+    "crx": "^5.0.0",
     "jsdom": "^9.12.0",
     "manifoldjs": "^0.7.5",
     "npm-run-all": "^4.0.2",
     "on-build-webpack": "^0.1.0",
+    "regenerator-runtime": "^0.13.2",
     "request-promise": "^4.2.0",
     "sinon": "^2.1.0",
     "sinon-chrome": "^2.2.0",
@@ -49,8 +50,9 @@
     "pack": "npm-run-all clean build pack-personal pack-teams",
     "pack-personal": "BUILD_EXTENSION_TYPE=personal npm-run-all build:personal pack:*",
     "pack-teams": "BUILD_EXTENSION_TYPE=teams npm-run-all build:teams pack:*",
-    "pack:chrome": "run-s pack:chrome:keygen pack:chrome:zip",
-    "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome": "run-s pack:chrome:keygen pack:chrome:*",
+    "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome:crx": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:keygen": "if [ ! -f build/$BUILD_EXTENSION_TYPE/key.pem ] ; then crx keygen ./build/$BUILD_EXTENSION_TYPE ; fi",
     "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE",
     "pack:msedge": "if [ ! -z $MS_PACKAGE_ID ] ; then run-s pack:msedge:prepare pack:msedge:generate pack:msedge:finalize ; fi",
@@ -86,12 +88,15 @@
   },
   "ava": {
     "require": [
-      "babel-register",
-      "babel-polyfill",
+      "@babel/register",
+      "core-js/stable",
+      "regenerator-runtime/runtime",
       "./test/helpers/browserEnv.js",
       "./test/helpers/chromeMock.js"
     ],
-    "babel": "inherit"
+    "helpers": [
+      "./test/helpers/**/*"
+    ]
   },
   "repository": "https://github.com/gyazo/gyazo-browser-extension.git",
   "author": "NOTA Inc <contact@gyazo.com>",

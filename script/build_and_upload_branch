@@ -11,12 +11,12 @@ const findAndUpload = (type) => {
   })
 
   if (!crxfile) {
-    console.error('It requires crx file')
+    console.error(`It requires crx file(${type})`)
     process.exit(-1)
   }
 
   if (!xpifile) {
-    console.error('It requires xpi file')
+    console.error(`It requires xpi file(${type})`)
     process.exit(-1)
   }
 
