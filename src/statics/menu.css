@@ -19,6 +19,7 @@ body.gyazo-select-element-mode *:not(.gyazo-crop-select-element):not(.gyazo-menu
 }
 
 .gyazo-menu {
+  display: block !important;
   box-sizing: border-box !important;
   position: fixed !important;
   right: 0 !important;
