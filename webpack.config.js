@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackOnBuildPlugin = require('on-build-webpack')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const exec = require('child_process').execSync
 
 const isProductionBuild = process.env.BUILD_TARGET === 'production' || process.env.NODE_ENV === 'production'
@@ -53,8 +52,6 @@ let plugins = [
     }
   })
 ]
-
-if (isProductionBuild || isReview) plugins.push(new UglifyJSPlugin())
 
 module.exports = {
   devtool: isProductionBuild ? false : 'inline-source-map',
