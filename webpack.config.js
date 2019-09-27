@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const WebpackOnBuildPlugin = require('on-build-webpack')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const exec = require('child_process').execSync
 
 const isProductionBuild = process.env.BUILD_TARGET === 'production' || process.env.NODE_ENV === 'production'
@@ -30,7 +29,7 @@ let plugins = [
   new WebpackOnBuildPlugin(() => {
     const wemfCommand = './node_modules/.bin/wemf -U'
     const extensionBaseName = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'Gyazo Teams' : 'Gyazo'
-    const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-extension-teams@gyazo.com' : 'gyazo-extension@gyazo.com'
+    const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-teams-extension@gyazo.com' : 'gyazo-extension@gyazo.com'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
     exec(`cp -R ${distPathCommon}/* ${distPathEdge}`)
@@ -54,14 +53,12 @@ let plugins = [
   })
 ]
 
-if (isProductionBuild || isReview) plugins.push(new UglifyJSPlugin())
-
 module.exports = {
   devtool: isProductionBuild ? false : 'inline-source-map',
   entry: {
-    main: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/main.js'],
-    content: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/content/content.js'],
-    option: ['chrome-browser-object-polyfill', 'babel-polyfill', './src/statics/option/option.js']
+    main: ['chrome-browser-object-polyfill', './src/main.js'],
+    content: ['chrome-browser-object-polyfill', './src/content/content.js'],
+    option: ['chrome-browser-object-polyfill', './src/statics/option/option.js']
   },
   output: {
     filename: '[name].js',
