@@ -15,8 +15,7 @@ module.exports = (api) => {
         targets: {
           browsers: [
             'last 1 Chrome version',
-            'last 1 Firefox version',
-            'last 1 Edge version'
+            'last 1 Firefox version'
           ]
         },
         corejs: 3,
