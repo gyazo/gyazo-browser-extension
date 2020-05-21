@@ -10,7 +10,6 @@ const distPath = 'dist/' + process.env.BUILD_EXTENSION_TYPE
 const distPathCommon = distPath + '/common'
 const distPathChrome = distPath + '/chrome'
 const distPathFirefox = distPath + '/firefox'
-const distPathEdge = distPath + '/edge'
 
 let plugins = [
   new webpack.EnvironmentPlugin({
@@ -32,10 +31,8 @@ let plugins = [
     const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-teams-extension@gyazo.com' : 'gyazo-extension@gyazo.com'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
-    exec(`cp -R ${distPathCommon}/* ${distPathEdge}`)
     exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data '${JSON.stringify({name: extensionBaseName, applications: {gecko: {id: extensionId}}})}'`)
     exec(`${wemfCommand} --browser chrome ${distPathChrome}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
-    exec(`${wemfCommand} --browser edge ${distPathEdge}/manifest.json --data '${JSON.stringify({name: extensionBaseName + ' Extension for Edge'})}'`)
 
     if (isReview) {
       const manifestPath = path.resolve(__dirname, `./${distPathFirefox}/manifest.json`)
