@@ -24,13 +24,12 @@
     "jsdom": "^9.12.0",
     "npm-run-all": "^4.0.2",
     "on-build-webpack": "^0.1.0",
-    "pwabuilder": "^2.0.3-rc.0",
     "regenerator-runtime": "^0.13.2",
     "request-promise": "^4.2.0",
     "sinon": "^2.1.0",
     "sinon-chrome": "^2.2.0",
     "standard": "^10.0.2",
-    "web-ext": "^3.1.1",
+    "web-ext": "^4.2.0",
     "webpack": "^2.4.1",
     "wemf": "^1.2.0"
   },
@@ -53,20 +52,7 @@
     "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:crx": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:keygen": "if [ ! -f build/$BUILD_EXTENSION_TYPE/key.pem ] ; then crx keygen ./build/$BUILD_EXTENSION_TYPE ; fi",
-    "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE",
-    "pack:msedge": "if [ ! -z $MS_PACKAGE_ID ] ; then run-s pack:msedge:prepare pack:msedge:generate pack:msedge:finalize ; fi",
-    "pack:msedge:prepare": "run-s pack:msedge:gen-manifest pack:msedge:replace-manifest pack:msedge:replace-icons",
-    "pack:msedge:gen-manifest": "rm -rf build/$BUILD_EXTENSION_TYPE/Gyazo && pwabuilder -l debug -p edgeextension -f edgeextension -m dist/$BUILD_EXTENSION_TYPE/edge/manifest.json && mv Gyazo build/$BUILD_EXTENSION_TYPE",
-    "pack:msedge:replace-manifest": "run-s pack:msedge:replace-manifest:*",
-    "pack:msedge:replace-manifest:01": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-NAME-HERE|$MS_PACKAGE_ID|\" build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/appxmanifest.xml",
-    "pack:msedge:replace-manifest:02": "sed -i -e \"s|INSERT-YOUR-PACKAGE-IDENTITY-PUBLISHER-HERE|$MS_PUBLISHER_IDENTITY|\" build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/appxmanifest.xml",
-    "pack:msedge:replace-manifest:03": "sed -i -e \"s|INSERT-YOUR-PACKAGE-PROPERTIES-PUBLISHERDISPLAYNAME-HERE|$MS_PUBLISHER_DNAME|\" build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/appxmanifest.xml",
-    "pack:msedge:replace-icons": "run-s pack:msedge:replace-icons:*",
-    "pack:msedge:replace-icons:01": "cp src/icons/$BUILD_EXTENSION_TYPE/44.png build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/Assets/Square44x44Logo.png",
-    "pack:msedge:replace-icons:02": "cp src/icons/$BUILD_EXTENSION_TYPE/150.png build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/Assets/Square150x150Logo.png",
-    "pack:msedge:replace-icons:03": "cp src/icons/$BUILD_EXTENSION_TYPE/50.png build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest/Assets/StoreLogo.png",
-    "pack:msedge:generate": "pwabuilder -l debug -p edgeextension package build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/manifest",
-    "pack:msedge:finalize": "mv build/$BUILD_EXTENSION_TYPE/Gyazo/edgeextension/package/edgeExtension.appx build/$BUILD_EXTENSION_TYPE"
+    "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
   },
   "standard": {
     "global": [

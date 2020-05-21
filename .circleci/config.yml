@@ -5,17 +5,11 @@ workflows:
   build-and-release:
     jobs:
     - build
-    - release:
-        requires:
-        - build
-        filters:
-          branches:
-            only: production
 
 jobs:
   build:
     docker:
-    - image: circleci/node
+    - image: circleci/node:12
     steps:
     - checkout
     - run: npm ci
@@ -39,15 +33,3 @@ jobs:
             ./node_modules/.bin/web-ext sign -a build/teams -s dist/teams/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
             ./script/build_and_upload_branch
           fi
-  release:
-    docker:
-    - image: circleci/node
-    steps:
-    - checkout
-    - attach_workspace:
-        at: .
-    - run: find build
-    - run:
-        command: |
-          BUILD_TARGET=production npm run pack
-          curl -X POST -F 'file=@build/chrome.zip' -F "token=$RELEASE_AUTH_TOKEN" http://gyazo-chrome-release.herokuapp.com/release --fail
