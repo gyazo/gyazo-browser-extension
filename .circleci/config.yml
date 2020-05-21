@@ -32,4 +32,4 @@ jobs:
             ./node_modules/.bin/web-ext sign -a build/personal -s dist/personal/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
             ./node_modules/.bin/web-ext sign -a build/teams -s dist/teams/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
             ./script/build_and_upload_branch
-          fis
+          fi
