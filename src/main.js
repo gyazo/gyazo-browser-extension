@@ -24,6 +24,7 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
     }))
   } catch (e) {}
   if (!loaded[0]) {
+    try {
       await thenChrome.tabs.executeScript(tabId, {
         file: './content.js'
       })
@@ -33,6 +34,9 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
       await thenChrome.tabs.insertCSS(tab.id, {
         file: '/menu.css'
       })
+    } catch (e) {
+      if (e.message.match(/Cannot access a chrome/)) return disableButton(tabId)
+    }
   }
   if (chrome.runtime.lastError && chrome.runtime.lastError.message.match(/cannot be scripted/)) {
     window.alert('It is not allowed to use Gyazo extension in this page.')

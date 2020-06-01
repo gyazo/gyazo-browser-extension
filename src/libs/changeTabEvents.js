@@ -26,11 +26,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   if (tab.status === 'loading') {
     return disableButton(tab.id)
   }
-  if (tab.url && tab.url.match(/^https?:/)) {
-    enableButton(tab.id)
-  } else {
-    disableButton(tab.id)
-  }
+  enableButton(tab.id)
 })
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
