@@ -1,5 +1,4 @@
 import thenChrome from 'then-chrome'
-import browserInfo from 'bowser'
 
 const disableButton = function (tabId) {
   chrome.browserAction.setIcon({
