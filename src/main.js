@@ -15,19 +15,40 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
     window.alert(chrome.i18n.getMessage('welcomeMessage'))
     return disableButton(tab.id)
   }
-  await thenChrome.tabs.insertCSS(tab.id, {
-    file: '/menu.css'
-  })
+  if (tab.status !== 'complete') return
+  const tabId = tab.id
+  let loaded = [false]
+  try {
+    loaded = (await thenChrome.tabs.executeScript(tabId, {
+      code: 'window.__embededGyazoContentJS'
+    }))
+  } catch (e) {}
+  if (!loaded[0]) {
+    try {
+      await thenChrome.tabs.executeScript(tabId, {
+        file: './content.js'
+      })
+      await thenChrome.tabs.insertCSS(tabId, {
+        file: '/content.css'
+      })
+      await thenChrome.tabs.insertCSS(tab.id, {
+        file: '/menu.css'
+      })
+    } catch (e) {
+      if (e.message.match(/Cannot access a chrome/)) return disableButton(tabId)
+    }
+  }
   if (chrome.runtime.lastError && chrome.runtime.lastError.message.match(/cannot be scripted/)) {
     window.alert('It is not allowed to use Gyazo extension in this page.')
     return disableButton(tab.id)
   }
   try {
-    await thenChrome.tabs.sendMessage(tab.id, {target: 'content', action: 'insertMenu', tab: tab})
+    await thenChrome.tabs.sendMessage(tab.id, { target: 'content', action: 'insertMenu', tab: tab })
   } catch (e) {
-    e.message.match(/Could not establish connection/) &&
-    window.confirm(chrome.i18n.getMessage('confirmReload')) &&
-    chrome.tabs.reload(tab.id)
+    if (e.message.match(/Could not establish connection/)) {
+      if (window.confirm(chrome.i18n.getMessage('confirmReload'))) chrome.tabs.reload(tab.id)
+      return
+    }
   }
   chrome && chrome.runtime && chrome.runtime.lastError &&
   chrome.runtime.lastError.number !== -2147467259 &&
