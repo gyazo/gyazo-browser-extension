@@ -42,7 +42,7 @@
     "message": "Always show Gyazo in context menu"
   },
   "pasteSupportSettingLabel": {
-    "message": "Replace Gyazo's URL to markdown style when it's pasted."
+    "message": "Replace Gyazo's URL to markdown style when it's pasted on github.com."
   },
   "captureParentTitle": {
     "message": "Capture"

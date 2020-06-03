@@ -1,23 +1,8 @@
-import storage from '../../libs/storageSwitcher'
 import defaultWebsites from './websites'
 
 export default async () => {
   if (document.body.dataset.__gyazoExtensionAddedPasteSupport) return
-  document.body.dataset.__gyazoExtensionAddedPasteSupport = true
-
-  let usersSettings = {}
-  try {
-    usersSettings = (await storage.get({
-      pasteWebsites: [],
-      pasteSupport: true
-    }))
-  } catch (e) {}
-
-  if (!usersSettings.pasteSupport) return
-
-  const usersWebsiteSettings = usersSettings ? usersSettings.pasteWebsites : []
-
-  const websites = usersWebsiteSettings.concat(defaultWebsites)
+  const websites = [...defaultWebsites]
 
   const website = websites.find((e) => e && e.host.test(location.hostname))
   if (!website) return
@@ -45,4 +30,6 @@ export default async () => {
     element.value = replacedText
     element.selectionEnd = newCursorPos
   })
+
+  document.body.dataset.__gyazoExtensionAddedPasteSupport = true
 }
