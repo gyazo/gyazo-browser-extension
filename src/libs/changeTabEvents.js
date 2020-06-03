@@ -40,7 +40,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
         thenChrome.tabs.executeScript(tabId, {
           file: './pasteSupport.js'
         })
-      } catch(e) {}
+      } catch (e) {}
     }
   }
   return true
