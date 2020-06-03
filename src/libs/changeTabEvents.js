@@ -36,9 +36,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     enableButton(tabId)
     const enabledClipboardRead = await check(permissions.githubPasteSupport)
     if (enabledClipboardRead) {
-      thenChrome.tabs.executeScript(tabId, {
-        file: './pasteSupport.js'
-      })
+      try {
+        thenChrome.tabs.executeScript(tabId, {
+          file: './pasteSupport.js'
+        })
+      } catch(e) {}
     }
   }
   return true
