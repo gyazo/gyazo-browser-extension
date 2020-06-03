@@ -1,9 +1,9 @@
 {
   "uploadingFinishTitle": {
-    "message": "Saved!"
+    "message": "Saved"
   },
   "uploadingFinishMessage": {
-    "message": "Gyazo link has been copied"
+    "message": "Link copied"
   },
   "captureTitle": {
     "message": "Capturing..."
@@ -30,25 +30,28 @@
     "message": "Page"
   },
   "confirmReload": {
-    "message": "This extension requires you to reload tabs after install. Could you reload the current tab now?"
+    "message": "This extension requires you to reload tabs after installing. Please reload the current tab."
   },
   "welcomeMessage": {
-    "message": "Welcome! Please open a page in a new tab, and click the Gyazo button!"
+    "message": "Welcome! Please open a page in a new tab and click the Gyazo icon to start."
   },
   "myImage": {
     "message": "Home"
   },
   "contextMenuSettingLabel": {
-    "message": "Always show Gyazo in context menu"
+    "message": "Show Gyazo options in the right click menu"
   },
   "pasteSupportSettingLabel": {
-    "message": "Replace Gyazo's URL to markdown style when it's pasted."
+    "message": "When pasting on github.com replace Gyazo links with markdown."
+  },
+  "copyUrlSupportSettingLabel": {
+    "message": "Copy Gyazo links to clipboard after uploading"
   },
   "captureParentTitle": {
     "message": "Capture"
   },
   "fileSizeLimitLabel": {
-    "message": "Maximum file size to upload"
+    "message": "Maximum upload size"
   },
   "fileSizeLimitHelpText": {
     "message": "Files larger than this size will be compressed"
@@ -60,21 +63,21 @@
     "message": "Page scroll speed"
   },
   "pageScrollDelayHelpText": {
-    "message": "Please set slow if images are broken"
+    "message": "Please set to slow if captures have issues"
   },
   "pageScrollDelayWords": {
-    "message": "Fast,Normal,Slow"
+    "message": "Fast, Normal, Slow"
   },
   "currentTeamLabel": {
-    "message": "Team to upload"
+    "message": "Team to upload to"
   },
   "requireLoginTeams": {
     "message": "Require login to Gyazo Teams"
   },
   "selectTeamToLogin": {
-    "message": "Select team to upload on extension's option page"
+    "message": "Select the team to upload to on the extension's options page"
   },
   "loginToTeamsLink": {
-    "message": "You can switch other team by signup to the team"
+    "message": "You can switch to other teams after signing in to them"
   }
 }

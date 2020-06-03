@@ -4,7 +4,6 @@ const defaultOptions = {
   behavior: 'element',
   delay: 1,
   contextMenu: true,
-  pasteSupport: true,
   fileSizeLimit: 2,
   team: {}
 }

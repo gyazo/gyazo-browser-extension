@@ -1,5 +1,6 @@
 import storage from '../../libs/storageSwitcher'
 import getTeams from '../../libs/getTeams'
+import { toggle as permissionToggle, check as permissionCheck, permissions } from '../../libs/permissions'
 
 const DELAY_WORDING = chrome.i18n.getMessage('pageScrollDelayWords').split(',')
 
@@ -10,20 +11,22 @@ let delaySelector = document.getElementById('pageScrollDelayRange')
 let delayCurrentSetting = document.getElementById('delayCurrentSetting')
 let contextMenuSetting = document.getElementById('contextMenuSetting')
 let pasteSupportSetting = document.getElementById('pasteSupportSetting')
+let copyUrlSupportSetting = document.getElementById('copyUrlSupportSetting')
 
 storage.get()
-  .then((item) => {
+  .then(async (item) => {
     selector.value = item.behavior
     delaySelector.value = item.delay
     delayCurrentSetting.textContent = DELAY_WORDING[item.delay]
-    pasteSupportSetting.checked = item.pasteSupport
+    pasteSupportSetting.checked = await permissionCheck(permissions.githubPasteSupport)
+    copyUrlSupportSetting.checked = await permissionCheck(permissions.copyUrlToClipboard)
     contextMenuSetting.checked = item.contextMenu
     fileSizeLimit.value = item.fileSizeLimit
     fileSizeLimitCurrentSetting.textContent = item.fileSizeLimit + ' MB'
   })
 ;[
   'defaultActionLabel', 'selectElement', 'selectArea',
-  'contextMenuSettingLabel', 'pasteSupportSettingLabel',
+  'contextMenuSettingLabel', 'pasteSupportSettingLabel', 'copyUrlSupportSettingLabel',
   'fileSizeLimitLabel', 'fileSizeLimitHelpText', 'pageScrollDelayLabel',
   'pageScrollDelayHelpText', 'currentTeamLabel', 'loginToTeamsLink'
 ].forEach((id) => {
@@ -68,6 +71,10 @@ delaySelector.addEventListener('change', function (event) {
     })
 })
 
-pasteSupportSetting.addEventListener('change', (event) => {
-  storage.set({pasteSupport: pasteSupportSetting.checked})
+pasteSupportSetting.addEventListener('change', async (event) => {
+  permissionToggle(permissions.githubPasteSupport, pasteSupportSetting.checked)
+})
+
+copyUrlSupportSetting.addEventListener('change', async () => {
+  permissionToggle(permissions.copyUrlToClipboard, pasteSupportSetting.checked)
 })

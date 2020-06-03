@@ -1,4 +1,5 @@
 import thenChrome from 'then-chrome'
+import { check, permissions } from './permissions'
 
 const disableButton = function (tabId) {
   chrome.browserAction.setIcon({
@@ -33,6 +34,14 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     disableButton(tabId)
   } else if (changeInfo.status === 'complete') {
     enableButton(tabId)
+    const enabledClipboardRead = await check(permissions.githubPasteSupport)
+    if (enabledClipboardRead) {
+      try {
+        thenChrome.tabs.executeScript(tabId, {
+          file: './pasteSupport.js'
+        })
+      } catch (e) {}
+    }
   }
   return true
 })

@@ -42,7 +42,10 @@
     "message": "コンテキストメニューに機能呼び出しメニューを追加する"
   },
   "pasteSupportSettingLabel": {
-    "message": "GyazoのURLが貼り付けられたら、markdown形式に置き換える"
+    "message": "github.com上でGyazoのURLが貼り付けられたら、markdown形式に置き換える"
+  },
+  "copyUrlSupportSettingLabel": {
+    "message": "アップロード後にGyazoのURLをクリップボードにコピーする"
   },
   "captureParentTitle": {
     "message": "キャプチャ"

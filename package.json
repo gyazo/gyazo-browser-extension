@@ -1,6 +1,6 @@
 {
   "name": "gyazo-browser-extension",
-  "version": "2.9.0",
+  "version": "3.0.0",
   "dependencies": {
     "bowser": "^1.3.0",
     "chrome-browser-object-polyfill": "^0.2.2",

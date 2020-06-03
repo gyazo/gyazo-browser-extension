@@ -8,9 +8,12 @@
     "https://gyazo.com/*",
     "activeTab",
     "contextMenus",
+    "storage"
+  ],
+  "optional_permissions": [
     "clipboardWrite",
     "clipboardRead",
-    "storage"
+    "https://github.com/*"
   ],
   "applications": {
     "gecko": {
