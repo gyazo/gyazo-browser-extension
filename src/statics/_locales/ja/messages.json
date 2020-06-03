@@ -44,6 +44,9 @@
   "pasteSupportSettingLabel": {
     "message": "github.com上でGyazoのURLが貼り付けられたら、markdown形式に置き換える"
   },
+  "copyUrlSupportSettingLabel": {
+    "message": "アップロード後にGyazoのURLをクリップボードにコピーする"
+  },
   "captureParentTitle": {
     "message": "キャプチャ"
   },

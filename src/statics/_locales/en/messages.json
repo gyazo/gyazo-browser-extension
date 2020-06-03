@@ -44,6 +44,9 @@
   "pasteSupportSettingLabel": {
     "message": "Replace Gyazo's URL to markdown style when it's pasted on github.com."
   },
+  "copyUrlSupportSettingLabel": {
+    "message": "Copy uploded Gyazo URL to clipboard after success"
+  },
   "captureParentTitle": {
     "message": "Capture"
   },

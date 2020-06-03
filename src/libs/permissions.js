@@ -4,6 +4,9 @@ export const permissions = {
   githubPasteSupport: {
     permissions: ['clipboardRead'],
     origins: ['https://github.com/']
+  },
+  copyUrlToClipboard: {
+    permissions: ['clipboardWrite']
   }
 }
 

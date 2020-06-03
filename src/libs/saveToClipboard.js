@@ -1,4 +1,8 @@
-module.exports = function (str) {
+import {check, permissions} from './permissions'
+
+export default async function (str) {
+  const permissionCheck = await check(permissions.copyUrlToClipboard)
+  if (!permissionCheck) return
   const textArea = document.createElement('textarea')
   textArea.style.cssText = 'position:absolute;left:-100%'
 
