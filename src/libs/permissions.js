@@ -11,7 +11,8 @@ export const permissions = {
 }
 
 export const check = async (permissions) => {
-  return await thenChrome.permissions.contains(permissions)
+  const res = await thenChrome.permissions.contains(permissions)
+  return res
 }
 
 export const toggle = async (permissions, state) => {
@@ -19,8 +20,10 @@ export const toggle = async (permissions, state) => {
     state = await check(permissions)
   }
   if (state) {
-    return await thenChrome.permissions.request(permissions)
+    const res = await thenChrome.permissions.request(permissions)
+    return res
   } else {
-    return await thenChrome.permissions.remove(permissions)
+    const res = await thenChrome.permissions.remove(permissions)
+    return res
   }
 }
