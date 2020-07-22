@@ -8,10 +8,11 @@ on:
 
 jobs:
   test:
-    matrix:
-        platform: [ubuntu-latest, windows-latest]
-        node-version: [12.x, 14.x]
     runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+          platform: [ubuntu-latest, windows-latest]
+          node-version: [12.x, 14.x]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.platform }}
