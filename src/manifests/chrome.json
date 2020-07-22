@@ -11,9 +11,7 @@
     "storage"
   ],
   "optional_permissions": [
-    "clipboardWrite",
-    "clipboardRead",
-    "https://github.com/*"
+    "clipboardWrite"
   ],
   "background": {
     "scripts": [

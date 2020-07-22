@@ -10,7 +10,6 @@ let fileSizeLimitCurrentSetting = document.getElementById('fileSizeLimitCurrentS
 let delaySelector = document.getElementById('pageScrollDelayRange')
 let delayCurrentSetting = document.getElementById('delayCurrentSetting')
 let contextMenuSetting = document.getElementById('contextMenuSetting')
-let pasteSupportSetting = document.getElementById('pasteSupportSetting')
 let copyUrlSupportSetting = document.getElementById('copyUrlSupportSetting')
 
 storage.get()
@@ -18,7 +17,6 @@ storage.get()
     selector.value = item.behavior
     delaySelector.value = item.delay
     delayCurrentSetting.textContent = DELAY_WORDING[item.delay]
-    pasteSupportSetting.checked = await permissionCheck(permissions.githubPasteSupport)
     copyUrlSupportSetting.checked = await permissionCheck(permissions.copyUrlToClipboard)
     contextMenuSetting.checked = item.contextMenu
     fileSizeLimit.value = item.fileSizeLimit
@@ -26,7 +24,7 @@ storage.get()
   })
 ;[
   'defaultActionLabel', 'selectElement', 'selectArea',
-  'contextMenuSettingLabel', 'pasteSupportSettingLabel', 'copyUrlSupportSettingLabel',
+  'contextMenuSettingLabel', 'copyUrlSupportSettingLabel',
   'fileSizeLimitLabel', 'fileSizeLimitHelpText', 'pageScrollDelayLabel',
   'pageScrollDelayHelpText', 'currentTeamLabel', 'loginToTeamsLink'
 ].forEach((id) => {
@@ -71,10 +69,6 @@ delaySelector.addEventListener('change', function (event) {
     })
 })
 
-pasteSupportSetting.addEventListener('change', async (event) => {
-  permissionToggle(permissions.githubPasteSupport, pasteSupportSetting.checked)
-})
-
 copyUrlSupportSetting.addEventListener('change', async () => {
-  permissionToggle(permissions.copyUrlToClipboard, pasteSupportSetting.checked)
+  permissionToggle(permissions.copyUrlToClipboard, copyUrlSupportSetting.checked)
 })
