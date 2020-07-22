@@ -26,7 +26,7 @@ let plugins = [
     {from: './src/manifest.json'}
   ]),
   new WebpackOnBuildPlugin(() => {
-    const wemfCommand = './node_modules/.bin/wemf -U'
+    const wemfCommand = 'npx wemf -U'
     const extensionBaseName = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'Gyazo Teams' : 'Gyazo'
     const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-teams-extension@gyazo.com' : 'gyazo-extension@gyazo.com'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
