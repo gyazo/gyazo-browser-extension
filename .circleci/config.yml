@@ -2,41 +2,17 @@ version: 2
 
 workflows:
   version: 2
-
-on:
-  pull_request:
-  push:
-    branches:
-    - master
+  build-and-release:
+    jobs:
+    - build
 
 jobs:
-  test:
-    matrix:
-        platform: [ubuntu-latest, windows-latest]
-        node-version: [12.x, 14.x]
-    runs-on: ${{ matrix.platform }}
+  build:
+    docker:
+    - image: circleci/node:12
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.platform }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm ci, test and pack
-      run: |
-        npm ci
-        npm run test
-        npm run pack
-
-  upload:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12'
+    - checkout
     - run: npm ci
-    - run: npm test
     - run:
         name: Install gcloud
         command: |

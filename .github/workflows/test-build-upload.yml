@@ -1,0 +1,25 @@
+name: Test and Upload Alpha
+
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+
+jobs:
+  test:
+    matrix:
+        platform: [ubuntu-latest, windows-latest]
+        node-version: [12.x, 14.x]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.platform }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm ci, test and pack
+      run: |
+        npm ci
+        npm run test
+        npm run pack
