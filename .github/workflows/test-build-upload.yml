@@ -1,4 +1,4 @@
-name: Test and Upload Alpha
+name: Build and Packaging Check
 
 on:
   pull_request:
