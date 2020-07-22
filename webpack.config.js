@@ -31,8 +31,8 @@ let plugins = [
     const extensionId = process.env.BUILD_EXTENSION_TYPE === 'teams' ? 'gyazo-teams-extension@gyazo.com' : 'gyazo-extension@gyazo.com'
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
     exec(`cp -R ${distPathCommon}/* ${distPathFirefox}`)
-    exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data '${JSON.stringify({name: extensionBaseName, applications: {gecko: {id: extensionId}}})}'`)
-    exec(`${wemfCommand} --browser chrome ${distPathChrome}/manifest.json --data '${JSON.stringify({name: extensionBaseName})}'`)
+    exec(`${wemfCommand} --browser firefox ${distPathFirefox}/manifest.json --data "${JSON.stringify({name: extensionBaseName, applications: {gecko: {id: extensionId}}}).replace(/"/g, '\\\"')}"`)
+    exec(`${wemfCommand} --browser chrome ${distPathChrome}/manifest.json --data "${JSON.stringify({name: extensionBaseName}).replace(/"/g, '\\\"')}"`)
 
     if (isReview) {
       const manifestPath = path.resolve(__dirname, `./${distPathFirefox}/manifest.json`)
