@@ -19,8 +19,15 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm ci, test and pack
-      run: |
-        npm ci
-        npm run test
-        npm run pack
+    - name: Cache node modules
+      id: cache
+      uses: actions/cache@v2.0.0
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-v2-${{ hashFiles(format('{0}{1}', github.workspace, '/package-lock.json')) }}
+        restore-keys: |
+          ${{ runner.os }}-node-v2-
+    - run: npm ci
+      if: steps.cache.outputs.cache-hit != 'true'
+    - run: npm run test
+    - run: npm run pack
