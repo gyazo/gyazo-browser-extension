@@ -16,10 +16,10 @@
     "ava": "^2.2.0",
     "babel-loader": "^8.0.0",
     "browser-env": "^2.0.30",
-    "browserify": "^14.3.0",
     "chrome-webstore-manager": "^0.4.2",
     "copy-webpack-plugin": "^4.0.1",
     "core-js": "^3.1.4",
+    "cross-env": "^7.0.2",
     "crx": "^5.0.0",
     "jsdom": "^9.12.0",
     "npm-run-all": "^4.0.2",
@@ -29,9 +29,8 @@
     "sinon": "^2.1.0",
     "sinon-chrome": "^2.2.0",
     "standard": "^10.0.2",
-    "web-ext": "^4.2.0",
-    "webpack": "^2.4.1",
-    "wemf": "^1.2.0"
+    "web-ext": "^4.3.0",
+    "webpack": "^2.4.1"
   },
   "scripts": {
     "test": "npm run build > /dev/null && run-p test:**",
@@ -43,16 +42,16 @@
     "watch": "run-p watch:*",
     "watch:personal": "npm run build:personal -- --watch",
     "watch:teams": "npm run build:teams -- --watch",
-    "build:personal": "BUILD_EXTENSION_TYPE=personal webpack --config webpack.config.js",
-    "build:teams": "BUILD_EXTENSION_TYPE=teams webpack --config webpack.config.js",
-    "pack": "npm-run-all clean build pack-personal pack-teams",
-    "pack-personal": "BUILD_EXTENSION_TYPE=personal npm-run-all build:personal pack:*",
-    "pack-teams": "BUILD_EXTENSION_TYPE=teams npm-run-all build:teams pack:*",
+    "build:personal": "cross-env BUILD_EXTENSION_TYPE=personal webpack --config webpack.config.js",
+    "build:teams": "cross-env BUILD_EXTENSION_TYPE=teams webpack --config webpack.config.js",
+    "pack": "npm-run-all clean pack-personal pack-teams",
+    "pack-personal": "cross-env-shell BUILD_EXTENSION_TYPE=personal npm-run-all build:personal pack:*",
+    "pack-teams": "cross-env-shell BUILD_EXTENSION_TYPE=teams npm-run-all build:teams pack:*",
     "pack:chrome": "run-s pack:chrome:keygen pack:chrome:*",
-    "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
-    "pack:chrome:crx": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
-    "pack:chrome:keygen": "if [ ! -f build/$BUILD_EXTENSION_TYPE/key.pem ] ; then crx keygen ./build/$BUILD_EXTENSION_TYPE ; fi",
-    "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
+    "pack:chrome:zip": "cross-env-shell crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome:crx": "cross-env-shell crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome:keygen": "cross-env-shell crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
+    "pack:firefox": "cross-env-shell web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
   },
   "standard": {
     "global": [

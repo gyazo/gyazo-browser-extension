@@ -13,7 +13,7 @@ jobs:
     steps:
     - checkout
     - run: npm ci
-    - run: npm test
+    - run: BUILD_TARGET=review npm run test
     - run:
         name: Install gcloud
         command: |
@@ -26,7 +26,6 @@ jobs:
         name: build and upload to gcs to be able to download and test
         command: |
           if [ -z "$CIRCLE_PR_NUMBER" ]; then
-            BUILD_TARGET=review npm run build
             BUILD_EXTENSION_TYPE=personal npm run pack:chrome
             BUILD_EXTENSION_TYPE=teams npm run pack:chrome
             ./node_modules/.bin/web-ext sign -a build/personal -s dist/personal/firefox --api-key $AMO_API_KEY --api-secret $AMO_API_SECRET
