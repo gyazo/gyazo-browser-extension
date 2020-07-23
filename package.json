@@ -48,10 +48,10 @@
     "pack-personal": "cross-env-shell BUILD_EXTENSION_TYPE=personal npm-run-all build:personal pack:*",
     "pack-teams": "cross-env-shell BUILD_EXTENSION_TYPE=teams npm-run-all build:teams pack:*",
     "pack:chrome": "run-s pack:chrome:keygen pack:chrome:*",
-    "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
-    "pack:chrome:crx": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
-    "pack:chrome:keygen": "crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
-    "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
+    "pack:chrome:zip": "cross-env-shell crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome:crx": "cross-env-shell crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
+    "pack:chrome:keygen": "cross-env-shell crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
+    "pack:firefox": "cross-env-shell web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
   },
   "standard": {
     "global": [
