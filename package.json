@@ -50,7 +50,7 @@
     "pack:chrome": "run-s pack:chrome:keygen pack:chrome:*",
     "pack:chrome:zip": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem --zip-output build/$BUILD_EXTENSION_TYPE/gyazo.chrome.zip dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:crx": "crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
-    "pack:chrome:keygen": "if [ ! -f build/$BUILD_EXTENSION_TYPE/key.pem ] ; then crx keygen ./build/$BUILD_EXTENSION_TYPE ; fi",
+    "pack:chrome:keygen": "crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
     "pack:firefox": "web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
   },
   "standard": {
