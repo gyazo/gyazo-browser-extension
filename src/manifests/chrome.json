@@ -1,5 +1,5 @@
 {
-  "version": "inherit",
+  "version": "3.0.0",
   "description": "Grab any image on the web and share it instantly.",
   "short_name": "Gyazo",
   "author": "Nota inc.",
@@ -15,21 +15,17 @@
     "clipboardRead",
     "https://github.com/*"
   ],
-  "applications": {
-    "gecko": {
-      "id": "gyazo-extension@gyazo.com",
-      "strict_min_version": "47.0a1"
-    }
-  },
   "background": {
-    "scripts": ["main.js"],
+    "scripts": [
+      "main.js"
+    ],
     "persistent": false
   },
   "browser_action": {
     "default_icon": {
-        "19": "icons/19.png",
-        "38": "icons/19@2x.png"
-      }
+      "19": "icons/19.png",
+      "38": "icons/19@2x.png"
+    }
   },
   "web_accessible_resources": [
     "imgs/crop.svg",
@@ -41,8 +37,8 @@
     "imgs/window.svg"
   ],
   "icons": {
-    "19": "icons/19.png",
     "16": "icons/16.png",
+    "19": "icons/19.png",
     "30": "icons/30.png",
     "32": "icons/16@2x.png",
     "38": "icons/19@2x.png",
@@ -50,8 +46,8 @@
     "48": "icons/48.png",
     "50": "icons/50.png",
     "96": "icons/48@2x.png",
-    "150": "icons/150.png",
     "128": "icons/128.png",
+    "150": "icons/150.png",
     "256": "icons/128@2x.png"
   },
   "options_ui": {
@@ -59,5 +55,6 @@
     "chrome_style": false
   },
   "manifest_version": 2,
-  "default_locale": "en"
+  "default_locale": "en",
+  "name": "Gyazo"
 }
