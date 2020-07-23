@@ -22,7 +22,7 @@ let plugins = [
     {from: './src/statics/imgs', to: 'imgs'},
     {from: `./src/icons/${process.env.BUILD_EXTENSION_TYPE}`, to: 'icons'},
     {from: './src/statics/content.css'},
-    {from: './src/statics/menu.css'},
+    {from: './src/statics/menu.css'}
   ]),
   new WebpackOnBuildPlugin(() => {
     exec(`cp -R ${distPathCommon}/* ${distPathChrome}`)
