@@ -13,6 +13,7 @@ jobs:
     steps:
     - checkout
     - run: npm ci
+    - run: npm run test
     - run:
         name: Install gcloud
         command: |

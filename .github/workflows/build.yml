@@ -29,5 +29,4 @@ jobs:
           ${{ runner.os }}-node-v2-
     - run: npm ci
       if: steps.cache.outputs.cache-hit != 'true'
-    - run: npm run test
     - run: npm run pack
