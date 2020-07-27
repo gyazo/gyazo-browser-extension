@@ -50,7 +50,6 @@ module.exports = {
   entry: {
     main: ['chrome-browser-object-polyfill', './src/main.js'],
     content: ['chrome-browser-object-polyfill', './src/content/content.js'],
-    pasteSupport: ['chrome-browser-object-polyfill', './src/content/paste.js'],
     option: ['chrome-browser-object-polyfill', './src/statics/option/option.js']
   },
   output: {

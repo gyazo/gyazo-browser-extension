@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Grab any image on the web and share it instantly.",
   "short_name": "Gyazo",
   "author": "Nota inc.",
@@ -11,9 +11,7 @@
     "storage"
   ],
   "optional_permissions": [
-    "clipboardWrite",
-    "clipboardRead",
-    "https://github.com/*"
+    "clipboardWrite"
   ],
   "background": {
     "scripts": [

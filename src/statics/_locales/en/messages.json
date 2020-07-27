@@ -41,9 +41,6 @@
   "contextMenuSettingLabel": {
     "message": "Show Gyazo options in the right click menu"
   },
-  "pasteSupportSettingLabel": {
-    "message": "When pasting on github.com replace Gyazo links with markdown."
-  },
   "copyUrlSupportSettingLabel": {
     "message": "Copy Gyazo links to clipboard after uploading"
   },

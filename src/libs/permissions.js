@@ -1,10 +1,6 @@
 import thenChrome from 'then-chrome'
 
 export const permissions = {
-  githubPasteSupport: {
-    permissions: ['clipboardRead'],
-    origins: ['https://github.com/']
-  },
   copyUrlToClipboard: {
     permissions: ['clipboardWrite']
   }
