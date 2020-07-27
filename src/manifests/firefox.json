@@ -4,11 +4,15 @@
   "short_name": "Gyazo",
   "author": "Nota inc.",
   "permissions": [
+    "<all_urls>",
     "https://upload.gyazo.com/*",
     "https://gyazo.com/*",
     "activeTab",
     "contextMenus",
     "storage"
+  ],
+  "optional_permissions": [
+    "clipboardWrite"
   ],
   "applications": {
     "gecko": {
