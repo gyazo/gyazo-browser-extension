@@ -91,7 +91,7 @@ export default async (request, sender, sendResponse) => {
   }
   closeBtn.setAttribute('title', 'Press: Escape');
 
-  window.addEventListener('contextmenu', function (event) {
+  window.addEventListener('contextmenu', function () {
     hideMenu();
   });
   document.body.appendChild(gyazoMenu);
@@ -126,7 +126,9 @@ export default async (request, sender, sendResponse) => {
   let settings = { behavior: 'element' };
   try {
     settings = await storage.get({ behavior: 'element' });
-  } catch (e) {}
+  } catch {
+    // no-op
+  }
   const { behavior } = settings;
   if (behavior === 'element') {
     // Default behavior is select element

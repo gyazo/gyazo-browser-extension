@@ -21,7 +21,7 @@ onContextMenuClickListener.add('gyazoIt', ({ info, tab }) => {
   gyazoIt(tab, info.srcUrl);
 });
 
-onContextMenuClickListener.add('captureSelectElement', ({ info, tab }) => {
+onContextMenuClickListener.add('captureSelectElement', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureElement',
@@ -29,7 +29,7 @@ onContextMenuClickListener.add('captureSelectElement', ({ info, tab }) => {
   });
 });
 
-onContextMenuClickListener.add('captureWindow', ({ info, tab }) => {
+onContextMenuClickListener.add('captureWindow', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureWindow',
@@ -37,7 +37,7 @@ onContextMenuClickListener.add('captureWindow', ({ info, tab }) => {
   });
 });
 
-onContextMenuClickListener.add('captureSelectArea', ({ info, tab }) => {
+onContextMenuClickListener.add('captureSelectArea', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureSelectArea',
@@ -45,7 +45,7 @@ onContextMenuClickListener.add('captureSelectArea', ({ info, tab }) => {
   });
 });
 
-onContextMenuClickListener.add('captureWholePage', ({ info, tab }) => {
+onContextMenuClickListener.add('captureWholePage', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureWholePage',
@@ -67,7 +67,9 @@ const checkContextMenuEnabled = async () => {
         id: 'gyazoIt',
         contexts: ['image'],
       });
-    } catch (e) {}
+    } catch {
+      // no-op
+    }
     return;
   }
   try {

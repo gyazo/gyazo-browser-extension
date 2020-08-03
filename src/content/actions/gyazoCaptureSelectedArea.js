@@ -85,7 +85,7 @@ export default (request) => {
       top: Math.min(e.pageY, startY) - window.scrollY + 'px',
     });
   };
-  const mouseupHandler = function (e) {
+  const mouseupHandler = function () {
     document.body.style.webkitUserSelect = tempUserSelect;
     document.removeEventListener('keydown', keydownHandler);
     window.addEventListener('contextmenu', function (event) {

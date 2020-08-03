@@ -41,7 +41,9 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
         result = await thenChrome.storage.sync.get(
           'gyazo-extension-sync-storage-test'
         );
-      } catch (e) {}
+      } catch {
+        // no-op
+      }
       return !!result;
     };
   }
@@ -54,7 +56,9 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
           'gyazo-extension-sync-storage-test': 1,
         });
         result = true;
-      } catch (e) {}
+      } catch {
+        // no-op
+      }
       return !!result;
     };
   }
@@ -69,7 +73,7 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     });
   }
 
-  storageObject(args) {
+  get storageObject() {
     return thenChrome.storage[this.storageType];
   }
 
@@ -77,28 +81,28 @@ const ExtensionStorageWrapper = class ExtensionStorageWrapper {
     if (!defaultValue) defaultValue = defaultOptions;
     if (!this.checkEnv)
       return this.waitForCheckEnv(() => this.get(defaultValue, ...args));
-    return this.storageObject(args).get(defaultValue, ...args);
+    return this.storageObject.get(defaultValue, ...args);
   }
 
   set(...args) {
     if (!this.checkEnv) return this.waitForCheckEnv(() => this.set(...args));
-    return this.storageObject(args).set(...args);
+    return this.storageObject.set(...args);
   }
 
   getBytesInUse(...args) {
     if (!this.checkEnv)
       return this.waitForCheckEnv(() => this.getBytesInUse(...args));
-    return this.storageObject(args).getBytesInUse(...args);
+    return this.storageObject.getBytesInUse(...args);
   }
 
   remove(...args) {
     if (!this.checkEnv) return this.waitForCheckEnv(() => this.remove(...args));
-    return this.storageObject(args).remove(...args);
+    return this.storageObject.remove(...args);
   }
 
   clear(...args) {
     if (!this.checkEnv) return this.waitForCheckEnv(() => this.clear(...args));
-    return this.storageObject(args).clear(...args);
+    return this.storageObject.clear(...args);
   }
 
   addListener(...args) {

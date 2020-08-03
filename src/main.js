@@ -22,7 +22,9 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
     loaded = await thenChrome.tabs.executeScript(tabId, {
       code: 'window.__embededGyazoContentJS',
     });
-  } catch (e) {}
+  } catch {
+    // no-op
+  }
   if (!loaded[0]) {
     try {
       await thenChrome.tabs.executeScript(tabId, {
@@ -98,7 +100,7 @@ onMessageListener.add('gyazoGetImageBlob', (request, sender, sendResponse) => {
   xhr.send();
 });
 
-onMessageListener.add('gyazoSendRawImage', (request, sender, sendResponse) => {
+onMessageListener.add('gyazoSendRawImage', (request) => {
   // XXX: Firefox WebExtension returns real size image
   if (browserInfo.firefox) request.data.s = 1;
   let data = request.data;

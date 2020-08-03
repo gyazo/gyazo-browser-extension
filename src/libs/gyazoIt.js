@@ -23,7 +23,7 @@ export default (tab, srcUrl) => {
         }
         const blob = new window.Blob([xhr.response], { type: mineType });
         const fileReader = new FileReader();
-        fileReader.onload = function (e) {
+        fileReader.onload = function () {
           postToGyazo(tab.id, {
             imageData: fileReader.result,
             title: tab.title,
