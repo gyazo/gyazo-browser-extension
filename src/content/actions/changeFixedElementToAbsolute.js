@@ -1,6 +1,6 @@
-import changeFixedElementToAbsolute from '../../libs/changeFixedElementToAbsolute'
+import changeFixedElementToAbsolute from '../../libs/changeFixedElementToAbsolute';
 
 export default (request, sender, sendResponse) => {
-  changeFixedElementToAbsolute()
-  sendResponse()
-}
+  changeFixedElementToAbsolute();
+  sendResponse();
+};

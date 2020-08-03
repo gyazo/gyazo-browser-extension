@@ -1,7 +1,9 @@
 export default () => {
-  const fixedElms = document.getElementsByClassName('gyazo-whole-capture-onetime-absolute')
+  const fixedElms = document.getElementsByClassName(
+    'gyazo-whole-capture-onetime-absolute'
+  );
   Array.from(fixedElms).forEach((item) => {
-    item.classList.remove('gyazo-whole-capture-onetime-absolute')
-    item.style.position = 'fixed'
-  })
-}
+    item.classList.remove('gyazo-whole-capture-onetime-absolute');
+    item.style.position = 'fixed';
+  });
+};

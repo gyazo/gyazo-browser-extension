@@ -1,122 +1,126 @@
-import thenChrome from 'then-chrome'
-import MessageListener from './MessageListener'
-import gyazoIt from './gyazoIt'
-import storage from './storageSwitcher'
+import thenChrome from 'then-chrome';
+import MessageListener from './MessageListener';
+import gyazoIt from './gyazoIt';
+import storage from './storageSwitcher';
 
-const onContextMenuClickListener = new MessageListener('contextmenu')
+const onContextMenuClickListener = new MessageListener('contextmenu');
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   chrome.tabs.insertCSS(tab.id, {
-    file: '/menu.css'
-  })
+    file: '/menu.css',
+  });
   onContextMenuClickListener.listen({
     target: 'contextmenu',
     action: info.menuItemId,
     info,
-    tab
-  })
-})
+    tab,
+  });
+});
 
-onContextMenuClickListener.add('gyazoIt', ({info, tab}) => {
-  gyazoIt(tab, info.srcUrl)
-})
+onContextMenuClickListener.add('gyazoIt', ({ info, tab }) => {
+  gyazoIt(tab, info.srcUrl);
+});
 
-onContextMenuClickListener.add('captureSelectElement', ({info, tab}) => {
+onContextMenuClickListener.add('captureSelectElement', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureElement',
-    tab
-  })
-})
+    tab,
+  });
+});
 
-onContextMenuClickListener.add('captureWindow', ({info, tab}) => {
+onContextMenuClickListener.add('captureWindow', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureWindow',
-    tab
-  })
-})
+    tab,
+  });
+});
 
-onContextMenuClickListener.add('captureSelectArea', ({info, tab}) => {
+onContextMenuClickListener.add('captureSelectArea', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureSelectArea',
-    tab
-  })
-})
+    tab,
+  });
+});
 
-onContextMenuClickListener.add('captureWholePage', ({info, tab}) => {
+onContextMenuClickListener.add('captureWholePage', ({ tab }) => {
   chrome.tabs.sendMessage(tab.id, {
     target: 'content',
     action: 'captureWholePage',
-    tab
-  })
-})
+    tab,
+  });
+});
 
 const checkContextMenuEnabled = async () => {
-  let contextMenuEnabled = true
-  const settings = await storage.get({contextMenu: true})
+  let contextMenuEnabled = true;
+  const settings = await storage.get({ contextMenu: true });
 
-  contextMenuEnabled = settings.contextMenu
+  contextMenuEnabled = settings.contextMenu;
 
   if (!contextMenuEnabled) {
     try {
-      await thenChrome.contextMenus.removeAll()
+      await thenChrome.contextMenus.removeAll();
       await thenChrome.contextMenus.create({
         title: chrome.i18n.getMessage('contextMenuImage'),
         id: 'gyazoIt',
-        contexts: ['image']
-      })
-    } catch (e) {}
-    return
+        contexts: ['image'],
+      });
+    } catch {
+      // no-op
+    }
+    return;
   }
   try {
-    await thenChrome.contextMenus.removeAll()
+    await thenChrome.contextMenus.removeAll();
     await thenChrome.contextMenus.create({
       title: chrome.i18n.getMessage('captureParentTitle'),
       id: 'captureParent',
-      contexts: ['all']
-    })
+      contexts: ['all'],
+    });
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',
       title: chrome.i18n.getMessage('thisImage'),
       id: 'gyazoIt',
-      contexts: ['image']
-    })
+      contexts: ['image'],
+    });
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',
       id: 'gyazoContextMenuSeparator',
       type: 'separator',
-      contexts: ['image']
-    })
+      contexts: ['image'],
+    });
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',
       id: 'captureSelectElement',
       title: chrome.i18n.getMessage('selectElement'),
-      contexts: ['all']
-    })
+      contexts: ['all'],
+    });
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',
       id: 'captureSelectArea',
       title: chrome.i18n.getMessage('selectArea'),
-      contexts: ['all']
-    })
+      contexts: ['all'],
+    });
     await thenChrome.contextMenus.create({
       parentId: 'captureParent',
       id: 'captureWindow',
       title: chrome.i18n.getMessage('captureWindow'),
-      contexts: ['all']
-    })
+      contexts: ['all'],
+    });
     chrome.contextMenus.create({
       parentId: 'captureParent',
       id: 'captureWholePage',
       title: chrome.i18n.getMessage('topToBottom'),
-      contexts: ['all']
-    })
+      contexts: ['all'],
+    });
   } catch (e) {
-    if (!e.message.match('duplicate id')) console.error(e)
+    if (!e.message.match('duplicate id')) console.error(e);
   }
-}
+};
 
-storage.onChanged.addListener(checkContextMenuEnabled.bind(checkContextMenuEnabled))
-checkContextMenuEnabled()
+storage.onChanged.addListener(
+  checkContextMenuEnabled.bind(checkContextMenuEnabled)
+);
+checkContextMenuEnabled();

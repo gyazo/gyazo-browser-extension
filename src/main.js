@@ -1,99 +1,114 @@
-import thenChrome from 'then-chrome'
-import browserInfo from 'bowser'
-import MessageListener from './libs/MessageListener'
-import gyazoIt from './libs/gyazoIt'
-import {disableButton} from './libs/changeTabEvents'
-import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize'
-import getTeams from './libs/getTeams'
-import storage from './libs/storageSwitcher'
-import './libs/contextMenu'
+import thenChrome from 'then-chrome';
+import browserInfo from 'bowser';
+import MessageListener from './libs/MessageListener';
+import gyazoIt from './libs/gyazoIt';
+import { disableButton } from './libs/changeTabEvents';
+import gyazoCaptureWithSize from './libs/gyazoCaptureWithSize';
+import getTeams from './libs/getTeams';
+import storage from './libs/storageSwitcher';
+import './libs/contextMenu';
 
-const onMessageListener = new MessageListener('main')
+const onMessageListener = new MessageListener('main');
 
 chrome.browserAction.onClicked.addListener(async (tab) => {
   if (tab.url.match(/chrome\.google\.com\/webstore\//)) {
-    window.alert(chrome.i18n.getMessage('welcomeMessage'))
-    return disableButton(tab.id)
+    window.alert(chrome.i18n.getMessage('welcomeMessage'));
+    return disableButton(tab.id);
   }
-  if (tab.status !== 'complete') return
-  const tabId = tab.id
-  let loaded = [false]
+  if (tab.status !== 'complete') return;
+  const tabId = tab.id;
+  let loaded = [false];
   try {
-    loaded = (await thenChrome.tabs.executeScript(tabId, {
-      code: 'window.__embededGyazoContentJS'
-    }))
-  } catch (e) {}
+    loaded = await thenChrome.tabs.executeScript(tabId, {
+      code: 'window.__embededGyazoContentJS',
+    });
+  } catch {
+    // no-op
+  }
   if (!loaded[0]) {
     try {
       await thenChrome.tabs.executeScript(tabId, {
-        file: './content.js'
-      })
+        file: './content.js',
+      });
       await thenChrome.tabs.insertCSS(tabId, {
-        file: '/content.css'
-      })
+        file: '/content.css',
+      });
       await thenChrome.tabs.insertCSS(tab.id, {
-        file: '/menu.css'
-      })
+        file: '/menu.css',
+      });
     } catch (e) {
-      if (e.message.match(/Cannot access a chrome/)) return disableButton(tabId)
+      if (e.message.match(/Cannot access a chrome/))
+        return disableButton(tabId);
     }
   }
-  if (chrome.runtime.lastError && chrome.runtime.lastError.message.match(/cannot be scripted/)) {
-    window.alert('It is not allowed to use Gyazo extension in this page.')
-    return disableButton(tab.id)
+  if (
+    chrome.runtime.lastError &&
+    chrome.runtime.lastError.message.match(/cannot be scripted/)
+  ) {
+    window.alert('It is not allowed to use Gyazo extension in this page.');
+    return disableButton(tab.id);
   }
   try {
-    await thenChrome.tabs.sendMessage(tab.id, { target: 'content', action: 'insertMenu', tab: tab })
+    await thenChrome.tabs.sendMessage(tab.id, {
+      target: 'content',
+      action: 'insertMenu',
+      tab: tab,
+    });
   } catch (e) {
     if (e.message.match(/Could not establish connection/)) {
-      if (window.confirm(chrome.i18n.getMessage('confirmReload'))) chrome.tabs.reload(tab.id)
-      return
+      if (window.confirm(chrome.i18n.getMessage('confirmReload')))
+        chrome.tabs.reload(tab.id);
+      return;
     }
   }
-  chrome && chrome.runtime && chrome.runtime.lastError &&
-  chrome.runtime.lastError.number !== -2147467259 &&
-  !chrome.runtime.lastError.message.match(/message port closed/) &&
-  window.confirm(chrome.i18n.getMessage('confirmReload')) &&
-  chrome.tabs.reload(tab.id)
-})
+  chrome &&
+    chrome.runtime &&
+    chrome.runtime.lastError &&
+    chrome.runtime.lastError.number !== -2147467259 &&
+    !chrome.runtime.lastError.message.match(/message port closed/) &&
+    window.confirm(chrome.i18n.getMessage('confirmReload')) &&
+    chrome.tabs.reload(tab.id);
+});
 
 onMessageListener.add('getTeam', async (request, sender, sendResponse) => {
-  const {teams, error} = await getTeams()
-  if (error) return sendResponse({error})
-  let team = teams[0]
+  const { teams, error } = await getTeams();
+  if (error) return sendResponse({ error });
+  let team = teams[0];
 
-  const savedTeam = await storage.get({team: null})
+  const savedTeam = await storage.get({ team: null });
   // Return team info if saved default team
   if (savedTeam.team) {
-    team = teams.find((t) => t.name === savedTeam.team.name) || team // prevent undefined
+    team = teams.find((t) => t.name === savedTeam.team.name) || team; // prevent undefined
   } else if (teams.length > 1) {
     // if haven't saved team info and logged in to more than 2 teams
-    window.alert(chrome.i18n.getMessage('selectTeamToLogin'))
-    chrome.tabs.create({url: chrome.runtime.getURL('option/options.html')})
-    team = {}
+    window.alert(chrome.i18n.getMessage('selectTeamToLogin'));
+    chrome.tabs.create({ url: chrome.runtime.getURL('option/options.html') });
+    team = {};
   }
-  storage.set({team})
-  sendResponse({team})
-})
+  storage.set({ team });
+  sendResponse({ team });
+});
 
 onMessageListener.add('gyazoGetImageBlob', (request, sender, sendResponse) => {
-  const xhr = new window.XMLHttpRequest()
-  xhr.open('GET', request.gyazoUrl + '/raw', true)
-  xhr.responseType = 'arraybuffer'
+  const xhr = new window.XMLHttpRequest();
+  xhr.open('GET', request.gyazoUrl + '/raw', true);
+  xhr.responseType = 'arraybuffer';
   xhr.onload = () => {
-    const blob = new window.Blob([xhr.response], {type: 'image/png'})
-    sendResponse({imageBlobUrl: window.URL.createObjectURL(blob)})
-  }
-  xhr.send()
-})
+    const blob = new window.Blob([xhr.response], { type: 'image/png' });
+    sendResponse({ imageBlobUrl: window.URL.createObjectURL(blob) });
+  };
+  xhr.send();
+});
 
-onMessageListener.add('gyazoSendRawImage', (request, sender, sendResponse) => {
+onMessageListener.add('gyazoSendRawImage', (request) => {
   // XXX: Firefox WebExtension returns real size image
-  if (browserInfo.firefox) request.data.s = 1
-  let data = request.data
-  gyazoIt(request.tab, data.srcUrl)
-})
+  if (browserInfo.firefox) request.data.s = 1;
+  let data = request.data;
+  gyazoIt(request.tab, data.srcUrl);
+});
 
-onMessageListener.add('gyazoCaptureWithSize', gyazoCaptureWithSize)
+onMessageListener.add('gyazoCaptureWithSize', gyazoCaptureWithSize);
 
-chrome.runtime.onMessage.addListener(onMessageListener.listen.bind(onMessageListener))
+chrome.runtime.onMessage.addListener(
+  onMessageListener.listen.bind(onMessageListener)
+);

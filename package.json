@@ -10,33 +10,38 @@
     "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/register": "^7.0.0",
+    "@babel/core": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
     "ava": "^2.2.0",
     "babel-loader": "^8.0.0",
     "browser-env": "^2.0.30",
     "chrome-webstore-manager": "^0.4.2",
-    "copy-webpack-plugin": "^4.0.1",
+    "copy-webpack-plugin": "^6.0.3",
     "core-js": "^3.1.4",
     "cross-env": "^7.0.2",
     "crx": "^5.0.0",
-    "jsdom": "^9.12.0",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jsdom": "^16.3.0",
     "npm-run-all": "^4.0.2",
     "on-build-webpack": "^0.1.0",
+    "prettier": "^2.0.5",
     "regenerator-runtime": "^0.13.2",
     "request-promise": "^4.2.0",
     "sinon": "^2.1.0",
     "sinon-chrome": "^2.2.0",
-    "standard": "^10.0.2",
     "web-ext": "^4.3.0",
-    "webpack": "^2.4.1"
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
-    "test": "npm run build > /dev/null && run-p test:**",
-    "test:lint": "standard \"./**/*.js\"",
+    "test": "npm run build > /dev/null && run-p test:*",
+    "test:lint": "eslint src",
+    "test:lint:fix": "eslint src --fix",
     "test:ava": "BABEL_ENV=test ava --verbose",
-    "test:lint:package:firefox": "web-ext lint -s dist/personal/firefox && web-ext lint -s dist/teams/firefox",
+    "test:package-firefox-lint": "web-ext lint -s dist/personal/firefox && web-ext lint -s dist/teams/firefox",
     "clean": "rm -rf dist/{personal,teams}/{chrome,firefox,common,edge}/* build/{personal,teams}/*",
     "build": "run-p build:*",
     "watch": "run-p watch:*",
@@ -52,24 +57,6 @@
     "pack:chrome:crx": "cross-env-shell crx pack -p build/$BUILD_EXTENSION_TYPE/key.pem -o build/$BUILD_EXTENSION_TYPE/gyazo.crx dist/$BUILD_EXTENSION_TYPE/chrome",
     "pack:chrome:keygen": "cross-env-shell crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
     "pack:firefox": "cross-env-shell web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
-  },
-  "standard": {
-    "global": [
-      "chrome",
-      "saveToClipboard",
-      "canvasUtils",
-      "location",
-      "window",
-      "document",
-      "screen",
-      "Image",
-      "$",
-      "jQuery",
-      "FileReader",
-      "MouseEvent",
-      "KeyboardEvent",
-      "URL"
-    ]
   },
   "ava": {
     "require": [
