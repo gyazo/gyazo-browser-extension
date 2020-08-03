@@ -50,20 +50,15 @@ function createImagePreview({ url, boxStyle }) {
   const img = document.createElement('img');
   img.src = url;
 
-  css(
-    img,
-    extend(
-      {
-        display: 'inline-block',
-        position: 'fixed',
-        zIndex: 1000000,
-        backgroundColor: '#fff',
-        maxWidth: 500,
-        boxShadow: '0 0 8px rgba(0,0,0,.6)',
-      },
-      boxStyle
-    )
-  );
+  css(img, {
+    display: 'inline-block',
+    position: 'fixed',
+    zIndex: 1000000,
+    backgroundColor: '#fff',
+    maxWidth: 500,
+    boxShadow: '0 0 8px rgba(0,0,0,.6)',
+    ...boxStyle,
+  });
 
   return img;
 }
