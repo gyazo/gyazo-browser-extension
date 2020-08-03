@@ -1,7 +1,6 @@
 import thenChrome from 'then-chrome';
 import delegate from 'delegate';
 import css from 'dom-css';
-import extend from 'xtend';
 import gyazoIdFromUrl from './lib/gyazoIdFromUrl';
 import adjacentStyle from './lib/adjacentStyle';
 import waitFor from './lib/waitFor';
@@ -26,28 +25,23 @@ const fetchImage = async (url, callback) => {
   xhr.send();
 };
 
-function createLoader(position = {}) {
+function createLoader(style = {}) {
   const loader = document.createElement('div');
   const circleIcon = document.createElement('div');
   circleIcon.className = 'gz-circle-loader';
   loader.appendChild(circleIcon);
 
-  css(
-    loader,
-    extend(
-      {
-        position: 'fixed',
-        boxShadow: '0 0 8px rgba(0,0,0,.6)',
-        backgroundColor: '#fff',
-        zIndex: 1000000,
-        width: 40,
-        height: 40,
-        padding: 4,
-        boxSizing: 'border-box',
-      },
-      position
-    )
-  );
+  css(loader, {
+    position: 'fixed',
+    boxShadow: '0 0 8px rgba(0,0,0,.6)',
+    backgroundColor: '#fff',
+    zIndex: 1000000,
+    width: 40,
+    height: 40,
+    padding: 4,
+    boxSizing: 'border-box',
+    ...style,
+  });
 
   return loader;
 }
@@ -56,20 +50,15 @@ function createImagePreview({ url, boxStyle }) {
   const img = document.createElement('img');
   img.src = url;
 
-  css(
-    img,
-    extend(
-      {
-        display: 'inline-block',
-        position: 'fixed',
-        zIndex: 1000000,
-        backgroundColor: '#fff',
-        maxWidth: 500,
-        boxShadow: '0 0 8px rgba(0,0,0,.6)',
-      },
-      boxStyle
-    )
-  );
+  css(img, {
+    display: 'inline-block',
+    position: 'fixed',
+    zIndex: 1000000,
+    backgroundColor: '#fff',
+    maxWidth: 500,
+    boxShadow: '0 0 8px rgba(0,0,0,.6)',
+    ...boxStyle,
+  });
 
   return img;
 }
