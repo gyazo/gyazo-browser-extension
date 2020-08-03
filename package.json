@@ -57,24 +57,6 @@
     "pack:chrome:keygen": "cross-env-shell crx keygen ./build/$BUILD_EXTENSION_TYPE --force",
     "pack:firefox": "cross-env-shell web-ext build -s dist/$BUILD_EXTENSION_TYPE/firefox -a build/$BUILD_EXTENSION_TYPE"
   },
-  "standard": {
-    "global": [
-      "chrome",
-      "saveToClipboard",
-      "canvasUtils",
-      "location",
-      "window",
-      "document",
-      "screen",
-      "Image",
-      "$",
-      "jQuery",
-      "FileReader",
-      "MouseEvent",
-      "KeyboardEvent",
-      "URL"
-    ]
-  },
   "ava": {
     "require": [
       "@babel/register",
