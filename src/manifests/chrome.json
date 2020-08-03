@@ -6,6 +6,7 @@
   "permissions": [
     "https://upload.gyazo.com/*",
     "https://gyazo.com/*",
+    "https://i.gyazo.com/*",
     "activeTab",
     "contextMenus",
     "storage"

@@ -1,10 +1,9 @@
 'use strict'
-import url from 'url'
 
 export default function gyazoIdFromUrl (str) {
-  let parsedUrl = ''
+  let parsedUrl
   try {
-    parsedUrl = url.parse(str)
+    parsedUrl = new URL(str)
   } catch (e) {
     return
   }
