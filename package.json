@@ -67,7 +67,8 @@
       "jQuery",
       "FileReader",
       "MouseEvent",
-      "KeyboardEvent"
+      "KeyboardEvent",
+      "URL"
     ]
   },
   "ava": {
