@@ -4,6 +4,7 @@
   "short_name": "Gyazo",
   "author": "Nota inc.",
   "permissions": [
+    "<all_urls>",
     "https://upload.gyazo.com/*",
     "https://gyazo.com/*",
     "https://i.gyazo.com/*",
