@@ -10,7 +10,7 @@ const extensionId =
 
 const { version } = require('../package.json');
 
-[('chrome', 'firefox')].forEach((browser) => {
+['chrome', 'firefox'].forEach((browser) => {
   const manifestBase = require(`../src/manifests/${browser}.json`);
   const overwrite =
     browser === 'firefox'
