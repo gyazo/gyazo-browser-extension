@@ -15,32 +15,9 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
     window.alert(chrome.i18n.getMessage('welcomeMessage'));
     return disableButton(tab.id);
   }
-  if (tab.status !== 'complete') return;
-  const tabId = tab.id;
-  let loaded = [false];
-  try {
-    loaded = await thenChrome.tabs.executeScript(tabId, {
-      code: 'window.__embededGyazoContentJS',
-    });
-  } catch {
-    // no-op
-  }
-  if (!loaded[0]) {
-    try {
-      await thenChrome.tabs.executeScript(tabId, {
-        file: './content.js',
-      });
-      await thenChrome.tabs.insertCSS(tabId, {
-        file: '/content.css',
-      });
-      await thenChrome.tabs.insertCSS(tab.id, {
-        file: '/menu.css',
-      });
-    } catch (e) {
-      if (e.message.match(/Cannot access a chrome/))
-        return disableButton(tabId);
-    }
-  }
+  await thenChrome.tabs.insertCSS(tab.id, {
+    file: '/menu.css',
+  });
   if (
     chrome.runtime.lastError &&
     chrome.runtime.lastError.message.match(/cannot be scripted/)
@@ -55,11 +32,9 @@ chrome.browserAction.onClicked.addListener(async (tab) => {
       tab: tab,
     });
   } catch (e) {
-    if (e.message.match(/Could not establish connection/)) {
-      if (window.confirm(chrome.i18n.getMessage('confirmReload')))
-        chrome.tabs.reload(tab.id);
-      return;
-    }
+    e.message.match(/Could not establish connection/) &&
+      window.confirm(chrome.i18n.getMessage('confirmReload')) &&
+      chrome.tabs.reload(tab.id);
   }
   chrome &&
     chrome.runtime &&
