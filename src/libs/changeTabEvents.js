@@ -47,7 +47,9 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
       loaded = await thenChrome.tabs.executeScript(tabId, {
         code: 'window.__embededGyazoContentJS',
       });
-    } catch (e) {}
+    } catch (e) {
+      // no-op
+    }
     if (loaded[0]) return enableButton(tabId);
     await thenChrome.tabs.executeScript(tabId, {
       file: './content.js',
