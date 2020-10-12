@@ -91,9 +91,11 @@ export default async (request, sender, sendResponse) => {
   }
   closeBtn.setAttribute('title', 'Press: Escape');
 
-  window.addEventListener('contextmenu', function () {
+  const onContextmenu = () => {
     hideMenu();
-  });
+  };
+
+  window.addEventListener('contextmenu', onContextmenu, { once: true });
   document.body.appendChild(gyazoMenu);
   gyazoMenu.appendChild(selectElementBtn);
   gyazoMenu.appendChild(selectAreaBtn);

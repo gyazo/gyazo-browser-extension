@@ -73,6 +73,7 @@ export default (request) => {
       left: startX + 'px',
       top: startY + 'px',
     });
+    window.removeEventListener('contextmenu', cancelGyazo);
     layer.removeEventListener('mousedown', mousedownHandler);
     layer.addEventListener('mousemove', mousemoveHandler);
     layer.addEventListener('mouseup', mouseupHandler);
@@ -88,10 +89,6 @@ export default (request) => {
   const mouseupHandler = function () {
     document.body.style.webkitUserSelect = tempUserSelect;
     document.removeEventListener('keydown', keydownHandler);
-    window.addEventListener('contextmenu', function (event) {
-      cancelGyazo();
-      event.preventDefault();
-    });
     const scaleObj = getZoomAndScale();
     const rect = selectionElm.getBoundingClientRect();
     data.w = rect.width;
