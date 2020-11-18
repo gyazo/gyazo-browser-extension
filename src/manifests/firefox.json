@@ -5,7 +5,8 @@
     "<all_urls>",
     "activeTab",
     "contextMenus",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "optional_permissions": [
     "clipboardWrite"

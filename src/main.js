@@ -1,5 +1,4 @@
 import thenChrome from 'then-chrome';
-import browserInfo from 'bowser';
 import MessageListener from './libs/MessageListener';
 import gyazoIt from './libs/gyazoIt';
 import { disableButton } from './libs/changeTabEvents';
@@ -76,8 +75,6 @@ onMessageListener.add('gyazoGetImageBlob', (request, sender, sendResponse) => {
 });
 
 onMessageListener.add('gyazoSendRawImage', (request) => {
-  // XXX: Firefox WebExtension returns real size image
-  if (browserInfo.firefox) request.data.s = 1;
   let data = request.data;
   gyazoIt(request.tab, data.srcUrl);
 });

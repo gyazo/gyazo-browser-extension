@@ -1,5 +1,4 @@
 import thenChrome from 'then-chrome';
-import browserInfo from 'bowser';
 import { trimImage, appendImageToCanvas } from './canvasUtils';
 import postToGyazo from './postToGyazo';
 import uploadLimitFileSize from './uploadLimitFileSize';
@@ -7,9 +6,6 @@ import waitForDelay from './waitForDelay';
 import toJpegDataURL from './convertAdjustmentJpegQuality';
 
 export default (request, sender, sendResponse) => {
-  // XXX: Firefox returns real size image
-  if (browserInfo.firefox) request.data.s = 1.0;
-  if (browserInfo.msedge && request.data.s === 1.25) request.data.s = 1.0;
   const baseCanvas = document.createElement('canvas');
   baseCanvas.height = request.data.h * request.data.z * request.data.s;
   baseCanvas.width = request.data.w * request.data.z * request.data.s;
