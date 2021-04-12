@@ -59,22 +59,7 @@ if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
         team = teams[0];
         storage.set({ team });
       }
-      document
-        .getElementById('teamSelector')
-        .addEventListener('change', (event) => {
-          const name = event.target.value;
-          team = { name };
-          storage.set({ team });
-        });
-      document.getElementById('teamSelector').append(
-        ...teams.map(({ name }) => {
-          const option = document.createElement('option');
-          option.textContent = name;
-          option.value = name;
-          option.selected = name === team.name;
-          return option;
-        })
-      );
+      document.getElementById('currentTeamName').textContent = team.name;
     })
     .catch((error) => {
       if (error.status === 403) {
