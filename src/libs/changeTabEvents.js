@@ -25,7 +25,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   if (tab.status === 'loading') {
     return disableButton(tab.id);
   }
-  if (tab.url.match(/^https?:/)) {
+  if (tab.url && tab.url.match(/^https?:/)) {
     enableButton(tab.id);
   } else {
     disableButton(tab.id);
@@ -37,6 +37,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     disableButton(tabId);
   } else if (changeInfo.status === 'complete') {
     const tab = await thenChrome.tabs.get(tabId);
+    if (!tab.url) return;
     if (!tab.url.match(/^https?:/)) {
       return console.error(
         'This Extension can run only on https? pages: ' + location.href
