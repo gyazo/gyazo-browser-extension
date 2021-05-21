@@ -46,9 +46,19 @@ storage.get().then(async (item) => {
 });
 
 if (process.env.BUILD_EXTENSION_TYPE === 'teams') {
+  document
+    .getElementById('loginToTeamsLink')
+    .addEventListener('click', (event) => {
+      event.preventDefault();
+      chrome.tabs.create({ url: 'https://gyazo.com/teams/login' });
+    });
   getTeams()
-    .then(async () => {
-      const { team } = await storage.get();
+    .then(async ({ teams }) => {
+      let { team } = await storage.get({ team: null });
+      if (!team) {
+        team = teams[0];
+        storage.set({ team });
+      }
       document.getElementById('currentTeamName').textContent = team.name;
     })
     .catch((error) => {
